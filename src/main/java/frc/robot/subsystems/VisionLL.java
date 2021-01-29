@@ -63,6 +63,9 @@ public class VisionLL extends SubsystemBase {
         LEDState = false;
     }
   }
+  public boolean getLEDState() {
+    return LEDState;
+  }
 
   public double getLLDegToTarget(){
     return limelight.getdegRotationToTarget();
