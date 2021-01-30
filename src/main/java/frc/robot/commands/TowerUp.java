@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.TransportSystem;
 
 public class TowerUp extends CommandBase {
@@ -23,13 +24,13 @@ public class TowerUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    tower.up();
+    RobotContainer.m_Transport.TowerUp();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    tower.stop();
+    RobotContainer.m_Transport.TowerStop();
   }
 
   // Returns true when the command should end.

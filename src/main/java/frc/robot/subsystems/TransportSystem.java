@@ -36,32 +36,42 @@ public class TransportSystem extends SubsystemBase {
   private TowerState currentState = TowerState.INIT;
 
   private static final int kTowerMotor = TowerConstants.TOWER_MOTOR; 
+  private static final int kHopperMotor = TowerConstants.HOPPER_MOTOR; 
   private static final int klowSensor = TowerConstants.BOTTOM_SENSOR_DIO;
   private static final int kmidSensor = TowerConstants.MIDDLE_SENSOR_DIO;
   private static final int khighSensor = TowerConstants.TOP_SENSOR_DIO;
   public final VictorSPX TowerVictor;
+  public final VictorSPX HopperVictor;
   private DigitalInput levelOne;
   private DigitalInput levelTwo;
   private DigitalInput levelThree;
 
   private double up_speed = 0.3;
   private double down_speed = -0.3;
+  private double in_speed = 0.3;
+  private double out_speed = -0.3;
 
   /** Creates a new TransportSystem. */
   public TransportSystem() {
     TowerVictor = new WPI_VictorSPX(kTowerMotor);
+    HopperVictor = new WPI_VictorSPX(kHopperMotor);
     TowerVictor.configFactoryDefault();
+    HopperVictor.configFactoryDefault();
 
     //VictorSPX doesn't have current limiting capabilities. Might be reason to switch to Talon/SparkMax. 
     //Otherwise implement some current limiting via PDP for checking for ball jams
     TowerVictor.configVoltageCompSaturation(12.0, 0);
     TowerVictor.configOpenloopRamp(0.5, 0);
+    HopperVictor.configVoltageCompSaturation(12.0, 0);
+    HopperVictor.configOpenloopRamp(0.5, 0);
 
     levelOne = new DigitalInput(klowSensor);
     levelTwo = new DigitalInput(kmidSensor);
     levelThree = new DigitalInput(khighSensor);
     SmartDashboard.putNumber("Up Speed", up_speed);
     SmartDashboard.putNumber("Down Speed", down_speed);
+    SmartDashboard.putNumber("Hopper in Speed", in_speed);
+    SmartDashboard.putNumber("Hopper out Speed", out_speed);
     
 
     //Helixlogger setup
@@ -72,17 +82,42 @@ public class TransportSystem extends SubsystemBase {
     this.setDefaultCommand(new ManageBallTower(this));
   }
 
-  public void up() {
+  public void TowerUp() {
     TowerVictor.set(ControlMode.PercentOutput, up_speed);    
   }
 
-  public void down() {
+  public void TowerDown() {
     TowerVictor.set(ControlMode.PercentOutput, down_speed);    
   }
 
-  public void stop() {
+  public void TowerStop() {
     TowerVictor.set(ControlMode.PercentOutput, 0.0);  
+  }
 
+  public void HopperIn() {
+    HopperVictor.set(ControlMode.PercentOutput, in_speed);    
+  }
+
+  public void HopperOut() {
+    HopperVictor.set(ControlMode.PercentOutput, out_speed);    
+  }
+
+  public void HopperStop() {
+    HopperVictor.set(ControlMode.PercentOutput, 0.0);  
+  }
+
+  public void LoadTransport() {
+    TowerUp();
+    HopperIn();
+  }
+  
+  public void StopTransportSystem() {
+    HopperStop();
+    TowerStop();
+  }
+  public void ReverseTransportSystem() {
+    HopperOut();
+    TowerDown();
   }
 
   public void setState(TowerState state) {
@@ -248,9 +283,11 @@ public class TransportSystem extends SubsystemBase {
   public void dashboard() {
     final double up = SmartDashboard.getNumber("Up Speed", up_speed);
     final double down = SmartDashboard.getNumber("Down Speed", down_speed);
+    final double in = SmartDashboard.getNumber("Hopper in Speed", in_speed);
+    final double out = SmartDashboard.getNumber("Hopper out Speed", out_speed);
     SmartDashboard.putString("Tower State", getState().toString());
-    SmartDashboard.putBoolean("Tower low", levelOne.get());
     SmartDashboard.putNumber("Tower Speed", TowerVictor.getMotorOutputPercent());
+    SmartDashboard.putNumber("Hopper Speed", HopperVictor.getMotorOutputPercent());
 
     if (up != up_speed)
     {
@@ -259,6 +296,15 @@ public class TransportSystem extends SubsystemBase {
     if (down != down_speed)
     {
       down_speed = down;
+    }
+    
+    if (in != in_speed)
+    {
+      in_speed = in;
+    }
+    if (out != out_speed)
+    {
+      out_speed = out;
     }
     
   }

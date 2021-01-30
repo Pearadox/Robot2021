@@ -36,28 +36,33 @@ public class ManageBallTower extends CommandBase {
     curr_state = RobotContainer.m_Transport.getState();
     switch (curr_state) {
       case EMPTY:
-        RobotContainer.m_Transport.stop();
+        RobotContainer.m_Transport.TowerStop();
+        RobotContainer.m_Transport.HopperIn();
         break;
       case READY_2:
-        RobotContainer.m_Transport.stop();
+      RobotContainer.m_Transport.TowerStop();
+      RobotContainer.m_Transport.HopperIn();
         break;
       case READY_3:
-        RobotContainer.m_Transport.stop();
+      RobotContainer.m_Transport.TowerStop();
+      RobotContainer.m_Transport.HopperIn();
         break;
       case LOADED_3:
-        RobotContainer.m_Transport.stop();
+      RobotContainer.m_Transport.StopTransportSystem();
         break;
       case LOADED_1:
-        RobotContainer.m_Transport.up();
+        RobotContainer.m_Transport.TowerUp();
+        RobotContainer.m_Transport.HopperStop();
         break;
       case LOADED_2:
-        RobotContainer.m_Transport.up();
+      RobotContainer.m_Transport.TowerUp();
+      RobotContainer.m_Transport.HopperStop();
         break;
       case UNKNOWN:
-        RobotContainer.m_Transport.down();
+        RobotContainer.m_Transport.ReverseTransportSystem();
         break;
       default:
-        RobotContainer.m_Transport.stop();
+        RobotContainer.m_Transport.StopTransportSystem();
         break;
     }
 
