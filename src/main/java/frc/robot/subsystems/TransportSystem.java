@@ -152,6 +152,10 @@ public class TransportSystem extends SubsystemBase {
           //mid is detecting a ball and low is empty 
           setState(TowerState.READY_2);
         }
+        else if (low && mid) {
+          //We think we loaded a second ball while raising the first
+          setState(TowerState.LOADED_2);
+        }
         break;
       case READY_2:
       //in this case - tower should not be moving until ball enters from hopper
