@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import javax.lang.model.util.ElementScanner6;
-
 // import java.lang.System.Logger.Level;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -14,11 +12,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.Debugger;
 import frc.robot.Robot;
 import frc.robot.Constants.TowerConstants;
+import frc.robot.commands.ManageBallTower;
 import frc.team2363.logger.HelixLogger;
 
 
@@ -41,8 +39,8 @@ public class TransportSystem extends SubsystemBase {
 
   private static final int kTowerMotor = TowerConstants.TOWER_MOTOR; 
   private static final int klowSensor = TowerConstants.BOTTOM_SENSOR_DIO;
-  private static final int kmidSensor = TowerConstants.BOTTOM_SENSOR_DIO;
-  private static final int khighSensor = TowerConstants.BOTTOM_SENSOR_DIO;
+  private static final int kmidSensor = TowerConstants.MIDDLE_SENSOR_DIO;
+  private static final int khighSensor = TowerConstants.TOP_SENSOR_DIO;
   public final VictorSPX TowerVictor;
   private DigitalInput levelOne;
   private DigitalInput levelTwo;
@@ -70,7 +68,7 @@ public class TransportSystem extends SubsystemBase {
     setupLogs();
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
-    this.setDefaultCommand(new RunCommand(() -> stop(), this));
+    this.setDefaultCommand(new ManageBallTower());
   }
 
   public void up() {
@@ -93,6 +91,9 @@ public class TransportSystem extends SubsystemBase {
 
   public TowerState getState() {
     return currentState;
+  }
+  public TowerState getPrevState() {
+    return prevState;
   }
 
   public boolean getLow() {
@@ -188,6 +189,8 @@ public class TransportSystem extends SubsystemBase {
       case UNKNOWN:
         //take a best guess at determining the state. 
         //maybe have motor run in reverse slowly to allow sensors to change
+
+        //could potentially use prev_state to be smarter about it
         if(!low && !mid && !high) {
           setState(TowerState.EMPTY);
         }
@@ -224,6 +227,11 @@ public class TransportSystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    determineState();
+  }
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
   }
 
   
@@ -239,6 +247,9 @@ public class TransportSystem extends SubsystemBase {
   public void dashboard() {
     final double up = SmartDashboard.getNumber("Up Speed", up_speed);
     final double down = SmartDashboard.getNumber("Down Speed", down_speed);
+    SmartDashboard.putString("State", getState().toString());
+    SmartDashboard.putBoolean("low", levelOne.get());
+    SmartDashboard.putNumber("Speed", TowerVictor.getMotorOutputPercent());
 
     if (up != up_speed)
     {

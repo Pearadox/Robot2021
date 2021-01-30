@@ -4,11 +4,9 @@
 
 package frc.robot.commands;
 
-import javax.sql.rowset.spi.TransactionalWriter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.RobotConstants;
 import frc.robot.subsystems.TransportSystem;
 import frc.robot.subsystems.TransportSystem.TowerState;
 
@@ -38,12 +36,20 @@ public class ManageBallTower extends CommandBase {
     curr_state = tower.getState();
     switch (curr_state) {
       case EMPTY:
+        tower.stop();
+        break;
       case READY_2:
+        tower.stop();
+        break;
       case READY_3:
+        tower.stop();
+        break;
       case LOADED_3:
         tower.stop();
         break;
       case LOADED_1:
+        tower.up();
+        break;
       case LOADED_2:
         tower.up();
         break;
