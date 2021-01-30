@@ -12,7 +12,7 @@ import frc.robot.subsystems.TransportSystem.TowerState;
 
 public class ManageBallTower extends CommandBase {
   /** Creates a new ManageBallTower. */
-  private TransportSystem tower;
+  TransportSystem tower;
   private TowerState curr_state;
   public ManageBallTower(TransportSystem tower) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,31 +33,31 @@ public class ManageBallTower extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    curr_state = tower.getState();
+    curr_state = RobotContainer.m_Transport.getState();
     switch (curr_state) {
       case EMPTY:
-        tower.stop();
+        RobotContainer.m_Transport.stop();
         break;
       case READY_2:
-        tower.stop();
+        RobotContainer.m_Transport.stop();
         break;
       case READY_3:
-        tower.stop();
+        RobotContainer.m_Transport.stop();
         break;
       case LOADED_3:
-        tower.stop();
+        RobotContainer.m_Transport.stop();
         break;
       case LOADED_1:
-        tower.up();
+        RobotContainer.m_Transport.up();
         break;
       case LOADED_2:
-        tower.up();
+        RobotContainer.m_Transport.up();
         break;
       case UNKNOWN:
-        tower.down();
+        RobotContainer.m_Transport.down();
         break;
       default:
-        tower.stop();
+        RobotContainer.m_Transport.stop();
         break;
     }
 

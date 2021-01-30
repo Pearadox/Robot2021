@@ -23,6 +23,7 @@ import frc.robot.subsystems.Hood;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -73,7 +74,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    // m_Transport.setDefaultCommand(new ManageBallTower(m_Transport));
 
     printInfo("End robotInit()");
   }
@@ -86,7 +86,7 @@ public class RobotContainer {
    */
   JoystickButton btn1 = new JoystickButton(driverJoystick, 0);
   private void configureButtonBindings() {
-    // btn1.whileHeld(new TowerUp(m_Transport));
+    btn1.whileHeld(new TowerUp(m_Transport));
   }
 
   private void portForwarding() {

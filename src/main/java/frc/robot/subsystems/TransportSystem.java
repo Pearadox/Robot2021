@@ -61,6 +61,8 @@ public class TransportSystem extends SubsystemBase {
     levelOne = new DigitalInput(klowSensor);
     levelTwo = new DigitalInput(kmidSensor);
     levelThree = new DigitalInput(khighSensor);
+    SmartDashboard.putNumber("Up Speed", up_speed);
+    SmartDashboard.putNumber("Down Speed", down_speed);
     
 
     //Helixlogger setup
@@ -68,6 +70,7 @@ public class TransportSystem extends SubsystemBase {
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
     // this.setDefaultCommand(new ManageBallTower());
+    this.setDefaultCommand(new ManageBallTower(this));
   }
 
   public void up() {
