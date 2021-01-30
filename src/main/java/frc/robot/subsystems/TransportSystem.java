@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.Debugger;
 import frc.robot.Robot;
@@ -26,10 +27,8 @@ public class TransportSystem extends SubsystemBase {
     INIT, //Start here
     EMPTY, //all ball sensors indicate no ball - assume ball tower is empty
     LOADED_1, //hopper has pushed 1 ball into lowest spot
-    RAISING_1, //while raising the 1st ball, may have some funny responses
     READY_2,  //1st ball is loaded, ready for 2nd
     LOADED_2, //hopper has pushed 2nd ball in
-    RAISING_2, //raising the bottom 2 balls to the otp
     READY_3, //ready for 3rd ball
     LOADED_3, //all three sensors indicate a ball
     UNKNOWN
@@ -68,7 +67,7 @@ public class TransportSystem extends SubsystemBase {
     setupLogs();
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
-    this.setDefaultCommand(new ManageBallTower());
+    // this.setDefaultCommand(new ManageBallTower());
   }
 
   public void up() {
@@ -247,9 +246,9 @@ public class TransportSystem extends SubsystemBase {
   public void dashboard() {
     final double up = SmartDashboard.getNumber("Up Speed", up_speed);
     final double down = SmartDashboard.getNumber("Down Speed", down_speed);
-    SmartDashboard.putString("State", getState().toString());
-    SmartDashboard.putBoolean("low", levelOne.get());
-    SmartDashboard.putNumber("Speed", TowerVictor.getMotorOutputPercent());
+    SmartDashboard.putString("Tower State", getState().toString());
+    SmartDashboard.putBoolean("Tower low", levelOne.get());
+    SmartDashboard.putNumber("Tower Speed", TowerVictor.getMotorOutputPercent());
 
     if (up != up_speed)
     {

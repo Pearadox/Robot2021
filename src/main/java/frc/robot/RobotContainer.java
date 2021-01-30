@@ -6,10 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
+import frc.robot.commands.ManageBallTower;
+import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -18,7 +21,9 @@ import frc.robot.subsystems.TransportSystem;
 import frc.robot.subsystems.VisionLL;
 import frc.robot.subsystems.Hood;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private static Joystick driverJoystick = new Joystick(0);
   public static final Climber m_Climber = new Climber();
   public static final Drivetrain m_Drivetrain = new Drivetrain();
   public static final Hood m_Hood = new Hood();
@@ -67,6 +73,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    // m_Transport.setDefaultCommand(new ManageBallTower(m_Transport));
 
     printInfo("End robotInit()");
   }
@@ -77,7 +84,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  JoystickButton btn1 = new JoystickButton(driverJoystick, 0);
+  private void configureButtonBindings() {
+    // btn1.whileHeld(new TowerUp(m_Transport));
+  }
 
   private void portForwarding() {
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_CAMERA_FEED);

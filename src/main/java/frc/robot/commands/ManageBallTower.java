@@ -14,9 +14,9 @@ public class ManageBallTower extends CommandBase {
   /** Creates a new ManageBallTower. */
   private TransportSystem tower;
   private TowerState curr_state;
-  public ManageBallTower() {
+  public ManageBallTower(TransportSystem tower) {
     // Use addRequirements() here to declare subsystem dependencies.
-    tower = RobotContainer.m_Transport;
+    // tower = RobotContainer.m_Transport;
     addRequirements(tower);
   }
 
@@ -67,7 +67,7 @@ public class ManageBallTower extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    tower.stop();
+    // tower.stop();
   }
 
   // Returns true when the command should end.
