@@ -249,6 +249,10 @@ public class TransportSystem extends SubsystemBase {
         else if (low && mid && high)
         {
           setState(TowerState.LOADED_3);
+        } 
+        else 
+        {
+          setState(TowerState.UNKNOWN);
         }
         break;
       default:
@@ -289,23 +293,10 @@ public class TransportSystem extends SubsystemBase {
     SmartDashboard.putNumber("Tower Speed", TowerVictor.getMotorOutputPercent());
     SmartDashboard.putNumber("Hopper Speed", HopperVictor.getMotorOutputPercent());
 
-    if (up != up_speed)
-    {
-      up_speed = up;
-    }
-    if (down != down_speed)
-    {
-      down_speed = down;
-    }
-    
-    if (in != in_speed)
-    {
-      in_speed = in;
-    }
-    if (out != out_speed)
-    {
-      out_speed = out;
-    }
+    if (up != up_speed) up_speed = up;
+    if (down != down_speed) down_speed = down;
+    if (in != in_speed) in_speed = in;
+    if (out != out_speed) out_speed = out;
     
   }
   

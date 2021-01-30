@@ -97,8 +97,8 @@ public final class Constants {
 
     public static final class IntakeConstants {
         public static final int ARM_INTAKE_MOTOR = 13;
-        public static final int TOP_INTAKE_MOTOR = 14;
-        public static final int BOT_INTAKE_MOTOR = 15;
+        public static final int TOP_ROLLER_MOTOR = 14;
+        public static final int BOT_ROLLER_MOTOR = 15;
     }
 
     // public static final class TransportConstants {

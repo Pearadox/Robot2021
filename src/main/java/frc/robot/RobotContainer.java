@@ -22,6 +22,7 @@ import frc.robot.subsystems.Hood;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -82,28 +83,25 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  JoystickButton btn1 = new JoystickButton(driverJoystick, 0);
-  JoystickButton btn2 = new JoystickButton(driverJoystick, 1);
-  JoystickButton btn3 = new JoystickButton(driverJoystick, 2);
-  JoystickButton btn4 = new JoystickButton(driverJoystick, 3);
+  JoystickButton btn1 = new JoystickButton(driverJoystick, 1);
+  JoystickButton btn2 = new JoystickButton(driverJoystick, 2);
+  JoystickButton btn3 = new JoystickButton(driverJoystick, 3);
+  JoystickButton btn4 = new JoystickButton(driverJoystick, 4);
+  JoystickButton btn5 = new JoystickButton(driverJoystick, 5);
+  JoystickButton btn6 = new JoystickButton(driverJoystick, 6);
   private void configureButtonBindings() {
-    btn1.whileHeld(new TowerUp(m_Transport));
-    // btn1.whileHeld(new InstantCommand(
-    //   () -> {
-    //     m_Transport.TowerUp();
-    // }, m_Transport));
-    btn2.whileHeld(new InstantCommand(
+    btn1.whileHeld(new RunCommand(m_Transport::TowerUp, m_Transport)); //Tower Up
+    btn2.whileHeld(new RunCommand(  //ArmIntake Up
       () -> {
-        m_Intake.setSpeed(.3);
+        m_Intake.setArmIntakeSpeed(.3);
     }, m_Intake));
-    btn3.whileHeld(new InstantCommand(
+    btn3.whileHeld(new RunCommand( //ArmIntake Down
       () -> {
-        m_Intake.setSpeed(-.3);
+        m_Intake.setArmIntakeSpeed(-.3);
     }, m_Intake));
-    btn4.whenPressed(new InstantCommand(
-      () -> {
-        m_Intake.resetEncoder();
-    }, m_Intake));
+    btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
+    // btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
+    // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
   }
 
   private void portForwarding() {
