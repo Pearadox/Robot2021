@@ -99,15 +99,15 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public boolean getLow() {
-    return levelOne.get();
+    return !(levelOne.get());
   }
 
   public boolean getMedium() {
-    return levelTwo.get();
+    return !(levelTwo.get());
   }
 
   public boolean getHigh() {
-    return levelThree.get();
+    return !(levelThree.get());
   }
   public TowerState determineState() {
     boolean low, mid, high;
@@ -152,10 +152,6 @@ public class TransportSystem extends SubsystemBase {
           //mid is detecting a ball and low is empty 
           setState(TowerState.READY_2);
         }
-        // else if (low && mid) {
-        //   //We think we loaded a second ball while raising the first
-        //   setState(TowerState.LOADED_2);
-        // }
         break;
       case READY_2:
       //in this case - tower should not be moving until ball enters from hopper
