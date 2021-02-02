@@ -119,11 +119,11 @@ public class Intake extends SubsystemBase {
   }
 
   public void resetArmIntakeEncoder() {
-    ArmIntakeEncoder.setPosition(0.0);
+    // ArmIntakeEncoder.setPosition(0.0);
   }
 
   public void resetRollerIntakeEncoder() {
-    ArmIntakeEncoder.setPosition(0.0);
+    // TopRollerEncoder.setPosition(0.0);
   }
   
   public void setArmIntakeSpeed(double speed) {

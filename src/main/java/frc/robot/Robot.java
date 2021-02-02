@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.Debugger;
+import frc.team2363.logger.HelixLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -111,7 +112,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    HelixLogger.getInstance().saveLogs();}
 
   @Override
   public void teleopInit() {
@@ -133,7 +135,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    
+    HelixLogger.getInstance().saveLogs();
+  }
 
   @Override
   public void testInit() {

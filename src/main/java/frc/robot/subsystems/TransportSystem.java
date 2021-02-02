@@ -17,6 +17,7 @@ import frc.lib.util.Debugger;
 import frc.robot.Robot;
 import frc.robot.Constants.TowerConstants;
 import frc.robot.commands.ManageBallTower;
+import frc.robot.commands.WiggleCmd;
 import frc.team2363.logger.HelixLogger;
 
 
@@ -79,7 +80,7 @@ public class TransportSystem extends SubsystemBase {
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
     // this.setDefaultCommand(new ManageBallTower());
-    this.setDefaultCommand(new ManageBallTower(this));
+    this.setDefaultCommand(new WiggleCmd(this));
   }
 
   public void TowerUp() {
@@ -268,6 +269,12 @@ public class TransportSystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     determineState();
+    switch(currentState) {
+      case LOADED_1:
+      case LOADED_2:
+      case LOADED_3:
+        
+    }
   }
   @Override
   public void simulationPeriodic() {
