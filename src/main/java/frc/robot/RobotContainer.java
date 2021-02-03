@@ -73,6 +73,17 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    // Configure default commands
+    // Set the default drive command to split-stick arcade drive
+    m_Drivetrain.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new RunCommand(
+            () ->
+                  m_Drivetrain.arcadeDrive(
+                    -driverJoystick.getRawAxis(0),
+                    driverJoystick.getRawAxis(1)),
+            m_Drivetrain));
 
     printInfo("End robotInit()");
   }
@@ -107,6 +118,8 @@ public class RobotContainer {
   private void portForwarding() {
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_CAMERA_FEED);
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_WEB_VIEW);
+
+
   }
 
   /**

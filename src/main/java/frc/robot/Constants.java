@@ -45,6 +45,9 @@ public final class Constants {
 
         public static final double MAX_SPEED = 0.0d; // Meters per second
         public static final double MAX_ACCELERATION = 0.0d; // Meters per second^2
+        public static final boolean kGyroReversed = false;
+        public static final boolean kLeftEncoderReversed = false;
+        public static final boolean kRightEncoderReversed = true;
     }
 
     public static final class FlywheelConstants {
