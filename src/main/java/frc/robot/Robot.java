@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.Debugger;
@@ -61,6 +63,17 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+  }
+  
+  @Override
+  public void simulationPeriodic() {
+    // Here we calculate the battery voltage based on drawn current.
+    // As our robot draws more power from the battery its voltage drops.
+    // The estimated voltage is highly dependent on the battery's internal
+    // resistance.
+    double drawCurrent = RobotContainer.m_Drivetrain.getDrawnCurrentAmps();
+    double loadedVoltage = BatterySim.calculateDefaultBatteryLoadedVoltage(drawCurrent);
+    RoboRioSim.setVInVoltage(loadedVoltage);
   }
 
   /**

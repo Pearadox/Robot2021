@@ -44,8 +44,10 @@ private final SpeedControllerGroup m_rightMotors =
       new PWMVictorSPX(17),
       new PWMVictorSPX(16));
 
-  private Encoder m_leftEncoder = new Encoder(15, 14);
-  private Encoder m_rightEncoder = new Encoder(13, 12);
+  private Encoder m_leftEncoder = new Encoder(15, 14,
+            Constants.DrivetrainConstants.kLeftEncoderReversed);
+  private Encoder m_rightEncoder = new Encoder(13, 12,
+            Constants.DrivetrainConstants.kRightEncoderReversed);
   
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
@@ -140,6 +142,16 @@ private final SpeedControllerGroup m_rightMotors =
     m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
     m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
     m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
+  }
+
+  /**
+   * Returns the current being drawn by the drivetrain. This works in SIMULATION ONLY! If you want
+   * it to work elsewhere, use the code in {@link DifferentialDrivetrainSim#getCurrentDrawAmps()}
+   *
+   * @return The drawn current in Amps.
+   */
+  public double getDrawnCurrentAmps() {
+    return m_drivetrainSimulator.getCurrentDrawAmps();
   }
 
   
