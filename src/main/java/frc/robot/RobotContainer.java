@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
-import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;

@@ -5,15 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.TransportSystem;
 
 public class TowerUp extends CommandBase {
-  private TransportSystem tower;
+  private TransportSystem balltower;
   /** Creates a new TowerUp. */
   public TowerUp(TransportSystem tower) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(tower);
+    balltower = tower;
+    addRequirements(balltower);
 
   }
 
@@ -24,13 +24,13 @@ public class TowerUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_Transport.TowerUp();
+    balltower.TowerUp();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_Transport.TowerStop();
+    balltower.TowerStop();
   }
 
   // Returns true when the command should end.
