@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
@@ -23,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.VecBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.Constants;
+import static frc.robot.Constants.DrivetrainConstants.*;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -33,24 +35,22 @@ public class Drivetrain extends SubsystemBase {
   // The motors on the left side of the drive.
 
   //Need to change these to be CANSParkMax for real robot
-  private final SpeedControllerGroup m_leftMotors =
-  new SpeedControllerGroup(
-      new PWMVictorSPX(19),
-      new PWMVictorSPX(18));
+  private final CANSparkMax frontLeftMotor = new CANSparkMax(FRONT_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax backLeftMotor = new CANSparkMax(BACK_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-// The motors on the right side of the drive.
-private final SpeedControllerGroup m_rightMotors =
-  new SpeedControllerGroup(
-      new PWMVictorSPX(17),
-      new PWMVictorSPX(16));
+  private final CANSparkMax frontRightMotor = new CANSparkMax(FRONT_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private final CANSparkMax backRightMotor = new CANSparkMax(BACK_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+  private final SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
+  private final SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
 
   private Encoder m_leftEncoder = new Encoder(15, 14,
-            Constants.DrivetrainConstants.kLeftEncoderReversed);
+            kLeftEncoderReversed);
   private Encoder m_rightEncoder = new Encoder(13, 12,
-            Constants.DrivetrainConstants.kRightEncoderReversed);
+            kRightEncoderReversed);
   
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
 
   // Create our gyro object like we would on a real robot.
   private ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
@@ -78,12 +78,11 @@ private final SpeedControllerGroup m_rightMotors =
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
     // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
     // m_rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
-    if(RobotBase.isSimulation()) {
+    if (RobotBase.isSimulation()) {
     //Do the following for simulating a robot  
       m_drivetrainSimulator = new DifferentialDrivetrainSim(
         DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
@@ -109,8 +108,6 @@ private final SpeedControllerGroup m_rightMotors =
       // the Field2d class lets us visualize our robot in the simulation GUI.
       m_fieldSim = new Field2d();
       SmartDashboard.putData("Field", m_fieldSim);
-
-
   }
 
   @Override
@@ -122,7 +119,7 @@ private final SpeedControllerGroup m_rightMotors =
       Rotation2d.fromDegrees(getHeading()),
       m_leftEncoder.getDistance(),
       m_rightEncoder.getDistance());
-  m_fieldSim.setRobotPose(getPose());
+    m_fieldSim.setRobotPose(getPose());
   }
 
   @Override
@@ -133,8 +130,8 @@ private final SpeedControllerGroup m_rightMotors =
     // We negate the right side so that positive voltages make the right side
     // move forward.
     m_drivetrainSimulator.setInputs(
-        m_leftMotors.get() * RobotController.getBatteryVoltage(),
-        -m_rightMotors.get() * RobotController.getBatteryVoltage());
+        leftMotors.get() * RobotController.getBatteryVoltage(),
+        -rightMotors.get() * RobotController.getBatteryVoltage());
     m_drivetrainSimulator.update(0.020);
 
     m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
@@ -175,7 +172,10 @@ private final SpeedControllerGroup m_rightMotors =
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
+    frontLeftMotor.set(fwd + rot);
+    backLeftMotor.set(fwd + rot);
+    frontRightMotor.set(fwd - rot);
+    backRightMotor.set(fwd - rot);
   }
 
   /**
@@ -184,6 +184,6 @@ private final SpeedControllerGroup m_rightMotors =
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (Constants.DrivetrainConstants.kGyroReversed ? -1.0 : 1.0);
+    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (kGyroReversed ? -1.0 : 1.0);
   }
 }
