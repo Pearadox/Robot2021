@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
+import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -99,6 +101,9 @@ public class RobotContainer {
   JoystickButton btn4 = new JoystickButton(driverJoystick, 4);
   JoystickButton btn5 = new JoystickButton(driverJoystick, 5);
   JoystickButton btn6 = new JoystickButton(driverJoystick, 6);
+  JoystickButton btn7 = new JoystickButton(driverJoystick, 7);
+  JoystickButton btn8 = new JoystickButton(driverJoystick, 8);
+
   private void configureButtonBindings() {
     btn1.whileHeld(new RunCommand(m_Transport::TowerUp, m_Transport)); //Tower Up
     btn2.whileHeld(new RunCommand(  //ArmIntake Up
@@ -112,6 +117,20 @@ public class RobotContainer {
     btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
     // btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
+
+    btn7.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport)); //Tower Down
+
+    btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
+
+    btn8.whileHeld(new RunCommand( () -> { m_Shooter.setShooterSpeed(0.4);}, m_Shooter));
+
+    //testing out trigger for ballTower
+    new Trigger(
+            () -> {
+              return m_Transport.getLow();
+            })
+            .whenActive(
+                    new TowerUp(m_Transport).withTimeout(0.5));
   }
 
   private void portForwarding() {
