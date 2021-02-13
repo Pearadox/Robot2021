@@ -88,9 +88,9 @@ public final class Constants {
     public static final class TowerConstants {
         public static final int TOWER_MOTOR = 12;
         public static final int HOPPER_MOTOR = 11;
-        public static final int BOTTOM_SENSOR_DIO = 0;
-        public static final int MIDDLE_SENSOR_DIO = 1;
-        public static final int TOP_SENSOR_DIO = 2;
+        public static final int BOTTOM_SENSOR_DIO = 6 ;
+        public static final int MIDDLE_SENSOR_DIO = 7;
+        public static final int TOP_SENSOR_DIO = 8;
     }
 
     public static final class ClimberConstants {

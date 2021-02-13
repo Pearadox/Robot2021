@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +20,7 @@ public class Intake extends SubsystemBase {
   private static final int kTopRollerMotor = Constants.IntakeConstants.TOP_ROLLER_MOTOR;
   private static final int kBotRollerMotor = Constants.IntakeConstants.BOT_ROLLER_MOTOR;
 
-  private PearadoxSparkMax ArmIntakeMotor;
+  private CANSparkMax ArmIntakeMotor;
   private PearadoxSparkMax TopRollerMotor;
   private PearadoxSparkMax BotRollerMotor;
 
@@ -34,7 +36,7 @@ public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
   public Intake() {
-    ArmIntakeMotor = new PearadoxSparkMax(kArmIntakeMotor);
+    ArmIntakeMotor = new CANSparkMax(kArmIntakeMotor, MotorType.kBrushless);
     TopRollerMotor = new PearadoxSparkMax(kTopRollerMotor);
     BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
     BotRollerMotor.setInverted(true);
@@ -47,11 +49,13 @@ public class Intake extends SubsystemBase {
      * in the SPARK MAX to their factory default state. If no argument is passed, these
      * parameters will not persist between power cycles
      */
+    ArmIntakeMotor.restoreFactoryDefaults();
 
     // initialze PID controller and encoder objects
     ArmPidController = ArmIntakeMotor.getPIDController();
     ArmIntakeEncoder = ArmIntakeMotor.getEncoder();
     ArmIntakeMotor.setSmartCurrentLimit(30, 35);
+    ArmIntakeMotor.setInverted(true);
 
     // PID coefficients
     kP = 5e-5; //0.002469(original 5e-5)

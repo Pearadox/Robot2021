@@ -76,15 +76,15 @@ public class RobotContainer {
     configureButtonBindings();
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
-    m_Drivetrain.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(
-            () ->
-                  m_Drivetrain.arcadeDrive(
-                    -driverJoystick.getRawAxis(0),
-                    driverJoystick.getRawAxis(1)),
-            m_Drivetrain));
+    // m_Drivetrain.setDefaultCommand(
+    //     // A split-stick arcade command, with forward/backward controlled by the left
+    //     // hand, and turning controlled by the right.
+    //     new RunCommand(
+    //         () ->
+    //               m_Drivetrain.arcadeDrive(
+    //                 -driverJoystick.getRawAxis(0),
+    //                 driverJoystick.getRawAxis(1)),
+    //         m_Drivetrain));
 
     printInfo("End robotInit()");
   }
@@ -103,6 +103,7 @@ public class RobotContainer {
   JoystickButton btn6 = new JoystickButton(driverJoystick, 6);
   JoystickButton btn7 = new JoystickButton(driverJoystick, 7);
   JoystickButton btn8 = new JoystickButton(driverJoystick, 8);
+  JoystickButton btn9 = new JoystickButton(driverJoystick, 9);
 
   private void configureButtonBindings() {
     btn1.whileHeld(new RunCommand(m_Transport::TowerUp, m_Transport)); //Tower Up
@@ -130,7 +131,9 @@ public class RobotContainer {
               return m_Transport.getLow();
             })
             .whenActive(
-                    new TowerUp(m_Transport).withTimeout(0.5));
+                    new RunCommand(m_Transport::HopperIn, m_Transport).withTimeout(0.17).andThen(new TowerUp(m_Transport).withTimeout(.8)));
+    
+    btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
   }
 
   private void portForwarding() {
