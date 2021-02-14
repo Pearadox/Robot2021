@@ -17,6 +17,7 @@ import frc.lib.util.Debugger;
 import frc.robot.Robot;
 import frc.robot.Constants.TowerConstants;
 import frc.robot.commands.HopperInCmd;
+import frc.robot.commands.ManageBallTower;
 import frc.team2363.logger.HelixLogger;
 
 
@@ -48,10 +49,10 @@ public class TransportSystem extends SubsystemBase {
   private DigitalInput levelThree;
 
   private double ballCounter;
-  private double up_speed = 0.3;
-  private double down_speed = -0.3;
-  private double in_speed = 0.3;
-  private double out_speed = -0.3;
+  private double up_speed = 0.8;
+  private double down_speed = -0.8;
+  private double in_speed = 0.8;
+  private double out_speed = -0.8;
 
   /** Creates a new TransportSystem. */
   public TransportSystem() {
@@ -63,9 +64,9 @@ public class TransportSystem extends SubsystemBase {
     //VictorSPX doesn't have current limiting capabilities. Might be reason to switch to Talon/SparkMax. 
     //Otherwise implement some current limiting via PDP for checking for ball jams
     TowerVictor.configVoltageCompSaturation(12.0, 0);
-    TowerVictor.configOpenloopRamp(0.5, 0);
+    // TowerVictor.configOpenloopRamp(0.5, 0);
     HopperVictor.configVoltageCompSaturation(12.0, 0);
-    HopperVictor.configOpenloopRamp(0.5, 0);
+    // HopperVictor.configOpenloopRamp(0.5, 0);
 
     levelOne = new DigitalInput(klowSensor);
     levelTwo = new DigitalInput(kmidSensor);
@@ -81,7 +82,7 @@ public class TransportSystem extends SubsystemBase {
     setupLogs();
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
-    // this.setDefaultCommand(new ManageBallTower());
+    // this.setDefaultCommand(new ManageBallTower(this));
     this.setDefaultCommand(new HopperInCmd(this));
   }
 
@@ -98,7 +99,13 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public void HopperIn() {
-    HopperVictor.set(ControlMode.PercentOutput, in_speed);    
+    if(ballCounter < 3) {
+      HopperVictor.set(ControlMode.PercentOutput, in_speed); 
+    }
+    else
+    {
+      HopperVictor.set(ControlMode.PercentOutput, 0.0); 
+    }   
   }
 
   public void HopperOut() {
@@ -107,6 +114,9 @@ public class TransportSystem extends SubsystemBase {
 
   public void HopperStop() {
     HopperVictor.set(ControlMode.PercentOutput, 0.0);  
+  }
+  public void HopperSet(double speed) {
+    HopperVictor.set(ControlMode.PercentOutput, speed);  
   }
 
   public void LoadTransport() {

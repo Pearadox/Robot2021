@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
+import frc.robot.commands.HopperInCmd;
 import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -38,7 +39,7 @@ public class RobotContainer {
   public static final Climber m_Climber = new Climber();
   public static final Drivetrain m_Drivetrain = new Drivetrain();
   public static final Hood m_Hood = new Hood();
-  public static final Intake m_Intake = new Intake();
+  // public static final Intake m_Intake = new Intake();
   public static final Shooter m_Shooter = new Shooter();
   public static final TransportSystem m_Transport = new TransportSystem();
   public static final VisionLL visionLL = new VisionLL(); 
@@ -107,15 +108,15 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     btn1.whileHeld(new RunCommand(m_Transport::TowerUp, m_Transport)); //Tower Up
-    btn2.whileHeld(new RunCommand(  //ArmIntake Up
-      () -> {
-        m_Intake.setArmIntakeSpeed(.3);
-    }, m_Intake));
-    btn3.whileHeld(new RunCommand( //ArmIntake Down
-      () -> {
-        m_Intake.setArmIntakeSpeed(-.3);
-    }, m_Intake));
-    btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
+    // btn2.whileHeld(new RunCommand(  //ArmIntake Up
+    //   () -> {
+    //     m_Intake.setArmIntakeSpeed(.3);
+    // }, m_Intake));
+    // btn3.whileHeld(new RunCommand( //ArmIntake Down
+    //   () -> {
+    //     m_Intake.setArmIntakeSpeed(-.3);
+    // }, m_Intake));
+    // btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
     // btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
 
@@ -131,7 +132,8 @@ public class RobotContainer {
               return m_Transport.getLow();
             })
             .whenActive(
-                    new RunCommand(m_Transport::HopperIn, m_Transport).withTimeout(0.17).andThen(new TowerUp(m_Transport).withTimeout(.8)));
+                    (new HopperInCmd(m_Transport)).withTimeout(0.17)
+                    .andThen(new TowerUp(m_Transport).withTimeout(.8)));
     
     btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
   }
