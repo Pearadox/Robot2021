@@ -29,6 +29,10 @@ public class Shooter extends SubsystemBase {
     rightFlywheelMotor.set(speed);
     leftFlywheelMotor.set(speed);
   }
+  public void setShooterVoltage(double voltage){
+    rightFlywheelMotor.setVoltage(voltage);
+    leftFlywheelMotor.setVoltage(voltage);
+  }
 
   @Override
   public void periodic() {

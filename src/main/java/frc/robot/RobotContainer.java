@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
 import frc.robot.commands.HopperInCmd;
+import frc.robot.commands.ThreeBallAuton;
 import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -152,7 +153,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new PrintCommand("New Message");
+    return new ThreeBallAuton();
   }
   private static void initDebugger(){
     if(DS.isFMSAttached()) {
