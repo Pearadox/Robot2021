@@ -15,11 +15,11 @@ public class ThreeBallAuton extends SequentialCommandGroup {
 
         super(
 
-                new ShooterVoltage(RobotContainer.m_Shooter).withTimeout(3),
-                        new ShooterVoltage(RobotContainer.m_Shooter)
-                        .alongWith(new TowerUp(RobotContainer.m_Transport).withTimeout(0.5))
-                        .andThen(new DriveForward(RobotContainer.m_Drivetrain).withTimeout(0.5)
+                 new ShooterVoltage(RobotContainer.m_Shooter).withTimeout(2.5),
+                 new AutonTowerUp(RobotContainer.m_Transport).withTimeout(7)
+                        .alongWith(new ShooterVoltage(RobotContainer.m_Shooter).withTimeout(7)),
+                 new DriveForward(RobotContainer.m_Drivetrain).withTimeout(5)
         )
-        );
+        ;
     }
 }

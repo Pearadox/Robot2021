@@ -49,7 +49,7 @@ public class TransportSystem extends SubsystemBase {
   private DigitalInput levelThree;
 
   private double ballCounter;
-  private double up_speed = 0.8;
+  private double up_speed = 0.4;
   private double down_speed = -0.8;
   private double in_speed = 0.8;
   private double out_speed = -0.8;

@@ -20,7 +20,8 @@ public class DriveForward extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.arcadeDrive(0.2,0);
+        //                    (rot,fwd)
+        drivetrain.arcadeDrive(0,-.2);
     }
 
     @Override
@@ -31,6 +32,8 @@ public class DriveForward extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        drivetrain.arcadeDrive(0,0);
+
 
     }
 }

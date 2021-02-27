@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.HoodUp;
 import frc.robot.commands.HopperInCmd;
 import frc.robot.commands.ThreeBallAuton;
 import frc.robot.commands.TowerUp;
@@ -43,7 +45,7 @@ public class RobotContainer {
   // public static final Intake m_Intake = new Intake();
   public static final Shooter m_Shooter = new Shooter();
   public static final TransportSystem m_Transport = new TransportSystem();
-  public static final VisionLL visionLL = new VisionLL(); 
+  public static final VisionLL visionLL = new VisionLL();
 
   public static DriverStation DS;
   public static PowerDistributionPanel pdp = new PowerDistributionPanel();
@@ -78,15 +80,21 @@ public class RobotContainer {
     configureButtonBindings();
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
-    // m_Drivetrain.setDefaultCommand(
-    //     // A split-stick arcade command, with forward/backward controlled by the left
-    //     // hand, and turning controlled by the right.
-    //     new RunCommand(
-    //         () ->
-    //               m_Drivetrain.arcadeDrive(
-    //                 -driverJoystick.getRawAxis(0),
-    //                 driverJoystick.getRawAxis(1)),
-    //         m_Drivetrain));
+    m_Drivetrain.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new RunCommand(
+            () -> {
+              double throttle = driverJoystick.getRawAxis(1);
+              double twist = -driverJoystick.getRawAxis(2);
+              if (Math.abs(throttle) <= 0.3) {
+                throttle = 0;
+              }
+              if (Math.abs(twist) <= 0.3) {
+                twist = 0;
+              }
+              m_Drivetrain.arcadeDrive(twist, throttle);
+            }, m_Drivetrain));
 
     printInfo("End robotInit()");
   }
@@ -106,8 +114,11 @@ public class RobotContainer {
   JoystickButton btn7 = new JoystickButton(driverJoystick, 7);
   JoystickButton btn8 = new JoystickButton(driverJoystick, 8);
   JoystickButton btn9 = new JoystickButton(driverJoystick, 9);
+  JoystickButton btn10 = new JoystickButton(driverJoystick, 10);
+  JoystickButton btn11 = new JoystickButton(driverJoystick, 11);
 
   private void configureButtonBindings() {
+   
     btn1.whileHeld(new RunCommand(m_Transport::TowerUp, m_Transport)); //Tower Up
     // btn2.whileHeld(new RunCommand(  //ArmIntake Up
     //   () -> {
@@ -120,23 +131,26 @@ public class RobotContainer {
     // btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
     // btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
+    btn3.whileHeld(new DriveForward(m_Drivetrain));
 
     btn7.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport)); //Tower Down
 
     btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
 
-    btn8.whileHeld(new RunCommand( () -> { m_Shooter.setShooterSpeed(0.4);}, m_Shooter));
+    //btn8.whileHeld(new RunCommand( () -> { m_Shooter.setShooterSpeed(0.4);}, m_Shooter));
 
     //testing out trigger for ballTower
-    new Trigger(
-            () -> {
-              return m_Transport.getLow();
-            })
-            .whenActive(
-                    (new HopperInCmd(m_Transport)).withTimeout(0.17)
-                    .andThen(new TowerUp(m_Transport).withTimeout(.8)));
+    // new Trigger(
+    //         () -> {
+    //           return m_Transport.getLow();
+    //         })
+    //         .whenActive(
+    //                 (new HopperInCmd(m_Transport)).withTimeout(0.17)
+    //                 .andThen(new TowerUp(m_Transport).withTimeout(.8)));
     
     btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
+    btn10.whileHeld(new HoodUp(m_Hood));
+    btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
   }
 
   private void portForwarding() {
@@ -153,6 +167,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+  
     return new ThreeBallAuton();
   }
   private static void initDebugger(){
