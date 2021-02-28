@@ -158,7 +158,7 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public void incrementBallCounter(){
-    ballCounter++;
+    // ballCounter++;
   }
 
   public double getBallCounter(){

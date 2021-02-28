@@ -14,6 +14,7 @@ import frc.lib.util.Debugger;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.HoodUp;
 import frc.robot.commands.HopperInCmd;
+import frc.robot.commands.ShooterVoltage;
 import frc.robot.commands.ThreeBallAuton;
 import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
@@ -38,11 +39,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private static Joystick driverJoystick = new Joystick(0);
+  public static final Joystick driverJoystick = new Joystick(0);
   public static final Climber m_Climber = new Climber();
   public static final Drivetrain m_Drivetrain = new Drivetrain();
   public static final Hood m_Hood = new Hood();
-  // public static final Intake m_Intake = new Intake();
+  public static final Intake m_Intake = new Intake();
   public static final Shooter m_Shooter = new Shooter();
   public static final TransportSystem m_Transport = new TransportSystem();
   public static final VisionLL visionLL = new VisionLL();
@@ -80,21 +81,30 @@ public class RobotContainer {
     configureButtonBindings();
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
-    m_Drivetrain.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-        new RunCommand(
-            () -> {
-              double throttle = driverJoystick.getRawAxis(1);
-              double twist = -driverJoystick.getRawAxis(2);
-              if (Math.abs(throttle) <= 0.3) {
-                throttle = 0;
-              }
-              if (Math.abs(twist) <= 0.3) {
-                twist = 0;
-              }
-              m_Drivetrain.arcadeDrive(twist, throttle);
-            }, m_Drivetrain));
+    // m_Drivetrain.setDefaultCommand(
+    //     // A split-stick arcade command, with forward/backward controlled by the left
+    //     // hand, and turning controlled by the right.
+    //     new RunCommand(
+    //         () -> {
+    //           double throttle = driverJoystick.getRawAxis(1);
+    //           double twist = -driverJoystick.getRawAxis(2);
+    //           if (Math.abs(throttle) <= 0.3) {
+    //             throttle = 0;
+    //           }
+    //           if (Math.abs(twist) <= 0.3) {
+    //             twist = 0;
+    //           }
+    //           m_Drivetrain.arcadeDrive(twist, throttle);
+    //         }, m_Drivetrain));
+            
+    m_Intake.setDefaultCommand(
+      new RunCommand(
+        () -> {
+          m_Intake.RollerIn();
+        }, m_Intake)
+    );
+    // m_Shooter.setDefaultCommand(
+    //   new (ShooterVoltage(m_Shooter, 4.3), m_Shooter);
 
     printInfo("End robotInit()");
   }
@@ -119,7 +129,8 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
    
-    btn1.whileHeld(new RunCommand(m_Transport::TowerUp, m_Transport)); //Tower Up
+    btn1.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport)); //Tower Up
+    btn1.whenReleased(new RunCommand(m_Transport::HopperIn, m_Transport));
     // btn2.whileHeld(new RunCommand(  //ArmIntake Up
     //   () -> {
     //     m_Intake.setArmIntakeSpeed(.3);
@@ -146,7 +157,7 @@ public class RobotContainer {
     //         })
     //         .whenActive(
     //                 (new HopperInCmd(m_Transport)).withTimeout(0.17)
-    //                 .andThen(new TowerUp(m_Transport).withTimeout(.8)));
+    //                 .andThen(new TowerUp(m_Transport).withTimeout(.9)));
     
     btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
     btn10.whileHeld(new HoodUp(m_Hood));
@@ -169,6 +180,10 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
   
     return new ThreeBallAuton();
+  }
+
+  public Joystick getDriverJoystick() {
+    return driverJoystick;
   }
   private static void initDebugger(){
     if(DS.isFMSAttached()) {

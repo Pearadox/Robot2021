@@ -5,43 +5,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TransportSystem;
+import frc.robot.subsystems.Drivetrain;
 
-public class TowerUp extends CommandBase {
-  private TransportSystem balltower;
-  /** Creates a new TowerUp. */
-  public TowerUp(TransportSystem tower) {
+public class DriveBackward extends CommandBase {
+  private final Drivetrain drivetrain;
+  
+  /** Creates a new DriveBackward. */
+  public DriveBackward(Drivetrain drivetrain) {
+    this.drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
-    balltower = tower;
-    addRequirements(balltower);
-
+    addRequirements(this.drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    balltower.incrementBallCounter();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (balltower.getBallCounter() < 3) {
-      balltower.TowerUp();
-    // } else {
-    //   balltower.TowerStop();
-    // }
+    
+    drivetrain.arcadeDrive(0,.2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    balltower.TowerStop();
+    
+    drivetrain.arcadeDrive(0,0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !balltower.getLow() && balltower.getMedium();
+    return false;
   }
 }

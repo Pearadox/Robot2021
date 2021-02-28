@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import org.opencv.video.BackgroundSubtractor;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.VecBuilder;
+import frc.robot.commands.HelixDrive;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
 import static frc.robot.Constants.DrivetrainConstants.*;
@@ -52,10 +55,10 @@ public class Drivetrain extends SubsystemBase {
             kRightEncoderReversed);
   
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
+  // private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
 
   // Create our gyro object like we would on a real robot.
-  private ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
+  // private ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
   
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
@@ -80,6 +83,11 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
+
+    
+  backLeftMotor.follow(frontLeftMotor);
+  backRightMotor.follow(frontRightMotor);
+  frontRightMotor.setInverted(true);
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
     // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
@@ -105,11 +113,13 @@ public class Drivetrain extends SubsystemBase {
       // The encoder and gyro angle sims let us set simulated sensor readings
       m_leftEncoderSim = new EncoderSim(m_leftEncoder);
       m_rightEncoderSim = new EncoderSim(m_rightEncoder);
-      m_gyroSim = new ADXRS450_GyroSim(m_gyro);
+      // m_gyroSim = new ADXRS450_GyroSim(m_gyro);
 
       // the Field2d class lets us visualize our robot in the simulation GUI.
       m_fieldSim = new Field2d();
       SmartDashboard.putData("Field", m_fieldSim);
+
+      this.setDefaultCommand(new HelixDrive(this));
   }
 
   @Override
@@ -164,6 +174,10 @@ public class Drivetrain extends SubsystemBase {
   }
   
   public void dashboard() {
+    SmartDashboard.putNumber("RightCurrent1", frontRightMotor.getOutputCurrent());
+    SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
+    SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
+    SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
     
   }
 
@@ -175,9 +189,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void arcadeDrive(double fwd, double rot) {
     frontLeftMotor.set(fwd + rot);
-    backLeftMotor.set(fwd + rot);
     frontRightMotor.set(fwd - rot);
-    backRightMotor.set(fwd - rot);
   }
 
   /**
@@ -186,6 +198,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (kGyroReversed ? -1.0 : 1.0);
+    return 0;
+    // return Math.IEEEremainder(m_gyro.getAngle(), 360) * (kGyroReversed ? -1.0 : 1.0);
   }
 }

@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -13,27 +15,67 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.PearadoxSparkMax;
 import frc.robot.Constants.FlywheelConstants;
+import frc.robot.commands.ShooterVoltage;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private PearadoxSparkMax rightFlywheelMotor;
   private PearadoxSparkMax leftFlywheelMotor;
+  private CANPIDController m_pidController;
   private CANEncoder rightCanEncoder;
   private CANEncoder leftCanEncoder;
+  public double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput, maxRPM;
 
   public Shooter() {
     rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kBrake, 20, false);
     leftFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.LEFT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kBrake, 20, false);
     rightFlywheelMotor.setInverted(true);
 
+    //follow function has a second parameter to indicate if it should be reversed in the follow
+    leftFlywheelMotor.follow(rightFlywheelMotor, true);
+
     rightCanEncoder = rightFlywheelMotor.getEncoder();
     leftCanEncoder = leftFlywheelMotor.getEncoder();
 
-    rightFlywheelMotor.setOpenLoopRampRate(0.25);
-    leftFlywheelMotor.setOpenLoopRampRate(0.25);
+    // rightFlywheelMotor.setOpenLoopRampRate(0.25);
+    // leftFlywheelMotor.setOpenLoopRampRate(0.25);
+
+    m_pidController = rightFlywheelMotor.getPIDController();
+
     SmartDashboard.putNumber("Flywheel RPM", 0);
     SmartDashboard.putNumber("Flywheel Voltage", 0);
     SmartDashboard.putNumber("Flywheel Output", 0);
+    
+    // PID coefficients
+    kP = 0.006; 
+    kI = 0;
+    kD = 0; 
+    kIz = 0; 
+    kFF = 0.0215; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+    maxRPM = 5700;
+    ksetpoint = 15.35;
+
+    // set PID coefficients
+    m_pidController.setP(kP);
+    m_pidController.setI(kI);
+    m_pidController.setD(kD);
+    m_pidController.setIZone(kIz);
+    m_pidController.setFF(kFF);
+    m_pidController.setOutputRange(kMinOutput, kMaxOutput);
+
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("S_P Gain", kP);
+    SmartDashboard.putNumber("S_I Gain", kI);
+    SmartDashboard.putNumber("S_D Gain", kD);
+    SmartDashboard.putNumber("S_I Zone", kIz);
+    SmartDashboard.putNumber("S_Feed Forward", kFF);
+    SmartDashboard.putNumber("S_Max Output", kMaxOutput);
+    SmartDashboard.putNumber("S_Min Output", kMinOutput);
+    SmartDashboard.putNumber("S_SetPoint", ksetpoint);
+
+    this.setDefaultCommand(new ShooterVoltage(this, 4.3));
   }
 
   // public void setShooterSpeed(double speed) {
@@ -41,17 +83,50 @@ public class Shooter extends SubsystemBase {
   //   leftFlywheelMotor.set(speed);
   // }
   public void setShooterVoltage(double voltage){
-    rightFlywheelMotor.setVoltage(voltage);
-    leftFlywheelMotor.setVoltage(voltage);
+    // rightFlywheelMotor.setVoltage(voltage);
+    // leftFlywheelMotor.setVoltage(voltage);
+    m_pidController.setReference(ksetpoint, ControlType.kVelocity);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("S_P Gain", 0);
+    double i = SmartDashboard.getNumber("S_I Gain", 0);
+    double d = SmartDashboard.getNumber("S_D Gain", 0);
+    double iz = SmartDashboard.getNumber("S_I Zone", 0);
+    double ff = SmartDashboard.getNumber("S_Feed Forward", 0);
+    double max = SmartDashboard.getNumber("S_Max Output", 0);
+    double min = SmartDashboard.getNumber("S_Min Output", 0);
+    double setpoint = SmartDashboard.getNumber("S_SetPoint", 0);
+
+
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) { m_pidController.setP(p); kP = p; }
+    if((i != kI)) { m_pidController.setI(i); kI = i; }
+    if((d != kD)) { m_pidController.setD(d); kD = d; }
+    if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
+    if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
+    if((setpoint != ksetpoint)) { ksetpoint=setpoint; }
+    if((max != kMaxOutput) || (min != kMinOutput)) { 
+      m_pidController.setOutputRange(min, max); 
+      kMinOutput = min; kMaxOutput = max; 
+    }
+    // rightFlywheelMotor.setVoltage(4.2);
+    // m_pidController.setReference(ksetpoint, ControlType.kVelocity);
+
+    SmartDashboard.putNumber("S_RightProcessVariable", rightCanEncoder.getVelocity());
+    SmartDashboard.putNumber("S_LeftProcessVariable", leftCanEncoder.getVelocity());
   }
   public void dashboard() {
     SmartDashboard.putNumber("Flywheel RPM", (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2);
     SmartDashboard.putNumber("Flywheel Voltage", rightFlywheelMotor.getBusVoltage());
     SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 
+    SmartDashboard.putNumber("Right Current", rightFlywheelMotor.getOutputCurrent());
+    SmartDashboard.putNumber("left Current", leftFlywheelMotor.getOutputCurrent());
+    
   }
 }
