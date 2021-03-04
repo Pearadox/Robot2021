@@ -28,7 +28,7 @@ public class Intake extends SubsystemBase {
 
   private CANPIDController ArmPidController;
   private CANEncoder ArmIntakeEncoder;
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxVel, minVel, maxAcc, allowedErr;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxVel, minVel, maxAcc, allowedErr;
 
   public double in_speed = 0.7;
   public double out_speed = -0.3;

@@ -147,17 +147,6 @@ public class RobotContainer {
     btn7.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport)); //Tower Down
 
     btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
-
-    //btn8.whileHeld(new RunCommand( () -> { m_Shooter.setShooterSpeed(0.4);}, m_Shooter));
-
-    //testing out trigger for ballTower
-    // new Trigger(
-    //         () -> {
-    //           return m_Transport.getLow();
-    //         })
-    //         .whenActive(
-    //                 (new HopperInCmd(m_Transport)).withTimeout(0.17)
-    //                 .andThen(new TowerUp(m_Transport).withTimeout(.9)));
     
     btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
     btn10.whileHeld(new HoodUp(m_Hood));

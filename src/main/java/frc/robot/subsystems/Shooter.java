@@ -24,12 +24,11 @@ public class Shooter extends SubsystemBase {
   private CANPIDController m_pidController;
   private CANEncoder rightCanEncoder;
   private CANEncoder leftCanEncoder;
-  public double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput, maxRPM;
+  private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput, maxRPM;
 
   public Shooter() {
     rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kBrake, 20, false);
     leftFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.LEFT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kBrake, 20, false);
-    rightFlywheelMotor.setInverted(true);
 
     //follow function has a second parameter to indicate if it should be reversed in the follow
     leftFlywheelMotor.follow(rightFlywheelMotor, true);
@@ -82,9 +81,8 @@ public class Shooter extends SubsystemBase {
   //   rightFlywheelMotor.set(speed);
   //   leftFlywheelMotor.set(speed);
   // }
+
   public void setShooterVoltage(double voltage){
-    // rightFlywheelMotor.setVoltage(voltage);
-    // leftFlywheelMotor.setVoltage(voltage);
     m_pidController.setReference(ksetpoint, ControlType.kVelocity);
   }
 
