@@ -147,15 +147,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     printInfo("End teleopInit()");
-
-     //testing out trigger for ballTower
-    new Trigger(
-            () -> {
-              return RobotContainer.m_Transport.getLow();
-            })
-            .whenActive(
-                    (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-                    .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(.9)));
   }
 
   /** This function is called periodically during operator control. */

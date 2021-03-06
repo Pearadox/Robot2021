@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
+import frc.robot.Robot.RobotState;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.HoodUp;
 import frc.robot.commands.HopperInCmd;
@@ -151,13 +152,22 @@ public class RobotContainer {
     btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
     btn10.whileHeld(new HoodUp(m_Hood));
     btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
+
+    //testing out trigger for ballTower with Robot state
+    if (Robot.getState() == RobotState.TELEOP) {      
+      new Trigger(
+        () -> {
+          return RobotContainer.m_Transport.getLow();
+        })
+        .whenActive(
+                (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
+                .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(.9)));
+    }  
   }
 
   private void portForwarding() {
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_CAMERA_FEED);
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_WEB_VIEW);
-
-
   }
 
   /**

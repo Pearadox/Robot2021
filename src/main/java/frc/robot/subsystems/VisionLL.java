@@ -18,6 +18,9 @@ public class VisionLL extends SubsystemBase {
 
   public final LimeLight limelight;
   private boolean LEDState;
+  private final double goalHeight = 0;
+  private final double robotHeight = 0;
+  private final double robotAngle = 0;
 
   /**
    * Creates a new VisionLL.
@@ -63,6 +66,7 @@ public class VisionLL extends SubsystemBase {
         LEDState = false;
     }
   }
+
   public boolean getLEDState() {
     return LEDState;
   }
@@ -79,8 +83,12 @@ public double getLLTargetArea(){
     return limelight.getTargetArea();
 }
 
-public boolean getLimelightHasValidTarget(){
-    return limelight.getIsTargetFound();
+//d=(h2-h1)/tan(a1+a2)
+public double getLLRobotToTargetDistance() {
+  double ty = limelight.getdegVerticalToTarget();
+  double distance = (goalHeight - robotHeight) / 
+                    Math.tan(Math.toRadians(ty + robotAngle));
+  return distance;
 }
 
 public void setLimeLightPipeline(int i) {
