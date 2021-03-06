@@ -41,8 +41,8 @@ public final class Constants {
         public static final DifferentialDriveKinematics KINEMATICS =
             new DifferentialDriveKinematics(DRIVE_BASE_WIDTH);
 
-        public static final double THROTTLE_DEADBAND = 0.075d;
-        public static final double TWIST_DEADBAND = 0.075d;
+        public static final double THROTTLE_DEADBAND = 0.01d;
+        public static final double TWIST_DEADBAND = 0.01d;
         public static final double MAX_OUTPUT = 1.0d;
 
         public static final double MAX_SPEED = 0.0d; // Meters per second

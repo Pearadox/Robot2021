@@ -93,12 +93,12 @@ public class RobotContainer {
     //           m_Drivetrain.arcadeDrive(twist, throttle);
     //         }, m_Drivetrain));
             
-    m_Intake.setDefaultCommand(
-      new RunCommand(
-        () -> {
-          m_Intake.RollerIn();
-        }, m_Intake)
-    );
+    // m_Intake.setDefaultCommand(
+    //   new RunCommand(
+    //     () -> {
+    //       m_Intake.RollerIn();
+    //     }, m_Intake)
+    // );
     // m_Shooter.setDefaultCommand(
     //   new (ShooterVoltage(m_Shooter, 4.3), m_Shooter);
 
@@ -128,26 +128,30 @@ public class RobotContainer {
    
     btn1.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport)); //Tower Up
     btn1.whenReleased(new RunCommand(m_Transport::HopperIn, m_Transport));
-    btn2.whileHeld(new RunCommand(  //ArmIntake Up
+    btn9.whileHeld(new RunCommand(  //ArmIntake Up
       () -> {
-        m_Intake.setArmIntakeSpeed(.3);
+        m_Intake.setArmIntakeSpeed(0.27);
     }, m_Intake));
-    btn3.whileHeld(new RunCommand( //ArmIntake Down
+    /*btn10.whileHeld(new RunCommand( //ArmIntake Down
       () -> {
-        m_Intake.setArmIntakeSpeed(-.3);
+        m_Intake.setArmIntakeSpeed(-.1);
     }, m_Intake));
-    // btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
-    // btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
+    */
+    btn10.whenPressed(new IntakeDown(m_Intake));
+     btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
+     //btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
-    btn3.whileHeld(new DriveForward(m_Drivetrain));
+    //btn3.whileHeld(new DriveForward(m_Drivetrain));
+
+
 
     btn7.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport)); //Tower Down
 
-    btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
+   //btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
     
-    btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
-    btn10.whileHeld(new HoodUp(m_Hood));
-    btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
+    //btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
+    //btn10.whileHeld(new HoodUp(m_Hood));
+   // btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
     btn12.whenPressed(new SetZeroHood(m_Hood));
     btn3.whenPressed(new SetHood(m_Hood));
 

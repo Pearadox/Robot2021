@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
   private CANEncoder ArmIntakeEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxVel, minVel, maxAcc, allowedErr;
 
-  public double in_speed = 0.7;
+  public double in_speed = 0.3;
   public double out_speed = -0.3;
   // public double maxRPM; //not used anywhere
 
@@ -125,7 +125,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void resetArmIntakeEncoder() {
-    // ArmIntakeEncoder.setPosition(0.0);
+     ArmIntakeEncoder.setPosition(0.0);
   }
 
   public void resetRollerIntakeEncoder() {
@@ -149,11 +149,19 @@ public class Intake extends SubsystemBase {
     setRollerSpeed(out_speed);
   }
 
+  public CANEncoder getArmIntakeEncoder() {
+    return ArmIntakeEncoder;
+  }
+
+  public double getArmIntakePosition(){
+    return ArmIntakeEncoder.getPosition();
+  }
+
   @Override
   public void periodic() {
 
     double setPoint, processVariable;
-    boolean mode = SmartDashboard.getBoolean("Arm Mode", false);
+    boolean mode = SmartDashboard.getBoolean("Arm Mode", true);
     if(mode) {
       setPoint = SmartDashboard.getNumber("Set Velocity", 0);
       ArmPidController.setReference(setPoint, ControlType.kVelocity);
