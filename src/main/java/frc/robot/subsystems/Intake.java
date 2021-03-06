@@ -120,6 +120,8 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putNumber("Roller in Speed", in_speed);
     SmartDashboard.putNumber("Roller out Speed", out_speed);
     SmartDashboard.putNumber("Roller RPM", 0);
+    SmartDashboard.putNumber("Arm Current", 0);
+    SmartDashboard.putNumber("Arm Voltage", 0);
   }
 
   public void resetArmIntakeEncoder() {
@@ -163,7 +165,7 @@ public class Intake extends SubsystemBase {
        * setReference method on an existing pid object and setting
        * the control type to kSmartMotion
        */
-      ArmPidController.setReference(setPoint, ControlType.kSmartMotion);
+      ArmPidController.setReference(setPoint, ControlType.kPosition);
       processVariable = ArmIntakeEncoder.getPosition();
     }
     
@@ -203,6 +205,8 @@ public class Intake extends SubsystemBase {
     
     SmartDashboard.putNumber("Arm Output", ArmIntakeMotor.getAppliedOutput());
     SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
+    SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());
 
     //change roller speeds based on SmartDashboard values
     final double in = SmartDashboard.getNumber("Roller in Speed", in_speed);
