@@ -99,8 +99,6 @@ public class RobotContainer {
     //       m_Intake.RollerIn();
     //     }, m_Intake)
     // );
-    // m_Shooter.setDefaultCommand(
-    //   new (ShooterVoltage(m_Shooter, 4.3), m_Shooter);
 
     printInfo("End robotInit()");
   }
@@ -131,6 +129,7 @@ public class RobotContainer {
     btn9.whileHeld(new RunCommand(  //ArmIntake Up
       () -> {
         m_Intake.setArmIntakeSpeed(0.27);
+        m_Intake.setRollerSpeed(0);
     }, m_Intake));
     /*btn10.whileHeld(new RunCommand( //ArmIntake Down
       () -> {
@@ -156,15 +155,13 @@ public class RobotContainer {
     btn3.whenPressed(new SetHood(m_Hood));
 
     //testing out trigger for ballTower with Robot state
-    if (Robot.getState() == RobotState.TELEOP) {      
-      new Trigger(
-        () -> {
-          return RobotContainer.m_Transport.getLow();
-        })
-        .whenActive(
-                (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-                .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(.9)));
-    }  
+    new Trigger(
+      () -> {
+        return RobotContainer.m_Transport.getLow();
+      })
+      .whenActive(
+              (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
+              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(.9)));
   }
 
   private void portForwarding() {

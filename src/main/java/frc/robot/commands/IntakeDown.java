@@ -28,15 +28,20 @@ public class IntakeDown extends CommandBase {
   public void execute() {
     encoderPosition = RobotContainer.m_Intake.getArmIntakePosition();
     if(encoderPosition > -17){
-    RobotContainer.m_Intake.setArmIntakeSpeed(-0.1);
-    System.out.println("down");
+      if(RobotContainer.m_Intake.getIntakeCurrent() < 10) {
+        RobotContainer.m_Intake.setArmIntakeSpeed(-0.1);
+      }
+      else{
+        RobotContainer.m_Intake.setArmIntakeSpeed(0);
+
+      }
     }
     else {
       
-    RobotContainer.m_Intake.setArmIntakeSpeed(-.1);
-    System.out.println("stop");
+      RobotContainer.m_Intake.setArmIntakeSpeed(0);
       
     }
+    RobotContainer.m_Intake.RollerIn();
   }
 
   // Called once the command ends or is interrupted.

@@ -27,11 +27,11 @@ public class HopperInCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        // if(balltower.getBallCounter() < 3) {
-            //balltower.HopperIn();
-        // }else{
-            // balltower.HopperStop();
-        // }
+        if(balltower.getBallCounter() < 3) {
+            balltower.HopperIn();
+        }else{
+            balltower.HopperStop();
+        }
     }
 
     /**

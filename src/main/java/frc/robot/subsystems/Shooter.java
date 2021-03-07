@@ -114,7 +114,7 @@ public class Shooter extends SubsystemBase {
       kMinOutput = min; kMaxOutput = max; 
     }
     // rightFlywheelMotor.setVoltage(4.2);
-    // m_pidController.setReference(ksetpoint, ControlType.kVelocity);
+    m_pidController.setReference(ksetpoint, ControlType.kVelocity);
 
     SmartDashboard.putNumber("S_RightProcessVariable", rightCanEncoder.getVelocity());
     SmartDashboard.putNumber("S_LeftProcessVariable", leftCanEncoder.getVelocity());
