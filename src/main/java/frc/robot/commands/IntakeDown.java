@@ -27,6 +27,15 @@ public class IntakeDown extends CommandBase {
   @Override
   public void execute() {
     encoderPosition = RobotContainer.m_Intake.getArmIntakePosition();
+
+    /* psuedo code
+    * move arm down until current exceeds some value
+    * turn off motor
+    * set an "arm down pos" variable to the arm encoder
+    * use a default command that trys to maintin current encoder value +/- epsilon
+    * do similar for up except do arm up pos
+
+    */
     if(encoderPosition > -17){
       if(RobotContainer.m_Intake.getIntakeCurrent() < 10) {
         RobotContainer.m_Intake.setArmIntakeSpeed(-0.1);
