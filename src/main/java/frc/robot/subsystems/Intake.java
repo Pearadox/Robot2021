@@ -1,62 +1,63 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+​
 package frc.robot.subsystems;
-
+​
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+​
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.PearadoxSparkMax;
 import frc.robot.Constants;
-
+​
 public class Intake extends SubsystemBase {
   private static final int kArmIntakeMotor = Constants.IntakeConstants.ARM_INTAKE_MOTOR;
   private static final int kTopRollerMotor = Constants.IntakeConstants.TOP_ROLLER_MOTOR;
   private static final int kBotRollerMotor = Constants.IntakeConstants.BOT_ROLLER_MOTOR;
-
+​
   private CANSparkMax ArmIntakeMotor;
   private PearadoxSparkMax TopRollerMotor;
   private PearadoxSparkMax BotRollerMotor;
-
+​
   private CANEncoder TopRollerEncoder;
-
-  private CANPIDController ArmPidController;
+​
+  public CANPIDController ArmPidController;
   private CANEncoder ArmIntakeEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxVel, minVel, maxAcc, allowedErr;
-
+  private double setPoint
+​
   public double in_speed = 1;
   public double out_speed = -0.3;
   // public double maxRPM; //not used anywhere
-
+​
   /** Creates a new Intake. */
   public Intake() {
     ArmIntakeMotor = new CANSparkMax(kArmIntakeMotor, MotorType.kBrushless);
     TopRollerMotor = new PearadoxSparkMax(kTopRollerMotor);
     BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
     BotRollerMotor.setInverted(true);
-
+​
     TopRollerEncoder = TopRollerMotor.getEncoder();
     resetRollerIntakeEncoder();
-
+​
     /**
      * The RestoreFactoryDefaults method can be used to reset the configuration parameters
      * in the SPARK MAX to their factory default state. If no argument is passed, these
      * parameters will not persist between power cycles
      */
     ArmIntakeMotor.restoreFactoryDefaults();
-
+​
     // initialze PID controller and encoder objects
     ArmPidController = ArmIntakeMotor.getPIDController();
     ArmIntakeEncoder = ArmIntakeMotor.getEncoder();
     ArmIntakeMotor.setSmartCurrentLimit(30, 35);
     ArmIntakeMotor.setInverted(true);
-
+​
     // PID coefficients
     kP = 5e-5; //0.002469(original 5e-5)
     kI = 1e-6; //0 (original 1e-6)
@@ -66,11 +67,11 @@ public class Intake extends SubsystemBase {
     kMaxOutput = .4;  //approximate speeds used previously for manual control on 2020 robot
     kMinOutput = -.4; //approximate speeds used previously for manual control on 2020 robot
     // maxRPM = 5700; not used anywhere
-
+​
     // Smart Motion Coefficients
     maxVel = 405; // rpm
     maxAcc = 202;
-
+​
     // set PID coefficients
     ArmPidController.setP(kP);
     ArmPidController.setI(kI);
@@ -78,7 +79,7 @@ public class Intake extends SubsystemBase {
     ArmPidController.setIZone(kIz);
     ArmPidController.setFF(kFF);
     ArmPidController.setOutputRange(kMinOutput, kMaxOutput);
-
+​
     /**
      * Smart Motion coefficients are set on a CANPIDController object
      * 
@@ -96,7 +97,7 @@ public class Intake extends SubsystemBase {
     ArmPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     ArmPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     ArmPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
-
+​
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("Arm P Gain", kP);
     SmartDashboard.putNumber("Arm I Gain", kI);
@@ -105,7 +106,7 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putNumber("Arm Feed Forward", kFF);
     SmartDashboard.putNumber("Arm Max Output", kMaxOutput);
     SmartDashboard.putNumber("Arm Min Output", kMinOutput);
-
+​
     // display Smart Motion coefficients
     SmartDashboard.putNumber("Arm Max Velocity", maxVel);
     SmartDashboard.putNumber("Arm Min Velocity", minVel);
@@ -113,46 +114,46 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putNumber("Arm Allowed Closed Loop Error", allowedErr);
     SmartDashboard.putNumber("Arm Set Position", 0);
     SmartDashboard.putNumber("Arm Set Velocity", 0);
-
+​
     // button to toggle between velocity and smart motion modes
     SmartDashboard.putBoolean("Arm Mode", true);
-
+​
     SmartDashboard.putNumber("Roller in Speed", in_speed);
     SmartDashboard.putNumber("Roller out Speed", out_speed);
     SmartDashboard.putNumber("Roller RPM", 0);
     SmartDashboard.putNumber("Arm Current", 0);
     SmartDashboard.putNumber("Arm Voltage", 0);
   }
-
+​
   public void resetArmIntakeEncoder() {
      ArmIntakeEncoder.setPosition(0.0);
   }
-
+​
   public void resetRollerIntakeEncoder() {
-    // TopRollerEncoder.setPosition(0.0);
+    TopRollerEncoder.setPosition(0.0);
   }
   
   public void setArmIntakeSpeed(double speed) {
     ArmIntakeMotor.set(speed);
   }
-
+​
   public void setRollerSpeed(double speed) {
     TopRollerMotor.set(speed);
     BotRollerMotor.set(speed);
   }
-
+​
   public void RollerIn() {
     setRollerSpeed(in_speed);
   }
-
+​
   public void RollerOut() {
     setRollerSpeed(out_speed);
   }
-
+​
   public CANEncoder getArmIntakeEncoder() {
     return ArmIntakeEncoder;
   }
-
+​
   public double getArmIntakePosition(){
     return ArmIntakeEncoder.getPosition();
   }
@@ -160,30 +161,14 @@ public class Intake extends SubsystemBase {
     return ArmIntakeMotor.getOutputCurrent();
   }
 
+  public void setIntakeTargetPosition (double setPoint) {
+    this.setPoint = setPoint;
+  }
+​
   @Override
   public void periodic() {
-
-    double setPoint, processVariable;
-    boolean mode = SmartDashboard.getBoolean("Arm Mode", true);
-    if(mode) {
-      setPoint = SmartDashboard.getNumber("Set Velocity", 0);
-      ArmPidController.setReference(setPoint, ControlType.kVelocity);
-      processVariable = ArmIntakeEncoder.getVelocity();
-    } else {
-      setPoint = SmartDashboard.getNumber("Arm Set Position", 0);
-      /**
-       * As with other PID modes, Smart Motion is set by calling the
-       * setReference method on an existing pid object and setting
-       * the control type to kSmartMotion
-       */
-      ArmPidController.setReference(setPoint, ControlType.kPosition);
-      processVariable = ArmIntakeEncoder.getPosition();
-    }
-    
-    SmartDashboard.putNumber("Arm SetPoint", setPoint);
-    SmartDashboard.putNumber("Arm Process Variable", processVariable);
   }
-
+​
   public void dashboard() {
     // This method will be called once per scheduler run
     // read PID coefficients from SmartDashboard
@@ -198,7 +183,7 @@ public class Intake extends SubsystemBase {
     double minV = SmartDashboard.getNumber("Arm Min Velocity", minVel);
     double maxA = SmartDashboard.getNumber("Arm Max Acceleration", maxVel);
     double allE = SmartDashboard.getNumber("Arm Allowed Closed Loop Error", allowedErr);
-
+​
     // if PID coefficients on SmartDashboard have changed, write new values to controller
     if((p != kP)) { ArmPidController.setP(p); kP = p; }
     if((i != kI)) { ArmPidController.setI(i); kI = i; }
@@ -218,14 +203,14 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
     SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
     SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());
-
+​
     //change roller speeds based on SmartDashboard values
     final double in = SmartDashboard.getNumber("Roller in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Roller out Speed", out_speed);
-
+​
     if((in_speed != in)) in_speed = in;
     if((out_speed != out)) out_speed = out;
-
+​
     SmartDashboard.putNumber("Roller RPM", TopRollerEncoder.getVelocity());
   }
 }
