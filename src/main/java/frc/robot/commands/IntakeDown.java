@@ -15,7 +15,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeDown extends CommandBase {
   /** Creates a new IntakeDown. */
   private double encoderPosition = RobotContainer.m_Intake.getArmIntakePosition();
-  boolean currentDownSpike=false;
+  boolean currDownSpike = false;
   double targetSpike;
   
   public IntakeDown(Intake m_Intake) {
@@ -42,7 +42,7 @@ public class IntakeDown extends CommandBase {
     * do similar for up except do arm up pos
 ​
     */
-    if (currentDownSpike){
+    if (currDownSpike){
       RobotContainer.m_Intake.ArmPidController.setReference(SmartDashboard.getNumber("Arm Set Position", 0), ControlType.kPosition);  
       RobotContainer.m_Intake.RollerIn();
     }
@@ -52,7 +52,7 @@ public class IntakeDown extends CommandBase {
       }
       else{
         RobotContainer.m_Intake.setArmIntakeSpeed(0);
-        currentDownSpike=true;
+        currDownSpike = true;
         targetSpike = RobotContainer.m_Intake.getArmIntakePosition();​
       }
      }
@@ -64,7 +64,7 @@ public class IntakeDown extends CommandBase {
   @Override
   public void end(boolean interrupted) {
    RobotContainer.m_Intake.setRollerSpeed(0);
-   currentDownSpike=false;
+   currDownSpike = false;
    RobotContainer.m_Intake.setArmIntakeSpeed(0); 
   }
 ​
