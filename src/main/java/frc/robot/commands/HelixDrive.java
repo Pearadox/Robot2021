@@ -25,7 +25,7 @@ public class HelixDrive extends CommandBase {
   @Override
   public void execute() {
     double throttle = RobotContainer.driverJoystick.getY();
-    double twist = RobotContainer.driverJoystick.getZ() * -0.8;
+    double twist = RobotContainer.driverJoystick.getZ() * -0.65;
 
     double saturatedInput;
     double greaterInput = Math.max(Math.abs(twist), Math.abs(throttle));

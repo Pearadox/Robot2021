@@ -25,7 +25,7 @@ public class AutonTowerUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_Transport.TowerUp();
+    RobotContainer.m_Transport.TowerUp(RobotContainer.m_Transport.up_speed);
   }
 
   // Called once the command ends or is interrupted.

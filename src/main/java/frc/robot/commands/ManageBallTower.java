@@ -51,11 +51,11 @@ public class ManageBallTower extends CommandBase {
       RobotContainer.m_Transport.StopTransportSystem();
         break;
       case LOADED_1:
-        RobotContainer.m_Transport.TowerUp();
+        RobotContainer.m_Transport.TowerUp(RobotContainer.m_Transport.up_speed);
         RobotContainer.m_Transport.HopperSet(0.3);
         break;
       case LOADED_2:
-      RobotContainer.m_Transport.TowerUp();
+      RobotContainer.m_Transport.TowerUp(RobotContainer.m_Transport.up_speed);
       RobotContainer.m_Transport.HopperSet(0.3);
         break;
       case UNKNOWN:

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.TransportSystem;
 
 public class TowerUp extends CommandBase {
@@ -20,15 +21,18 @@ public class TowerUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    balltower.incrementBallCounter();
+    // balltower.incrementBallCounter();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (balltower.getBallCounter() < 3) {
-      balltower.TowerUp();
-    } else {
+    if (balltower.getBallCounter() < 1) {
+      balltower.TowerUp(RobotContainer.m_Transport.up_speed-0.1);
+    } else if (balltower.getBallCounter() < 3){
+      balltower.TowerUp(RobotContainer.m_Transport.up_speed+.1);
+    }
+    else {
       balltower.TowerStop();
     }
   }

@@ -124,11 +124,11 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
    
-    btn1.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport)); //Tower Up
-    btn1.whenReleased(new RunCommand(m_Transport::HopperIn, m_Transport));
+    btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
+    btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     btn9.whileHeld(new RunCommand(  //ArmIntake Up
       () -> {
-        m_Intake.setArmIntakeSpeed(0.27);
+        m_Intake.setArmIntakeSpeed(1);
         m_Intake.setRollerSpeed(0);
     }, m_Intake));
     /*btn10.whileHeld(new RunCommand( //ArmIntake Down
@@ -161,7 +161,8 @@ public class RobotContainer {
       })
       .whenActive(
               (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(.9)));
+              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(0.9))
+              .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
   }
 
   private void portForwarding() {

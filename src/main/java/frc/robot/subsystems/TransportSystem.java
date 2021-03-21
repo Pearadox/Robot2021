@@ -49,7 +49,7 @@ public class TransportSystem extends SubsystemBase {
   private DigitalInput levelThree;
 
   private double ballCounter;
-  private double up_speed = 0.4;
+  public double up_speed = 0.4;
   private double down_speed = -0.8;
   private double in_speed = 0.8;
   private double out_speed = -0.8;
@@ -86,8 +86,8 @@ public class TransportSystem extends SubsystemBase {
     this.setDefaultCommand(new HopperInCmd(this));
   }
 
-  public void TowerUp() {
-    TowerVictor.set(ControlMode.PercentOutput, up_speed);    
+  public void TowerUp(double speed) {
+    TowerVictor.set(ControlMode.PercentOutput, speed);    
   }
 
   public void TowerDown() {
@@ -99,6 +99,16 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public void HopperIn() {
+    if(ballCounter < 3) {
+      HopperVictor.set(ControlMode.PercentOutput, in_speed); 
+    }
+    else
+    {
+      HopperVictor.set(ControlMode.PercentOutput, 0.0); 
+    }   
+  }
+  public void HopperInOnly() {    
+    TowerVictor.set(ControlMode.PercentOutput, 0.0); 
     if(ballCounter < 3) {
       HopperVictor.set(ControlMode.PercentOutput, in_speed); 
     }
@@ -120,7 +130,7 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public void LoadTransport() {
-    TowerUp();
+    TowerUp(up_speed);
     HopperIn();
   }
   
@@ -158,7 +168,8 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public void incrementBallCounter(){
-    // ballCounter++;
+    if(ballCounter <= 3)
+      ballCounter++;
   }
 
   public double getBallCounter(){
