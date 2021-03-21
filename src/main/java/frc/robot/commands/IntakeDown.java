@@ -15,7 +15,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeDown extends CommandBase {
   /** Creates a new IntakeDown. */
   private double encoderPosition = RobotContainer.m_Intake.getArmIntakePosition();
-  boolean currentDownSpike=false;
+  boolean currentDownSpike = false;
   double targetSpike;
   
   public IntakeDown(Intake m_Intake) {
@@ -101,7 +101,7 @@ public class IntakeDown extends CommandBase {
   @Override
   public void end(boolean interrupted) {
    RobotContainer.m_Intake.setRollerSpeed(0);
-   currentDownSpike=false;
+   currentDownSpike = false;
    RobotContainer.m_Intake.setArmIntakeSpeed(0); 
   }
   
