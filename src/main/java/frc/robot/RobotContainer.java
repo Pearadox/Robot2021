@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
-import frc.robot.Robot.RobotState;
-import frc.robot.commands.*;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.HoodUp;
+import frc.robot.commands.HopperInCmd;
+import frc.robot.commands.ShooterVoltage;
+import frc.robot.commands.ThreeBallAuton;
+import frc.robot.commands.TowerUp;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -93,12 +97,14 @@ public class RobotContainer {
     //           m_Drivetrain.arcadeDrive(twist, throttle);
     //         }, m_Drivetrain));
             
-    // m_Intake.setDefaultCommand(
-    //   new RunCommand(
-    //     () -> {
-    //       m_Intake.RollerIn();
-    //     }, m_Intake)
-    // );
+    m_Intake.setDefaultCommand(
+      new RunCommand(
+        () -> {
+          m_Intake.RollerIn();
+        }, m_Intake)
+    );
+    // m_Shooter.setDefaultCommand(
+    //   new (ShooterVoltage(m_Shooter, 4.3), m_Shooter);
 
     printInfo("End robotInit()");
   }
@@ -120,54 +126,38 @@ public class RobotContainer {
   JoystickButton btn9 = new JoystickButton(driverJoystick, 9);
   JoystickButton btn10 = new JoystickButton(driverJoystick, 10);
   JoystickButton btn11 = new JoystickButton(driverJoystick, 11);
-  JoystickButton btn12 = new JoystickButton(driverJoystick, 12);
 
   private void configureButtonBindings() {
    
-    btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
-    btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
-    btn9.whileHeld(new RunCommand(  //ArmIntake Up
-      () -> {
-        m_Intake.setArmIntakeSpeed(1);
-        m_Intake.setRollerSpeed(0);
-    }, m_Intake));
-    /*btn10.whileHeld(new RunCommand( //ArmIntake Down
-      () -> {
-        m_Intake.setArmIntakeSpeed(-.1);
-    }, m_Intake));
-    */
-    btn10.whenPressed(new IntakeDown(m_Intake));
-     btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
-     //btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
+    btn1.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport)); //Tower Up
+    btn1.whenReleased(new RunCommand(m_Transport::HopperIn, m_Transport));
+    // btn2.whileHeld(new RunCommand(  //ArmIntake Up
+    //   () -> {
+    //     m_Intake.setArmIntakeSpeed(.3);
+    // }, m_Intake));
+    // btn3.whileHeld(new RunCommand( //ArmIntake Down
+    //   () -> {
+    //     m_Intake.setArmIntakeSpeed(-.3);
+    // }, m_Intake));
+    // btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
+    // btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
-    //btn3.whileHeld(new DriveForward(m_Drivetrain));
-
-
+    btn3.whileHeld(new DriveForward(m_Drivetrain));
 
     btn7.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport)); //Tower Down
 
-   //btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
+    btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
     
-    //btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
-    //btn10.whileHeld(new HoodUp(m_Hood));
-   // btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
-    btn12.whenPressed(new SetZeroHood(m_Hood));
-    btn3.whenPressed(new SetHood(m_Hood));
-
-    //testing out trigger for ballTower with Robot state
-    new Trigger(
-      () -> {
-        return RobotContainer.m_Transport.getLow();
-      })
-      .whenActive(
-              (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(0.9))
-              .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
+    btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
+    btn10.whileHeld(new HoodUp(m_Hood));
+    btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
   }
 
   private void portForwarding() {
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_CAMERA_FEED);
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_WEB_VIEW);
+
+
   }
 
   /**
