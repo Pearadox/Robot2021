@@ -62,7 +62,6 @@ public class Drivetrain extends SubsystemBase {
   
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
-
    
   
   // These are our EncoderSim objects, which we will only use in
@@ -81,7 +80,6 @@ public class Drivetrain extends SubsystemBase {
 
   // Create the simulation model of our drivetrain.
   public DifferentialDrivetrainSim m_drivetrainSimulator;
-
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {

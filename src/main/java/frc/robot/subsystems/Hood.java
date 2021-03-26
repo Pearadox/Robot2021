@@ -19,12 +19,14 @@ public class Hood extends SubsystemBase {
   /** Creates a new hood. */
   private TalonSRX hoodMotor;
   private DigitalInput hoodSwitch;
+  private double setPoint;
 
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);
     hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    hoodMotor.configSelectedFeedbackCoefficient(1.0 / 1440);
+    hoodMotor.configSelectedFeedbackCoefficient(1);
     hoodSwitch = new DigitalInput(HoodConstants.HOOD_SWITCH_PORT);
+    setPoint = 0;
   }
 
   public void setHoodSpeed(double speed) {
@@ -32,6 +34,7 @@ public class Hood extends SubsystemBase {
     if (!SmartDashboard.containsKey("Hood Angle")) SmartDashboard.putNumber("Hood Angle", 0);
     if (!SmartDashboard.containsKey("Set Hood Angle")) SmartDashboard.putNumber("Set Hood Angle", 0);
     if (!SmartDashboard.containsKey("Hood Switch")) SmartDashboard.putBoolean("Hood Switch", false);
+    if (!SmartDashboard.containsKey("Hood RPM")) SmartDashboard.putNumber("Hood RPM", 0);
   }
 
   public void hoodUp() {
@@ -56,7 +59,19 @@ public class Hood extends SubsystemBase {
   }
 
   public boolean getHoodSwitch() {
-    return hoodSwitch.get();
+    return !hoodSwitch.get();
+  }
+
+  public void setHoodPoint(double target){
+    setPoint = target;
+  }
+
+  public double getHoodSetPoint() {
+    return setPoint;
+  }
+
+  public void zeroHood() {
+    hoodMotor.setSelectedSensorPosition(0);
   }
 
   @Override
@@ -65,7 +80,13 @@ public class Hood extends SubsystemBase {
   }
 
   public void dashboard() {
-    SmartDashboard.putNumber("Hood Angle", getHoodAngle());
+    if (getHoodAngle() < 1) {
+      SmartDashboard.putNumber("Hood Angle", 0);
+    } else {
+      SmartDashboard.putNumber("Hood Angle", getHoodAngle());
+    }
     SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
+    setHoodPoint(SmartDashboard.getNumber("Set Hood Angle", 0));
+    SmartDashboard.putNumber("Hood RPM", hoodMotor.getMotorOutputVoltage());
   }
 }
