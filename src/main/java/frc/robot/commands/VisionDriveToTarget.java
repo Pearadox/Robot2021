@@ -11,7 +11,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionLL;
 
-public class VisionTurnToTarget extends CommandBase {
+public class VisionDriveToTarget extends CommandBase {
   /** Creates a new VisionTurnToTarget. */
 
   private double kp = RobotContainer.visionLL.turnKp;
@@ -21,7 +21,7 @@ public class VisionTurnToTarget extends CommandBase {
   private boolean reachedTarget, foundTarget;
   private double changeInError, errorSum = 0; 
   private double lastError;
-  public VisionTurnToTarget(Drivetrain driveTrain, VisionLL visionLL) {
+  public VisionDriveToTarget(Drivetrain driveTrain, VisionLL visionLL) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain, visionLL);
     if (!SmartDashboard.containsKey("Vision Output")) SmartDashboard.putNumber("Vision Output", 0);
@@ -43,11 +43,7 @@ public class VisionTurnToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!foundTarget) {
-      RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6),
-                                              Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.4));
-    }
-    else {
+      double throttle = RobotContainer.getDriverJoystick().getY();
       tx = RobotContainer.visionLL.getLLDegToTarget();
       changeInError = lastError - tx;
       errorSum += tx;
@@ -56,25 +52,23 @@ public class VisionTurnToTarget extends CommandBase {
       double D = kd * changeInError;
       double output = -1*(P + I - D);
       lastError = tx;
-      RobotContainer.m_Drivetrain.arcadeDrive(0, output);
       if (Math.abs(tx) < 1) {
-        reachedTarget = true;
+       output = 0; 
       }
+      RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output);
       SmartDashboard.putNumber("Vision Output", output);
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     RobotContainer.m_Drivetrain.stop();
-    reachedTarget = false;
     
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return reachedTarget;
+    return false;
   }
 }

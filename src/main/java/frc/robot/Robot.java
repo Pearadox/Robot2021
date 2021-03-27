@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     
+    
   }
   
   @Override
@@ -98,7 +99,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     printInfo("Start disabledInit()");
     CommandScheduler.getInstance().cancelAll();
-    RobotContainer.visionLL.setLimeLightLED(false);
+    RobotContainer.visionLL.setLimeLightLED(true);
     setState(RobotState.DISABLED);
     printInfo("End disabledInit()");
   }

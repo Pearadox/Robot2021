@@ -12,6 +12,7 @@ import org.opencv.video.BackgroundSubtractor;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.VecBuilder;
+import frc.robot.RobotContainer;
 import frc.robot.commands.HelixDrive;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -188,8 +190,26 @@ public class Drivetrain extends SubsystemBase {
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
-    frontLeftMotor.set(fwd + rot);
-    frontRightMotor.set(fwd - rot);
+
+    if(RobotContainer.driverJoystick.getRawButton(11))
+    {
+      frontLeftMotor.set(0.2 * (fwd + rot));
+      frontRightMotor.set(fwd - rot);
+    }
+    else if(RobotContainer.driverJoystick.getRawButton(12))
+    {
+      frontLeftMotor.set(fwd + rot);
+      frontRightMotor.set(0.2 * (fwd - rot));
+    }
+    else {
+      frontLeftMotor.set(fwd + rot);
+      frontRightMotor.set(fwd - rot);
+    }
+  }
+
+  public void stop() {
+    frontLeftMotor.set(0);
+    frontRightMotor.set(0);
   }
 
   /**

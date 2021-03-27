@@ -40,8 +40,8 @@ public class HelixDrive extends CommandBase {
 
     throttle = throttle / saturatedInput;
     twist = twist/saturatedInput;
-    if(Math.abs(throttle) < 0.1) {throttle = 0;}
-    if(Math.abs(twist) < 0.1) {twist = 0;}
+    // if(Math.abs(throttle) < 0.1) {throttle = 0;}
+    // if(Math.abs(twist) < 0.1) {twist = 0;}
 
     drivetrain.arcadeDrive(throttle, twist);
 

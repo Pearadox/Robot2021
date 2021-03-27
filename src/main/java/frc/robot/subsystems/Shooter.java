@@ -74,7 +74,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("S_Min Output", kMinOutput);
     SmartDashboard.putNumber("S_SetPoint", ksetpoint);
 
-    this.setDefaultCommand(new ShooterVoltage(this, 4.3));
+    // this.setDefaultCommand(new ShooterVoltage(this, 4.3));
   }
 
   // public void setShooterSpeed(double speed) {
@@ -118,6 +118,7 @@ public class Shooter extends SubsystemBase {
 
     SmartDashboard.putNumber("S_RightProcessVariable", rightCanEncoder.getVelocity());
     SmartDashboard.putNumber("S_LeftProcessVariable", leftCanEncoder.getVelocity());
+    
   }
   public void dashboard() {
     SmartDashboard.putNumber("Flywheel RPM", (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2);
@@ -125,6 +126,5 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 
     SmartDashboard.putNumber("Right Current", rightFlywheelMotor.getOutputCurrent());
     SmartDashboard.putNumber("left Current", leftFlywheelMotor.getOutputCurrent());
-    
-  }
+    }
 }

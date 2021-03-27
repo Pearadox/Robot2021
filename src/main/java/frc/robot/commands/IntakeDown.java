@@ -7,8 +7,10 @@ package frc.robot.commands;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
@@ -38,6 +40,7 @@ public class IntakeDown extends CommandBase {
     RobotContainer.m_Intake.setRollerSpeed(RobotContainer.m_Intake.in_speed);
     RobotContainer.m_Intake.setArmIntakeSpeed(-0.2);
     encoderPosition = RobotContainer.m_Intake.getArmIntakePosition();
+    
     /* psuedo code
     * move arm down until current exceeds some value
     * turn off motor

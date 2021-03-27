@@ -24,7 +24,7 @@ public class ShooterVoltage extends CommandBase {
 
     @Override
     public void execute() {
-    RobotContainer.m_Shooter.setShooterVoltage(VoltageToSet);
+        RobotContainer.m_Shooter.setShooterVoltage(VoltageToSet);
     }
 
     @Override

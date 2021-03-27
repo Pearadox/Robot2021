@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
 import frc.robot.Robot.RobotState;
@@ -43,9 +44,10 @@ public class RobotContainer {
   public static final Shooter m_Shooter = new Shooter();
   public static final TransportSystem m_Transport = new TransportSystem();
   public static final VisionLL visionLL = new VisionLL();
+  
 
   public static DriverStation DS;
-  public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+  // public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   // public static PearadoPreferences prefs = PearadoxPreferences.getInstance();
 
@@ -102,17 +104,20 @@ public class RobotContainer {
 
     //Shooter items
    
-    btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
+    //btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
     btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     btn3.whenPressed(new SetHood(m_Hood));
-    btn12.whenPressed(new SetZeroHood(m_Hood));
+    btn5.whenPressed(new SetZeroHood(m_Hood));
+    btn8.whenPressed(new ShooterVoltage(m_Shooter, SmartDashboard.getNumber("S_Setpoint", 0)));
+    btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
+    btn9.whileHeld(new VisionTurnToTarget(m_Drivetrain, visionLL));  
 
     //intake items
-    btn9.whileHeld(new RunCommand(  //ArmIntake Up
-      () -> {
-        m_Intake.setArmIntakeSpeed(1);
-        m_Intake.setRollerSpeed(0);
-    }, m_Intake));
+    // btn9.whileHeld(new RunCommand(  //ArmIntake Up
+    //   () -> {
+    //     m_Intake.setArmIntakeSpeed(1);
+    //     m_Intake.setRollerSpeed(0);
+    // }, m_Intake));
 
     btn10.whenPressed(new IntakeDown(m_Intake));
     btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
@@ -139,8 +144,6 @@ public class RobotContainer {
   private void portForwarding() {
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_CAMERA_FEED);
     EForwardableConnections.addPortForwarding(EForwardableConnections.LIMELIGHT_WEB_VIEW);
-
-
   }
 
   /**
@@ -154,7 +157,7 @@ public class RobotContainer {
     return new ThreeBallAuton();
   }
 
-  public Joystick getDriverJoystick() {
+  public static Joystick getDriverJoystick() {
     return driverJoystick;
   }
   private static void initDebugger(){

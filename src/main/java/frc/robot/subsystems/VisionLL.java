@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.LimeLight;
 import frc.lib.drivers.LimeLightControlModes.LedMode;
@@ -18,9 +19,13 @@ public class VisionLL extends SubsystemBase {
 
   public final LimeLight limelight;
   private boolean LEDState;
-  private final double goalHeight = 0;
-  private final double robotHeight = 0;
-  private final double robotAngle = 0;
+  private final double goalHeight = 2.5; //meters
+  private final double robotHeight = 0.7747; //meters
+  private final double robotAngle = 0.872665; //radians
+
+  public double turnKp = 0.021; //0.021
+  public double turnKi = 0.0; //0.0
+  public double turnKd = 0.0; //0.15
 
   /**
    * Creates a new VisionLL.
@@ -28,7 +33,7 @@ public class VisionLL extends SubsystemBase {
   public VisionLL() {
     limelight = new LimeLight();
     
-    setDefaultCommand(new DefaultLL(this));
+    //setDefaultCommand(new DefaultLL(this));
   }
 
   @Override
@@ -83,17 +88,19 @@ public double getLLTargetArea(){
     return limelight.getTargetArea();
 }
 
+
 //d=(h2-h1)/tan(a1+a2)
 public double getLLRobotToTargetDistance() {
   double ty = limelight.getdegVerticalToTarget();
-  double distance = (goalHeight - robotHeight) / 
-                    Math.tan(Math.toRadians(ty + robotAngle));
-  return distance;
-}
 
-public void setLimeLightPipeline(int i) {
-  setLimeLightPipeline(i);
-}
+  double distance = (goalHeight - robotHeight) / 
+                    Math.tan(Math.toRadians(Units.degreesToRadians(ty) + robotAngle));
+  return distance;
+  }
+
+  public void setLimeLightPipeline(int i) {
+    setLimeLightPipeline(i);
+  }
 
   public static void printDebug(String msg) {
     Debugger.println(msg, Robot._visionLL, Debugger.debug2);
@@ -106,5 +113,4 @@ public void setLimeLightPipeline(int i) {
   public static void printWarning(String msg) {
     Debugger.println(msg, Robot._visionLL, Debugger.warning4);
   }
-
 }
