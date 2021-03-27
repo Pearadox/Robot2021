@@ -88,38 +88,38 @@ public class Drivetrain extends SubsystemBase {
   backLeftMotor.follow(frontLeftMotor);
   backRightMotor.follow(frontRightMotor);
   frontRightMotor.setInverted(true);
-    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+  m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-    // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
-    // m_rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
-    if (RobotBase.isSimulation()) {
-    //Do the following for simulating a robot  
-      m_drivetrainSimulator = new DifferentialDrivetrainSim(
-        DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
-        12.4,                    // 10:62 1st stage and 16:32 second stage = 12.4:1
-        4.25,                     // (should be between 3-8 kg * m^2) mass = 60 kg, COM is x = .068, y = -.02. MOI = 60.0 * sqrt(.068^2 + .02^2) = 4.25?
-        60.0,                    // The mass of the robot is 60 kg.
-        Units.inchesToMeters(6), // The robot uses 6" radius wheels.
-        Units.inchesToMeters(27),                  // The track width is 0.7112 meters. 24.937 in to inside wheel faces, 29.063 to outside. Average = 27
-      
-        // The standard deviations for measurement noise:
-        // x and y:          0.001 m
-        // heading:          0.001 rad
-        // l and r velocity: 0.1   m/s
-        // l and r position: 0.005 m
-        VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
-      }
+  // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
+  // m_rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
+  if (RobotBase.isSimulation()) {
+  //Do the following for simulating a robot  
+    m_drivetrainSimulator = new DifferentialDrivetrainSim(
+      DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
+      12.4,                    // 10:62 1st stage and 16:32 second stage = 12.4:1
+      4.25,                     // (should be between 3-8 kg * m^2) mass = 60 kg, COM is x = .068, y = -.02. MOI = 60.0 * sqrt(.068^2 + .02^2) = 4.25?
+      60.0,                    // The mass of the robot is 60 kg.
+      Units.inchesToMeters(6), // The robot uses 6" radius wheels.
+      Units.inchesToMeters(27),                  // The track width is 0.7112 meters. 24.937 in to inside wheel faces, 29.063 to outside. Average = 27
+    
+      // The standard deviations for measurement noise:
+      // x and y:          0.001 m
+      // heading:          0.001 rad
+      // l and r velocity: 0.1   m/s
+      // l and r position: 0.005 m
+      VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+    }
 
-      // The encoder and gyro angle sims let us set simulated sensor readings
-      m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-      m_rightEncoderSim = new EncoderSim(m_rightEncoder);
-      // m_gyroSim = new ADXRS450_GyroSim(m_gyro);
+    // The encoder and gyro angle sims let us set simulated sensor readings
+    m_leftEncoderSim = new EncoderSim(m_leftEncoder);
+    m_rightEncoderSim = new EncoderSim(m_rightEncoder);
+    // m_gyroSim = new ADXRS450_GyroSim(m_gyro);
 
-      // the Field2d class lets us visualize our robot in the simulation GUI.
-      m_fieldSim = new Field2d();
-      SmartDashboard.putData("Field", m_fieldSim);
+    // the Field2d class lets us visualize our robot in the simulation GUI.
+    m_fieldSim = new Field2d();
+    SmartDashboard.putData("Field", m_fieldSim);
 
-      this.setDefaultCommand(new HelixDrive(this));
+    this.setDefaultCommand(new HelixDrive(this));
   }
 
   @Override

@@ -5,15 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.util.Debugger;
-import frc.robot.commands.HopperInCmd;
-import frc.robot.commands.TowerUp;
 import frc.team2363.logger.HelixLogger;
 
 /**
@@ -101,8 +98,6 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     printInfo("Start disabledInit()");
     CommandScheduler.getInstance().cancelAll();
-    LiveWindow.setEnabled(false);
-    LiveWindow.disableAllTelemetry();
     RobotContainer.visionLL.setLimeLightLED(false);
     setState(RobotState.DISABLED);
     printInfo("End disabledInit()");
@@ -118,8 +113,6 @@ public class Robot extends TimedRobot {
     initDebugger();//Used to set debug level lower when FMS attached.
     printInfo("Start autonomousInit()");
     CommandScheduler.getInstance().cancelAll();
-    LiveWindow.setEnabled(false);
-		LiveWindow.disableAllTelemetry();
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -141,8 +134,6 @@ public class Robot extends TimedRobot {
     
     printInfo("Start teleopInit()");
     CommandScheduler.getInstance().cancelAll();
-		LiveWindow.setEnabled(false);
-		LiveWindow.disableAllTelemetry();
     setState(RobotState.TELEOP);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

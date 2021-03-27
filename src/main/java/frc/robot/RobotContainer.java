@@ -75,30 +75,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    // Configure default commands
-    // Set the default drive command to split-stick arcade drive
-    // m_Drivetrain.setDefaultCommand(
-    //     // A split-stick arcade command, with forward/backward controlled by the left
-    //     // hand, and turning controlled by the right.
-    //     new RunCommand(
-    //         () -> {
-    //           double throttle = driverJoystick.getRawAxis(1);
-    //           double twist = -driverJoystick.getRawAxis(2);
-    //           if (Math.abs(throttle) <= 0.3) {
-    //             throttle = 0;
-    //           }
-    //           if (Math.abs(twist) <= 0.3) {
-    //             twist = 0;
-    //           }
-    //           m_Drivetrain.arcadeDrive(twist, throttle);
-    //         }, m_Drivetrain));
-            
-    // m_Intake.setDefaultCommand(
-    //   new RunCommand(
-    //     () -> {
-    //       m_Intake.RollerIn();
-    //     }, m_Intake)
-    // );
 
     printInfo("End robotInit()");
   }
@@ -123,41 +99,36 @@ public class RobotContainer {
   JoystickButton btn12 = new JoystickButton(driverJoystick, 12);
 
   private void configureButtonBindings() {
+
+    //Shooter items
    
     btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
     btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
+    btn3.whenPressed(new SetHood(m_Hood));
+    btn12.whenPressed(new SetZeroHood(m_Hood));
+
+    //intake items
     btn9.whileHeld(new RunCommand(  //ArmIntake Up
       () -> {
         m_Intake.setArmIntakeSpeed(1);
         m_Intake.setRollerSpeed(0);
     }, m_Intake));
-    /*btn10.whileHeld(new RunCommand( //ArmIntake Down
-      () -> {
-        m_Intake.setArmIntakeSpeed(-.1);
-    }, m_Intake));
-    */
+
     btn10.whenPressed(new IntakeDown(m_Intake));
-     btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
-     //btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
+    btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
+    //btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
     //btn3.whileHeld(new DriveForward(m_Drivetrain));
 
 
+    //outtake 
+    btn7.whileHeld(new Outake_balls()); //Tower Down
 
-    btn7.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport)); //Tower Down
-
-   //btn5.whenPressed(new InstantCommand(m_Transport::resetBallCounter, m_Transport));
-    
-    //btn9.whileHeld(new RunCommand(m_Transport::TowerDown, m_Transport).withTimeout(0.4).andThen(new RunCommand(m_Transport::HopperOut, m_Transport)));
-    //btn10.whileHeld(new HoodUp(m_Hood));
-   // btn11.whileHeld(new RunCommand(m_Hood::hoodDown, m_Hood)).whenReleased(new RunCommand(m_Hood::stopHood, m_Hood));
-    btn12.whenPressed(new SetZeroHood(m_Hood));
-    btn3.whenPressed(new SetHood(m_Hood));
 
     //testing out trigger for ballTower with Robot state
     new Trigger(
       () -> {
-        return RobotContainer.m_Transport.getLow();
+        return RobotContainer.m_Transport.getLow() && (Robot.getState() == RobotState.TELEOP);
       })
       .whenActive(
               (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
@@ -190,15 +161,15 @@ public class RobotContainer {
     } else {
       Debugger.setLevel(Debugger.info3);
     }
-    Debugger.flagOn(_general); //Set all the flags on, comment out ones you want off
-    Debugger.flagOn(_auton);
-    Debugger.flagOn(_drive);
-    Debugger.flagOn(_transport);
-    Debugger.flagOn(_intake);
-    Debugger.flagOn(_shooter);
-    Debugger.flagOn(_tower);
-    Debugger.flagOn(_climber);
-    Debugger.flagOn(_visionLL);
+    // Debugger.flagOn(_general); //Set all the flags on, comment out ones you want off
+    // Debugger.flagOn(_auton);
+    // Debugger.flagOn(_drive);
+    // Debugger.flagOn(_transport);
+    // Debugger.flagOn(_intake);
+    // Debugger.flagOn(_shooter);
+    // Debugger.flagOn(_tower);
+    // Debugger.flagOn(_climber);
+    // Debugger.flagOn(_visionLL);
   }
 
   public static void printDebug(String msg){
