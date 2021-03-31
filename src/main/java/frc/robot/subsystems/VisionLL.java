@@ -113,4 +113,8 @@ public double getLLRobotToTargetDistance() {
   public static void printWarning(String msg) {
     Debugger.println(msg, Robot._visionLL, Debugger.warning4);
   }
+
+  public void dashboard() {
+    SmartDashboard.putNumber(getD);
+  }
 }
