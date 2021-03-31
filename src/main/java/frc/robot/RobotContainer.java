@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.drivers.EForwardableConnections;
@@ -23,7 +22,6 @@ import frc.robot.subsystems.VisionLL;
 import frc.robot.subsystems.Hood;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final Joystick driverJoystick = new Joystick(0);
+  public static final Joystick operatorJoystick = new Joystick(1);
   public static final Climber m_Climber = new Climber();
   public static final Drivetrain m_Drivetrain = new Drivetrain();
   public static final Hood m_Hood = new Hood();
@@ -100,8 +99,21 @@ public class RobotContainer {
   JoystickButton btn11 = new JoystickButton(driverJoystick, 11);
   JoystickButton btn12 = new JoystickButton(driverJoystick, 12);
 
-  private void configureButtonBindings() {
+  JoystickButton opbtn1 = new JoystickButton(operatorJoystick, 1);
+  JoystickButton opbtn2 = new JoystickButton(operatorJoystick, 2);
+  JoystickButton opbtn3 = new JoystickButton(operatorJoystick, 3);
+  JoystickButton opbtn4 = new JoystickButton(operatorJoystick, 4);
+  JoystickButton opbtn5 = new JoystickButton(operatorJoystick, 5);
+  JoystickButton opbtn6 = new JoystickButton(operatorJoystick, 6);
+  JoystickButton opbtn7 = new JoystickButton(operatorJoystick, 7);
+  JoystickButton opbtn8 = new JoystickButton(operatorJoystick, 8);
+  JoystickButton opbtn9 = new JoystickButton(operatorJoystick, 9);
+  JoystickButton opbtn10 = new JoystickButton(operatorJoystick, 10);
+  JoystickButton opbtn11 = new JoystickButton(operatorJoystick, 11);
+  JoystickButton opbtn12 = new JoystickButton(operatorJoystick, 12);
 
+  private void configureButtonBindings() {
+    // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
    
     //btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
@@ -129,6 +141,8 @@ public class RobotContainer {
     //outtake 
     btn7.whileHeld(new Outake_balls()); //Tower Down
 
+    //Operator Buttons
+    opbtn7.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
 
     //testing out trigger for ballTower with Robot state
     new Trigger(

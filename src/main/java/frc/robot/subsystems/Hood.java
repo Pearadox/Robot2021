@@ -20,6 +20,11 @@ public class Hood extends SubsystemBase {
   private TalonSRX hoodMotor;
   private DigitalInput hoodSwitch;
   private double setPoint;
+  private double kMaxOutput = 1;
+  private double kMinOutput = -1;
+  private double THRESHOLD = 5;
+  private double kP = 1/ THRESHOLD;
+  public double kMinError = 1;
 
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);
@@ -33,6 +38,7 @@ public class Hood extends SubsystemBase {
     hoodMotor.set(ControlMode.PercentOutput, speed);
     if (!SmartDashboard.containsKey("Hood Angle")) SmartDashboard.putNumber("Hood Angle", 0);
     if (!SmartDashboard.containsKey("Set Hood Angle")) SmartDashboard.putNumber("Set Hood Angle", 0);
+    if (!SmartDashboard.containsKey("Hood Error")) SmartDashboard.putNumber("Hood Error", 0);
     if (!SmartDashboard.containsKey("Hood Switch")) SmartDashboard.putBoolean("Hood Switch", false);
     if (!SmartDashboard.containsKey("Hood RPM")) SmartDashboard.putNumber("Hood RPM", 0);
   }
@@ -88,5 +94,19 @@ public class Hood extends SubsystemBase {
     SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
     setHoodPoint(SmartDashboard.getNumber("Set Hood Angle", 0));
     SmartDashboard.putNumber("Hood RPM", hoodMotor.getMotorOutputVoltage());
+  }
+
+  public void setHoodAngle(double setPointAngle) {
+    double currAngle = SmartDashboard.getNumber("Hood Angle", 0);
+    double error = setPointAngle - currAngle;
+    SmartDashboard.putNumber("Hood Error", error);
+    double output = error * kP;
+      if (output > kMaxOutput) {
+        output = kMaxOutput;
+      } 
+      if (output < kMinOutput) {
+        output = kMinOutput;
+      }
+      setHoodSpeed(output);
   }
 }

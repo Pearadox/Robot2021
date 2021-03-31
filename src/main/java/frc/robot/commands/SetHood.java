@@ -10,41 +10,22 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Hood;
 
 public class SetHood extends CommandBase {
-  private double kP, kFF, kMaxOutput, kMinOutput, currAngle, setPointAngle, error, THRESHOLD, kMinError; 
 
   /** Creates a new SetHood. */
   public SetHood(Hood m_hood) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_hood);
-
-    kMaxOutput = 1;
-    kMinOutput = -1;
-    THRESHOLD = 5;
-    kP = 1/ THRESHOLD;
-    kMinError = 1;
   }
- 
-
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    setPointAngle = RobotContainer.m_Hood.getHoodSetPoint();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currAngle = SmartDashboard.getNumber("Hood Angle", 0);
-    error = setPointAngle - currAngle;
-    double output = error * kP;
-      if (output > kMaxOutput) {
-        output = kMaxOutput;
-      } 
-      if (output < kMinOutput) {
-        output = kMinOutput;
-      }
-      RobotContainer.m_Hood.setHoodSpeed(output);
+    RobotContainer.m_Hood.setHoodAngle(SmartDashboard.getNumber("Set Hood Angle", 0));
   }
 
   // Called once the command ends or is interrupted.
@@ -56,7 +37,7 @@ public class SetHood extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(error)  < kMinError) {
+    if (Math.abs(SmartDashboard.getNumber("Hood Error", 0))  < RobotContainer.m_Hood.kMinError) {
       return true;
     } else {
       return false;

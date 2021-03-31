@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.LimeLight;
@@ -22,16 +23,27 @@ public class VisionLL extends SubsystemBase {
   private final double goalHeight = 2.5; //meters
   private final double robotHeight = 0.7747; //meters
   private final double robotAngle = 0.872665; //radians
+  private double zoneGreen = 0;
+  private double zoneYellow = 0; 
+  private double zoneBlue = 0; 
+  private double zoneRed = 0;
 
   public double turnKp = 0.021; //0.021
   public double turnKi = 0.0; //0.0
   public double turnKd = 0.0; //0.15
+
+  public int enteredZone = -99;
 
   /**
    * Creates a new VisionLL.
    */
   public VisionLL() {
     limelight = new LimeLight();
+
+    if(!SmartDashboard.containsKey("Green Zone")) SmartDashboard.putNumber("Green Zone", 0);
+    if(!SmartDashboard.containsKey("Yellow Zone")) SmartDashboard.putNumber("Yellow Zone", 0);
+    if(!SmartDashboard.containsKey("Blue Zone")) SmartDashboard.putNumber("Blue Zone", 0);
+    if(!SmartDashboard.containsKey("Red Zone")) SmartDashboard.putNumber("Red Zone", 0);
     
     //setDefaultCommand(new DefaultLL(this));
   }
@@ -52,6 +64,26 @@ public class VisionLL extends SubsystemBase {
         LEDState = true;
       }
     } */
+    enteredZone = getZone();
+  }
+
+  public int getZone() {
+    if(getLLTargetArea() > zoneGreen) {
+      SmartDashboard.putString("Entered Zone", "Green");
+      return 0;
+    } else if (getLLTargetArea() > zoneYellow) {
+      SmartDashboard.putString("Entered Zone", "Yellow");
+      return 1;
+    } else if (getLLTargetArea() > zoneBlue) {
+      SmartDashboard.putString("Entered Zone", "Blue");
+      return 2;
+    } else if (getLLTargetArea() > zoneRed) {
+      SmartDashboard.putString("Entered Zone", "Red");
+      return 3;
+    } else {
+      SmartDashboard.putString("Entered Zone", "Unknown");
+      return -99;
+    }
   }
 
   public void limeLightLEDOff(){
@@ -115,6 +147,9 @@ public double getLLRobotToTargetDistance() {
   }
 
   public void dashboard() {
-    SmartDashboard.putNumber(getD);
+    zoneGreen = SmartDashboard.getNumber("Green Zone", zoneGreen);
+    zoneYellow = SmartDashboard.getNumber("Yellow Zone", zoneYellow);
+    zoneBlue = SmartDashboard.getNumber("Blue Zone", zoneBlue);
+    zoneRed = SmartDashboard.getNumber("Red Zone", zoneRed);
   }
 }

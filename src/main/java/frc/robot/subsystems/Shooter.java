@@ -126,5 +126,5 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 
     SmartDashboard.putNumber("Right Current", rightFlywheelMotor.getOutputCurrent());
     SmartDashboard.putNumber("left Current", leftFlywheelMotor.getOutputCurrent());
-    }
+  }
 }
