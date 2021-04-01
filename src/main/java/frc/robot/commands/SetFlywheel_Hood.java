@@ -10,6 +10,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionLL;
+import frc.robot.subsystems.VisionLL.HoodShooterSettings;
 
 public class SetFlywheel_Hood extends CommandBase {
   /** Creates a new SetFlywheel_Hood. */
@@ -17,8 +18,6 @@ public class SetFlywheel_Hood extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter, limelight, hood);
   }
-  private double shooterVoltage;
-  private double hoodAngle;
 
   // Called when the command is initially scheduled.
   @Override
@@ -28,34 +27,13 @@ public class SetFlywheel_Hood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    switch (RobotContainer.visionLL.enteredZone) {
-      case 0:
-        shooterVoltage = 0;
-        hoodAngle = 0;
-        break;
-      case 1:
-        shooterVoltage = 0;
-        hoodAngle = 0;
-        break;
-      case 2:
-        shooterVoltage = 0;
-        hoodAngle = 0;
-        break;
-      case 3:
-        shooterVoltage = 0;
-        hoodAngle = 0;
-        break;
-      default:
-        shooterVoltage = 0;
-        hoodAngle = 0;
-        break;
-    }
+    HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
     if (Math.abs(SmartDashboard.getNumber("Hood Error", 0))  < RobotContainer.m_Hood.kMinError) {
-      RobotContainer.m_Hood.setHoodAngle(hoodAngle);;
+      RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());;
     } else {
       RobotContainer.m_Hood.stopHood();
     }
-    RobotContainer.m_Shooter.setShooterVoltage(shooterVoltage);
+    RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
   }
 
   // Called once the command ends or is interrupted.

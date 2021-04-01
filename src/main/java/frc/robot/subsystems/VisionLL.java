@@ -44,6 +44,7 @@ public class VisionLL extends SubsystemBase {
     if(!SmartDashboard.containsKey("Yellow Zone")) SmartDashboard.putNumber("Yellow Zone", 0);
     if(!SmartDashboard.containsKey("Blue Zone")) SmartDashboard.putNumber("Blue Zone", 0);
     if(!SmartDashboard.containsKey("Red Zone")) SmartDashboard.putNumber("Red Zone", 0);
+    if(!SmartDashboard.containsKey("LL Target Y Distance")) SmartDashboard.putNumber("LL Target Y Distance", 0);
     
     //setDefaultCommand(new DefaultLL(this));
   }
@@ -64,25 +65,34 @@ public class VisionLL extends SubsystemBase {
         LEDState = true;
       }
     } */
-    enteredZone = getZone();
+    displayZone();
   }
 
-  public int getZone() {
+  public void displayZone() {
     if(getLLTargetArea() > zoneGreen) {
       SmartDashboard.putString("Entered Zone", "Green");
-      return 0;
     } else if (getLLTargetArea() > zoneYellow) {
       SmartDashboard.putString("Entered Zone", "Yellow");
-      return 1;
     } else if (getLLTargetArea() > zoneBlue) {
       SmartDashboard.putString("Entered Zone", "Blue");
-      return 2;
     } else if (getLLTargetArea() > zoneRed) {
       SmartDashboard.putString("Entered Zone", "Red");
-      return 3;
     } else {
       SmartDashboard.putString("Entered Zone", "Unknown");
-      return -99;
+    }
+  }
+
+  public HoodShooterSettings getZone() {
+    if(getLLTargetArea() > zoneGreen) {
+      return new HoodShooterSettings(0, 0);
+    } else if (getLLTargetArea() > zoneYellow) {
+      return new HoodShooterSettings(0, 0);
+    } else if (getLLTargetArea() > zoneBlue) {
+      return new HoodShooterSettings(0, 0);
+    } else if (getLLTargetArea() > zoneRed) {
+      return new HoodShooterSettings(0, 0);
+    } else {
+      return new HoodShooterSettings(0, 0);
     }
   }
 
@@ -151,5 +161,28 @@ public double getLLRobotToTargetDistance() {
     zoneYellow = SmartDashboard.getNumber("Yellow Zone", zoneYellow);
     zoneBlue = SmartDashboard.getNumber("Blue Zone", zoneBlue);
     zoneRed = SmartDashboard.getNumber("Red Zone", zoneRed);
+
+    SmartDashboard.putNumber("LL Target Y Distance", getLLRobotToTargetDistance());
+  }
+
+  public class HoodShooterSettings {
+    private double targetHoodAngle, targetShooterVoltage;
+    public HoodShooterSettings() {
+      targetHoodAngle = 0;
+      targetShooterVoltage = 0;
+    }
+
+    public HoodShooterSettings(double hoodAngle, double shooterVoltage) {
+      targetHoodAngle = hoodAngle;
+      targetShooterVoltage = shooterVoltage;
+    }
+  
+    public double getTargetHoodAngle() {
+      return targetHoodAngle;
+    }
+  
+    public double getTargetShooterVoltage() {
+      return targetShooterVoltage;
+    }
   }
 }
