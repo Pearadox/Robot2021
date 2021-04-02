@@ -42,6 +42,5 @@ public class SetHood extends CommandBase {
     } else {
       return false;
     }
-    
   }
 }

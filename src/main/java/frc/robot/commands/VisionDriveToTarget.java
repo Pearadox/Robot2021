@@ -25,6 +25,11 @@ public class VisionDriveToTarget extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain, visionLL);
     if (!SmartDashboard.containsKey("Vision Output")) SmartDashboard.putNumber("Vision Output", 0);
+    if (!SmartDashboard.containsKey("Vision Turn kp")) SmartDashboard.putNumber("Vision Turn kpt", kp);
+    if (!SmartDashboard.containsKey("Vision Turn ki")) SmartDashboard.putNumber("Vision Turn ki", ki);
+    if (!SmartDashboard.containsKey("Vision Turn kd")) SmartDashboard.putNumber("Vision Turn kd", kd);
+    
+    
   }
 
   // Called when the command is initially scheduled.
@@ -52,7 +57,7 @@ public class VisionDriveToTarget extends CommandBase {
       double D = kd * changeInError;
       double output = -1*(P + I - D);
       lastError = tx;
-      if (Math.abs(tx) < 1) {
+      if (Math.abs(tx) < 0.5) {
        output = 0; 
       }
       RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output);

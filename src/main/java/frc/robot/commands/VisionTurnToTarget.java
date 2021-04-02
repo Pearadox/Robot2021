@@ -57,7 +57,7 @@ public class VisionTurnToTarget extends CommandBase {
       double output = -1*(P + I - D);
       lastError = tx;
       RobotContainer.m_Drivetrain.arcadeDrive(0, output);
-      if (Math.abs(tx) < 1) {
+      if (Math.abs(tx) < 0.5) {
         reachedTarget = true;
       }
       SmartDashboard.putNumber("Vision Output", output);

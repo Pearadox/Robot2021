@@ -23,10 +23,11 @@ public class Shooter extends SubsystemBase {
   private CANEncoder rightCanEncoder;
   private CANEncoder leftCanEncoder;
   private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput, maxRPM;
+  private double lastError = 0;
 
   public Shooter() {
-    rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kBrake, 20, false);
-    leftFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.LEFT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kBrake, 20, false);
+    rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 20, false);
+    leftFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.LEFT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 20, false);
 
     //follow function has a second parameter to indicate if it should be reversed in the follow
     leftFlywheelMotor.follow(rightFlywheelMotor, true);
@@ -44,7 +45,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Output", 0);
     
     // PID coefficients
-    kP = 0.006; 
+    kP = 0.00075; 
     kI = 0;
     kD = 0; 
     kIz = 0; 
@@ -52,7 +53,7 @@ public class Shooter extends SubsystemBase {
     kMaxOutput = 1; 
     kMinOutput = -1;
     maxRPM = 5700;
-    ksetpoint = 15.35;
+    ksetpoint = -75;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -82,6 +83,10 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterVoltage(double voltage){
     m_pidController.setReference(ksetpoint, ControlType.kVelocity);
+  }
+
+  public void setShooterZone(double voltage) {
+    m_pidController.setReference(voltage, ControlType.kVelocity);
   }
 
   @Override
@@ -118,6 +123,19 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("S_LeftProcessVariable", leftCanEncoder.getVelocity());
     
   }
+
+  public void ShooterPID() {
+    double currRPM = (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2;
+    double error = SmartDashboard.getNumber("S_SetPoint", 0) - currRPM;
+    double errorSum = lastError + error;
+    double P = kP * error;
+    double I = errorSum * kI;
+    double D = (lastError - error) * kD;
+    lastError = error;
+    double output = P + I - D;
+    rightFlywheelMotor.setVoltage(output);
+  }
+
   public void dashboard() {
     SmartDashboard.putNumber("Flywheel RPM", (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2);
     SmartDashboard.putNumber("Flywheel Voltage", rightFlywheelMotor.getBusVoltage());

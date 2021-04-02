@@ -30,7 +30,7 @@ public class VisionLL extends SubsystemBase {
 
   public double turnKp = 0.021; //0.021
   public double turnKi = 0.0; //0.0
-  public double turnKd = 0.0; //0.15
+  public double turnKd = 0.015; //0.15
 
   public int enteredZone = -99;
 
@@ -45,6 +45,7 @@ public class VisionLL extends SubsystemBase {
     if(!SmartDashboard.containsKey("Blue Zone")) SmartDashboard.putNumber("Blue Zone", 0);
     if(!SmartDashboard.containsKey("Red Zone")) SmartDashboard.putNumber("Red Zone", 0);
     if(!SmartDashboard.containsKey("LL Target Y Distance")) SmartDashboard.putNumber("LL Target Y Distance", 0);
+    if(!SmartDashboard.containsKey("LL TA")) SmartDashboard.putNumber("LL TA", 0);
     
     //setDefaultCommand(new DefaultLL(this));
   }
@@ -84,17 +85,19 @@ public class VisionLL extends SubsystemBase {
 
   public HoodShooterSettings getZone() {
     if(getLLTargetArea() > zoneGreen) {
-      return new HoodShooterSettings(0, 0);
+      return new HoodShooterSettings(30, -75);
     } else if (getLLTargetArea() > zoneYellow) {
-      return new HoodShooterSettings(0, 0);
+      return new HoodShooterSettings(35, -75);
     } else if (getLLTargetArea() > zoneBlue) {
-      return new HoodShooterSettings(0, 0);
+      return new HoodShooterSettings(43, -85);
     } else if (getLLTargetArea() > zoneRed) {
-      return new HoodShooterSettings(0, 0);
+      return new HoodShooterSettings(46, -105);
     } else {
-      return new HoodShooterSettings(0, 0);
+      return new HoodShooterSettings();
     }
   }
+  //2.70 gz
+  // 1.82 yz
 
   public void limeLightLEDOff(){
     limelight.setLEDMode(LedMode.kforceOff);
@@ -161,6 +164,7 @@ public double getLLRobotToTargetDistance() {
     zoneYellow = SmartDashboard.getNumber("Yellow Zone", zoneYellow);
     zoneBlue = SmartDashboard.getNumber("Blue Zone", zoneBlue);
     zoneRed = SmartDashboard.getNumber("Red Zone", zoneRed);
+    SmartDashboard.putNumber("LL TA", getLLTargetArea());
 
     SmartDashboard.putNumber("LL Target Y Distance", getLLRobotToTargetDistance());
   }

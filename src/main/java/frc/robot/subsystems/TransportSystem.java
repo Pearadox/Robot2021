@@ -83,7 +83,7 @@ public class TransportSystem extends SubsystemBase {
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
     // this.setDefaultCommand(new ManageBallTower(this));
-    this.setDefaultCommand(new HopperInCmd(this));
+    // this.setDefaultCommand(new HopperInCmd(this));
   }
 
   public void TowerUp(double speed) {
@@ -120,6 +120,10 @@ public class TransportSystem extends SubsystemBase {
 
   public void HopperOut() {
     HopperVictor.set(ControlMode.PercentOutput, out_speed);    
+  }
+
+  public void TestTowerUp() {
+    TowerUp(up_speed);
   }
 
   public void HopperStop() {
