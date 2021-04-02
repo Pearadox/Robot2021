@@ -24,7 +24,7 @@ public class Hood extends SubsystemBase {
   private double kMinOutput = -1;
   private double THRESHOLD = 5;
   private double kP = 1/ THRESHOLD;
-  public double kMinError = 1;
+  public double kMinError = 0.5;
 
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);

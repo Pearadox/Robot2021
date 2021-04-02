@@ -116,25 +116,25 @@ public class RobotContainer {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
    
-    //btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
+    btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
     btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
-    btn3.whenPressed(new SetHood(m_Hood));
+    // btn3.whenPressed(new SetHood(m_Hood));
     btn5.whenPressed(new SetZeroHood(m_Hood));
     btn8.whenPressed(new ShooterVoltage(m_Shooter, SmartDashboard.getNumber("S_Setpoint", 0)));
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
-    btn9.whileHeld(new VisionTurnToTarget(m_Drivetrain, visionLL));  
+    // btn9.whileHeld(new VisionTurnToTarget(m_Drivetrain, visionLL));  
     btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport)).whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
 
     //intake items
-    // btn9.whileHeld(new RunCommand(  //ArmIntake Up
-    //   () -> {
-    //     m_Intake.setArmIntakeSpeed(1);
-    //     m_Intake.setRollerSpeed(0);
-    // }, m_Intake));
+    btn9.whileHeld(new RunCommand(  //ArmIntake Up
+      () -> {
+        m_Intake.setArmIntakeSpeed(1);
+        m_Intake.setRollerSpeed(0);
+    }, m_Intake));
 
     btn10.whenPressed(new IntakeDown(m_Intake));
    // btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
-    //btn5.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
+    // btn3.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
     // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
     //btn3.whileHeld(new DriveForward(m_Drivetrain));
 
@@ -146,14 +146,15 @@ public class RobotContainer {
     btn4.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
 
     //testing out trigger for ballTower with Robot state
-    // new Trigger(
-    //   () -> {
-    //     return RobotContainer.m_Transport.getLow() && (Robot.getState() == RobotState.TELEOP);
-    //   })
-    //   .whenActive(
-    //           (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-    //           .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(0.9))
-    //           .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
+    new Trigger(
+      () -> {
+        return RobotContainer.m_Transport.getLow() && (Robot.getState() == RobotState.TELEOP);
+      })
+      .whenActive(
+              (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
+              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.25))
+              .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
+
   }
 
   private void portForwarding() {

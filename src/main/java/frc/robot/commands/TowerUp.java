@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.TransportSystem;
@@ -28,8 +29,8 @@ public class TowerUp extends CommandBase {
   @Override
   public void execute() {
     if (balltower.getBallCounter() < 1) {
-      balltower.TowerUp(RobotContainer.m_Transport.up_speed-0.1);
-    } else if (balltower.getBallCounter() < 3){
+      balltower.TowerUp(RobotContainer.m_Transport.up_speed);
+    } else if (balltower.getBallCounter() < 2){
       balltower.TowerUp(RobotContainer.m_Transport.up_speed+.1);
     }
     else {

@@ -23,10 +23,10 @@ public class VisionLL extends SubsystemBase {
   private final double goalHeight = 2.5; //meters
   private final double robotHeight = 0.7747; //meters
   private final double robotAngle = 0.872665; //radians
-  private double zoneGreen = 0;
-  private double zoneYellow = 0; 
-  private double zoneBlue = 0; 
-  private double zoneRed = 0;
+  private double zoneGreen = 3.25;
+  private double zoneYellow = 2.35; 
+  private double zoneBlue = 1.4; 
+  private double zoneRed = 0.9;
 
   public double turnKp = 0.021; //0.021
   public double turnKi = 0.0; //0.0
@@ -40,14 +40,14 @@ public class VisionLL extends SubsystemBase {
   public VisionLL() {
     limelight = new LimeLight();
 
-    if(!SmartDashboard.containsKey("Green Zone")) SmartDashboard.putNumber("Green Zone", 0);
-    if(!SmartDashboard.containsKey("Yellow Zone")) SmartDashboard.putNumber("Yellow Zone", 0);
-    if(!SmartDashboard.containsKey("Blue Zone")) SmartDashboard.putNumber("Blue Zone", 0);
-    if(!SmartDashboard.containsKey("Red Zone")) SmartDashboard.putNumber("Red Zone", 0);
+    if(!SmartDashboard.containsKey("Green Zone")) SmartDashboard.putNumber("Green Zone", zoneGreen);
+    if(!SmartDashboard.containsKey("Yellow Zone")) SmartDashboard.putNumber("Yellow Zone", zoneYellow);
+    if(!SmartDashboard.containsKey("Blue Zone")) SmartDashboard.putNumber("Blue Zone", zoneBlue);
+    if(!SmartDashboard.containsKey("Red Zone")) SmartDashboard.putNumber("Red Zone", zoneRed);
     if(!SmartDashboard.containsKey("LL Target Y Distance")) SmartDashboard.putNumber("LL Target Y Distance", 0);
     if(!SmartDashboard.containsKey("LL TA")) SmartDashboard.putNumber("LL TA", 0);
     
-    //setDefaultCommand(new DefaultLL(this));
+    setDefaultCommand(new DefaultLL(this));
   }
 
   @Override
@@ -85,13 +85,13 @@ public class VisionLL extends SubsystemBase {
 
   public HoodShooterSettings getZone() {
     if(getLLTargetArea() > zoneGreen) {
-      return new HoodShooterSettings(30, -75);
+      return new HoodShooterSettings(30, -2600);
     } else if (getLLTargetArea() > zoneYellow) {
-      return new HoodShooterSettings(35, -75);
+      return new HoodShooterSettings(35.75, -2750);
     } else if (getLLTargetArea() > zoneBlue) {
-      return new HoodShooterSettings(43, -85);
+      return new HoodShooterSettings(44.5, -3100);
     } else if (getLLTargetArea() > zoneRed) {
-      return new HoodShooterSettings(46, -105);
+      return new HoodShooterSettings(49.5, -3800); // -3800
     } else {
       return new HoodShooterSettings();
     }

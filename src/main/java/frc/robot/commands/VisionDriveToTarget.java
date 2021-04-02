@@ -20,12 +20,13 @@ public class VisionDriveToTarget extends CommandBase {
   private double tx;
   private boolean reachedTarget, foundTarget;
   private double changeInError, errorSum = 0; 
+  private final double OFFSET = 0.215;
   private double lastError;
   public VisionDriveToTarget(Drivetrain driveTrain, VisionLL visionLL) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain, visionLL);
     if (!SmartDashboard.containsKey("Vision Output")) SmartDashboard.putNumber("Vision Output", 0);
-    if (!SmartDashboard.containsKey("Vision Turn kp")) SmartDashboard.putNumber("Vision Turn kpt", kp);
+    if (!SmartDashboard.containsKey("Vision Turn kp")) SmartDashboard.putNumber("Vision Turn kp", kp);
     if (!SmartDashboard.containsKey("Vision Turn ki")) SmartDashboard.putNumber("Vision Turn ki", ki);
     if (!SmartDashboard.containsKey("Vision Turn kd")) SmartDashboard.putNumber("Vision Turn kd", kd);
     
@@ -49,7 +50,7 @@ public class VisionDriveToTarget extends CommandBase {
   @Override
   public void execute() {
       double throttle = RobotContainer.getDriverJoystick().getY();
-      tx = RobotContainer.visionLL.getLLDegToTarget();
+      tx = RobotContainer.visionLL.getLLDegToTarget() + OFFSET;
       changeInError = lastError - tx;
       errorSum += tx;
       double P = kp * tx;

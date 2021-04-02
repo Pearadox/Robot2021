@@ -26,8 +26,8 @@ public class Shooter extends SubsystemBase {
   private double lastError = 0;
 
   public Shooter() {
-    rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 20, false);
-    leftFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.LEFT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 20, false);
+    rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 80, false);
+    leftFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.LEFT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 80, false);
 
     //follow function has a second parameter to indicate if it should be reversed in the follow
     leftFlywheelMotor.follow(rightFlywheelMotor, true);
@@ -45,11 +45,12 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Output", 0);
     
     // PID coefficients
-    kP = 0.00075; 
+    //from testing 4/2/2021, good kp = .00027 and kf of .00013
+    kP = 0.00022; //0.00075; 
     kI = 0;
     kD = 0; 
     kIz = 0; 
-    kFF = 0.0215; 
+    kFF = .00013; //0.0215; 
     kMaxOutput = 1; 
     kMinOutput = -1;
     maxRPM = 5700;
@@ -61,6 +62,7 @@ public class Shooter extends SubsystemBase {
     m_pidController.setD(kD);
     m_pidController.setIZone(kIz);
     m_pidController.setFF(kFF);
+    
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
@@ -136,8 +138,20 @@ public class Shooter extends SubsystemBase {
     rightFlywheelMotor.setVoltage(output);
   }
 
+  public double getFlySetPoint() {
+    return ksetpoint;
+  }
+
+  public double getFlywheelRPM() {
+    return (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2;
+  }
+
+  public boolean isFlywheelInRange() {
+    return getFlywheelRPM() < getFlySetPoint();
+  }
+
   public void dashboard() {
-    SmartDashboard.putNumber("Flywheel RPM", (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2);
+    SmartDashboard.putNumber("Flywheel RPM", getFlywheelRPM());
     SmartDashboard.putNumber("Flywheel Voltage", rightFlywheelMotor.getBusVoltage());
     SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 
     SmartDashboard.putNumber("Right Current", rightFlywheelMotor.getOutputCurrent());
