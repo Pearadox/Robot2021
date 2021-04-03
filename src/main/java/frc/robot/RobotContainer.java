@@ -46,7 +46,6 @@ public class RobotContainer {
   
 
   public static DriverStation DS;
-  // public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   // public static PearadoPreferences prefs = PearadoxPreferences.getInstance();
 
@@ -152,7 +151,7 @@ public class RobotContainer {
       })
       .whenActive(
               (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.25))
+              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))
               .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
 
   }

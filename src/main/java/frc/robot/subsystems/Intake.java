@@ -212,7 +212,7 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
     SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());
     SmartDashboard.putNumber("IntakeDown value", IntakeDownEncoderValue);
-    
+    SmartDashboard.putNumber("Intake Temp", ArmIntakeMotor.getMotorTemperature());
     //change roller speeds based on SmartDashboard values
     final double in = SmartDashboard.getNumber("Roller in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Roller out Speed", out_speed);

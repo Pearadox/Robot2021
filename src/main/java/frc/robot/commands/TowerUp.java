@@ -29,9 +29,9 @@ public class TowerUp extends CommandBase {
   @Override
   public void execute() {
     if (balltower.getBallCounter() < 1) {
-      balltower.TowerUp(RobotContainer.m_Transport.up_speed);
+      balltower.TowerUp(RobotContainer.m_Transport.up_speed+0.2);
     } else if (balltower.getBallCounter() < 2){
-      balltower.TowerUp(RobotContainer.m_Transport.up_speed+.1);
+      balltower.TowerUp(RobotContainer.m_Transport.up_speed+0.2);
     }
     else {
       balltower.TowerStop();

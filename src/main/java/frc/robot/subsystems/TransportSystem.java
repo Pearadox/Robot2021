@@ -98,7 +98,9 @@ public class TransportSystem extends SubsystemBase {
   public void TowerStop() {
     TowerVictor.set(ControlMode.PercentOutput, 0.0);  
   }
-
+  public void HopperInSet(double speed) {
+    HopperVictor.set(ControlMode.PercentOutput,speed);
+  }
   public void HopperIn() {
     if(ballCounter < 3) {
       HopperVictor.set(ControlMode.PercentOutput, in_speed); 

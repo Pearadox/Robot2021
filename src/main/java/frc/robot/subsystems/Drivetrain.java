@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -47,6 +48,7 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax backLeftMotor = new CANSparkMax(BACK_LEFT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final CANSparkMax frontRightMotor = new CANSparkMax(FRONT_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
   private final CANSparkMax backRightMotor = new CANSparkMax(BACK_RIGHT_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+  // public PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   private final SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
   private final SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
@@ -85,6 +87,8 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
+
+
 
     
   backLeftMotor.follow(frontLeftMotor);
@@ -134,6 +138,7 @@ public class Drivetrain extends SubsystemBase {
       m_leftEncoder.getDistance(),
       m_rightEncoder.getDistance());
     m_fieldSim.setRobotPose(getPose());
+    dashboard();
   }
 
   @Override
@@ -180,6 +185,8 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
     SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
     SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
+
+    // SmartDashboard.putNumber("Total PDP", pdp.getTotalCurrent());
     
   }
 

@@ -24,7 +24,7 @@ public class VisionLL extends SubsystemBase {
   private final double robotHeight = 0.7747; //meters
   private final double robotAngle = 0.872665; //radians
   private double zoneGreen = 3.25;
-  private double zoneYellow = 2.35; 
+  private double zoneYellow = 2.0; 
   private double zoneBlue = 1.4; 
   private double zoneRed = 0.9;
 

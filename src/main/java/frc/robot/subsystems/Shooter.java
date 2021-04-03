@@ -32,6 +32,7 @@ public class Shooter extends SubsystemBase {
     //follow function has a second parameter to indicate if it should be reversed in the follow
     leftFlywheelMotor.follow(rightFlywheelMotor, true);
 
+    
     rightCanEncoder = rightFlywheelMotor.getEncoder();
     leftCanEncoder = leftFlywheelMotor.getEncoder();
 
@@ -39,7 +40,8 @@ public class Shooter extends SubsystemBase {
     // leftFlywheelMotor.setOpenLoopRampRate(0.25);
 
     m_pidController = rightFlywheelMotor.getPIDController();
-
+    rightCanEncoder.setVelocityConversionFactor(1.57289);
+    leftCanEncoder.setVelocityConversionFactor(1.57289);
     SmartDashboard.putNumber("Flywheel RPM", 0);
     SmartDashboard.putNumber("Flywheel Voltage", 0);
     SmartDashboard.putNumber("Flywheel Output", 0);
@@ -54,7 +56,7 @@ public class Shooter extends SubsystemBase {
     kMaxOutput = 1; 
     kMinOutput = -1;
     maxRPM = 5700;
-    ksetpoint = -75;
+    ksetpoint = 0;
 
     // set PID coefficients
     m_pidController.setP(kP);
