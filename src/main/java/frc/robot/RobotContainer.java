@@ -117,7 +117,7 @@ public class RobotContainer {
    
     btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
     btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
-    // btn3.whenPressed(new SetHood(m_Hood));
+    btn3.whenPressed(new SetHood(m_Hood));
     btn5.whenPressed(new SetZeroHood(m_Hood));
     btn8.whenPressed(new ShooterVoltage(m_Shooter, SmartDashboard.getNumber("S_Setpoint", 0)));
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
@@ -150,9 +150,11 @@ public class RobotContainer {
         return RobotContainer.m_Transport.getLow() && (Robot.getState() == RobotState.TELEOP);
       })
       .whenActive(
-              (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
-              .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))
+              (new liftTowerOne(RobotContainer.m_Transport))
               .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
+              // (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
+              // .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))
+              // .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
 
   }
 

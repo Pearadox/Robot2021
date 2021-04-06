@@ -35,7 +35,7 @@ public class HopperInTowerUpCmd extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.m_Shooter.isFlywheelInRange()) {
+    // if(RobotContainer.m_Shooter.isFlywheelInRange()) {
       if (timer.get() < RunTime) {
         RobotContainer.m_Transport.TowerUp(0.9);
         if(!RobotContainer.m_Transport.getLow())
@@ -51,7 +51,7 @@ public class HopperInTowerUpCmd extends CommandBase {
       } else {
         timer.reset();
       }
-    }
+    // }
   }
 
   // Called once the command ends or is interrupted.
