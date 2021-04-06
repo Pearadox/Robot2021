@@ -91,7 +91,7 @@ public class VisionLL extends SubsystemBase {
     } else if (getLLTargetArea() > zoneBlue) {
       return new HoodShooterSettings(44.5, -3100);
     } else if (getLLTargetArea() > zoneRed) {
-      return new HoodShooterSettings(49.5, -3800); // -3800
+      return new HoodShooterSettings(50.5, -3800); // -3800
     } else {
       return new HoodShooterSettings();
     }

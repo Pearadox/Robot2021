@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+// import org.graalvm.compiler.core.common.type.ArithmeticOpTable.UnaryOp.Abs;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,9 +24,10 @@ public class Hood extends SubsystemBase {
   private double setPoint;
   private double kMaxOutput = 1;
   private double kMinOutput = -1;
-  private double THRESHOLD = 5;
+  private double THRESHOLD = 3;
   private double kP = 1/ THRESHOLD;
   public double kMinError = 0.5;
+
 
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);
@@ -106,6 +109,10 @@ public class Hood extends SubsystemBase {
       } 
       if (output < kMinOutput) {
         output = kMinOutput;
+      }
+      if(Math.abs(output) < 0.3)
+      {
+        output = Math.signum(output) * 0.3;
       }
       setHoodSpeed(output);
   }
