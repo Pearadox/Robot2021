@@ -144,6 +144,14 @@ public class RobotContainer {
     //Operator Buttons
     btn4.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
 
+    new Trigger(
+      () -> {
+        return !(m_Hood.gethasHoodZeroed());
+      })
+      .whileActiveContinuous(
+        (new SetZeroHood(m_Hood)), false);
+
+
     //testing out trigger for ballTower with Robot state
     new Trigger(
       () -> {

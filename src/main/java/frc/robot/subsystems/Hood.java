@@ -27,6 +27,7 @@ public class Hood extends SubsystemBase {
   private double THRESHOLD = 3;
   private double kP = 1/ THRESHOLD;
   public double kMinError = 0.5;
+  private boolean hasHoodZeroed = false;
 
 
   public Hood() {
@@ -48,6 +49,12 @@ public class Hood extends SubsystemBase {
 
   public void hoodUp() {
     setHoodSpeed(1);
+  }
+  public boolean gethasHoodZeroed() {
+    return hasHoodZeroed;
+  }
+  public void sethasHoodZeroed(boolean value) {
+    hasHoodZeroed = value;
   }
 
   public void hoodDown() {
@@ -95,6 +102,7 @@ public class Hood extends SubsystemBase {
       SmartDashboard.putNumber("Hood Angle", getHoodAngle());
     }
     SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
+    SmartDashboard.putBoolean("hasHoodZeroed", gethasHoodZeroed());
     setHoodPoint(SmartDashboard.getNumber("Set Hood Angle", 0));
     SmartDashboard.putNumber("Hood RPM", hoodMotor.getMotorOutputVoltage());
   }

@@ -31,6 +31,7 @@ public class SetZeroHood extends CommandBase {
   public void end(boolean interrupted) {
     RobotContainer.m_Hood.stopHood();
     RobotContainer.m_Hood.zeroHood();
+    RobotContainer.m_Hood.sethasHoodZeroed(true);
   }
 
   // Returns true when the command should end.
