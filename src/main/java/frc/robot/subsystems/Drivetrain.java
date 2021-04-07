@@ -4,20 +4,22 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.DrivetrainConstants.BACK_LEFT_MOTOR;
+import static frc.robot.Constants.DrivetrainConstants.BACK_RIGHT_MOTOR;
+import static frc.robot.Constants.DrivetrainConstants.FRONT_LEFT_MOTOR;
+import static frc.robot.Constants.DrivetrainConstants.FRONT_RIGHT_MOTOR;
+
+import com.kauailabs.navx.frc.AHRS;
 // import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
+import edu.wpi.first.wpilibj.SPI;
 // import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.RobotContainer;
 import frc.robot.commands.HelixDrive;
-import edu.wpi.first.wpilibj.SPI;
-
-import static frc.robot.Constants.DrivetrainConstants.*;
-import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -37,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
   // private final SpeedControllerGroup leftMotors = new SpeedControllerGroup(frontLeftMotor, backLeftMotor);
   // private final SpeedControllerGroup rightMotors = new SpeedControllerGroup(frontRightMotor, backRightMotor);
 
-  private final AHRS gyro;
+  public static AHRS navx;
    
   public static final double ksVolts = 0.235;
   public static final double kvVoltSecondsPerMeter = 3.6;
@@ -57,8 +59,8 @@ public class Drivetrain extends SubsystemBase {
     backLeftMotor.follow(frontLeftMotor);
     backRightMotor.follow(frontRightMotor);
     frontRightMotor.setInverted(true);
-    gyro = new AHRS(SPI.Port.kMXP);
-    gyro.reset();
+    navx = new AHRS(SPI.Port.kMXP);
+    navx.reset();
   
   
     this.setDefaultCommand(new HelixDrive(this));
@@ -80,12 +82,12 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
     SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
     SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Gyro Heading", gyro.getAngle());
+    SmartDashboard.putNumber("Gyro Heading", navx.getAngle());
 
   }
 
   public void arcadeDrive(double fwd, double rot) {
-
+    
     if(RobotContainer.driverJoystick.getRawButton(11))
     {
       frontLeftMotor.set(0.2 * (fwd + rot));
@@ -105,5 +107,10 @@ public class Drivetrain extends SubsystemBase {
   public void stop() {
     frontLeftMotor.set(0);
     frontRightMotor.set(0);
+  }
+
+  public void resetHeading() {
+    navx.reset();
+  
   }
 }
