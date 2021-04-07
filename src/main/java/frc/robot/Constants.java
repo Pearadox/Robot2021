@@ -23,6 +23,7 @@ public final class Constants {
     public static final class RobotConstants {
         public static final int minBatteryVoltage = 12;
     }
+
     public static final class DrivetrainConstants {
         public static final int FRONT_RIGHT_MOTOR = 2;
         public static final int BACK_RIGHT_MOTOR = 3;
@@ -76,6 +77,11 @@ public final class Constants {
         public static final double ZETA = 0.0d;
 
         public static final double KS = 0.0d; // Volts
+
+        public static final double ksVolts = 0;
+        public static final double kvVoltSecondsPerMeter = 0;
+        public static final double kaVoltSecondsSquaredPerMeter = 0;
+        public static final double kPDriveVel = 0;
     }
 
     public static final class MPConstants {
