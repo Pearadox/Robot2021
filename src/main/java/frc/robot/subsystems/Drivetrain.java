@@ -7,20 +7,14 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.CANSparkMax.IdleMode;
 
-import org.opencv.video.BackgroundSubtractor;
-
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
@@ -30,11 +24,16 @@ import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.VecBuilder;
+
 import frc.robot.RobotContainer;
 import frc.robot.commands.HelixDrive;
+
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.SPI;
+
 import static frc.robot.Constants.DrivetrainConstants.*;
+import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -58,6 +57,9 @@ public class Drivetrain extends SubsystemBase {
             kLeftEncoderReversed);
   private Encoder m_rightEncoder = new Encoder(13, 12,
             kRightEncoderReversed);
+
+  private final AHRS gyro;
+  private Pose2d pose;
   
   // The robot's drive
   // private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
@@ -67,6 +69,7 @@ public class Drivetrain extends SubsystemBase {
   
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
+  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
    
   
   // These are our EncoderSim objects, which we will only use in
@@ -98,7 +101,6 @@ public class Drivetrain extends SubsystemBase {
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
 
-  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
 
   private final CANEncoder m_LeftEncoder = frontLeftMotor.getEncoder();
   private final CANEncoder m_RightEncoder = frontRightMotor.getEncoder();
@@ -106,36 +108,31 @@ public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
+    backLeftMotor.follow(frontLeftMotor);
+    backRightMotor.follow(frontRightMotor);
+    frontRightMotor.setInverted(true);
+    gyro = new AHRS(SPI.Port.kMXP);
+    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-
-    
-  backLeftMotor.follow(frontLeftMotor);
-  backRightMotor.follow(frontRightMotor);
-  frontRightMotor.setInverted(true);
-
-
-
-  m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
-
-  // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
-  // m_rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
-  if (RobotBase.isSimulation()) {
-  //Do the following for simulating a robot  
-    m_drivetrainSimulator = new DifferentialDrivetrainSim(
-      DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
-      12.4,                    // 10:62 1st stage and 16:32 second stage = 12.4:1
-      4.25,                     // (should be between 3-8 kg * m^2) mass = 60 kg, COM is x = .068, y = -.02. MOI = 60.0 * sqrt(.068^2 + .02^2) = 4.25?
-      60.0,                    // The mass of the robot is 60 kg.
-      Units.inchesToMeters(6), // The robot uses 6" radius wheels.
-      Units.inchesToMeters(27),                  // The track width is 0.7112 meters. 24.937 in to inside wheel faces, 29.063 to outside. Average = 27
-    
-      // The standard deviations for measurement noise:
-      // x and y:          0.001 m
-      // heading:          0.001 rad
-      // l and r velocity: 0.1   m/s
-      // l and r position: 0.005 m
-      VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
-    }
+    // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
+    // m_rightEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
+    if (RobotBase.isSimulation()) {
+      //Do the following for simulating a robot  
+      m_drivetrainSimulator = new DifferentialDrivetrainSim(
+        DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
+        12.4,                    // 10:62 1st stage and 16:32 second stage = 12.4:1
+        4.25,                     // (should be between 3-8 kg * m^2) mass = 60 kg, COM is x = .068, y = -.02. MOI = 60.0 * sqrt(.068^2 + .02^2) = 4.25?
+        60.0,                    // The mass of the robot is 60 kg.
+        Units.inchesToMeters(6), // The robot uses 6" radius wheels.
+        Units.inchesToMeters(27),                  // The track width is 0.7112 meters. 24.937 in to inside wheel faces, 29.063 to outside. Average = 27
+      
+        // The standard deviations for measurement noise:
+        // x and y:          0.001 m
+        // heading:          0.001 rad
+        // l and r velocity: 0.1   m/s
+        // l and r position: 0.005 m
+        VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
+      }
 
     // The encoder and gyro angle sims let us set simulated sensor readings
     m_leftEncoderSim = new EncoderSim(m_leftEncoder);
@@ -154,7 +151,7 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
 
     //Update odometry in the periodic block
-    m_odometry.update(
+    pose = m_odometry.update(
       Rotation2d.fromDegrees(getHeading()),
       m_leftEncoder.getDistance(),
       m_rightEncoder.getDistance());
@@ -181,24 +178,12 @@ public class Drivetrain extends SubsystemBase {
     m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
   }
 
-  /**
-   * Returns the current being drawn by the drivetrain. This works in SIMULATION ONLY! If you want
-   * it to work elsewhere, use the code in {@link DifferentialDrivetrainSim#getCurrentDrawAmps()}
-   *
-   * @return The drawn current in Amps.
-   */
   public double getDrawnCurrentAmps() {
     return m_drivetrainSimulator.getCurrentDrawAmps();
   }
 
-  
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return pose;
   }
   
   public void dashboard() {
@@ -208,15 +193,8 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
 
     // SmartDashboard.putNumber("Total PDP", pdp.getTotalCurrent());
-    
   }
 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
   public void arcadeDrive(double fwd, double rot) {
 
     if(RobotContainer.driverJoystick.getRawButton(11))
@@ -240,13 +218,40 @@ public class Drivetrain extends SubsystemBase {
     frontRightMotor.set(0);
   }
 
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+  }
+
   public double getHeading() {
-    return 0;
-    // return Math.IEEEremainder(m_gyro.getAngle(), 360) * (kGyroReversed ? -1.0 : 1.0);
+    return gyro.getRotation2d().getDegrees();
+    // return Math.IEEEremainder(gyro.getAngle(), 360) * (kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(pose, gyro.getRotation2d());
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMotors.setVoltage(leftVolts);
+    rightMotors.setVoltage(-rightVolts);
+    m_drive.feed();
+  }
+
+  public void resetEncoders() {
+    m_leftEncoder.reset();
+    m_rightEncoder.reset();
+  }
+
+  public void setMaxOutput(double maxOutput) {
+    m_drive.setMaxOutput(maxOutput);
+  }
+
+  public void zeroHeading() {
+    gyro.reset();
+  }
+
+  public double getTurnRate() {
+    return -gyro.getRate();
   }
 }

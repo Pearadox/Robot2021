@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,7 +26,6 @@ public class Intake extends SubsystemBase {
   public CANPIDController ArmPidController;
   private CANEncoder ArmIntakeEncoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxVel, minVel, maxAcc, allowedErr;
-  private double setPoint;
 
   public double in_speed = 1;
   public double out_speed = -0.3;
@@ -167,10 +165,6 @@ public class Intake extends SubsystemBase {
   }
   public double getIntakeCurrent(){
     return ArmIntakeMotor.getOutputCurrent();
-  }
-
-  public void setIntakeTargetPosition (double setPoint) {
-    this.setPoint = setPoint;
   }
 
   @Override
