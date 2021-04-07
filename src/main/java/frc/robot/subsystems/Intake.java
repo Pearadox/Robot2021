@@ -15,11 +15,11 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   private static final int kArmIntakeMotor = Constants.IntakeConstants.ARM_INTAKE_MOTOR;
   private static final int kTopRollerMotor = Constants.IntakeConstants.TOP_ROLLER_MOTOR;
-  private static final int kBotRollerMotor = Constants.IntakeConstants.BOT_ROLLER_MOTOR;
+  // private static final int kBotRollerMotor = Constants.IntakeConstants.BOT_ROLLER_MOTOR;
 
   private CANSparkMax ArmIntakeMotor;
   private PearadoxSparkMax TopRollerMotor;
-  private PearadoxSparkMax BotRollerMotor;
+  // private PearadoxSparkMax BotRollerMotor;
 
   private CANEncoder TopRollerEncoder;
 
@@ -36,8 +36,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
     ArmIntakeMotor = new CANSparkMax(kArmIntakeMotor, MotorType.kBrushless);
     TopRollerMotor = new PearadoxSparkMax(kTopRollerMotor);
-    BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
-    BotRollerMotor.setInverted(true);
+    // BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
+    // BotRollerMotor.setInverted(true);
 
     TopRollerEncoder = TopRollerMotor.getEncoder();
     resetRollerIntakeEncoder();
@@ -137,7 +137,7 @@ public class Intake extends SubsystemBase {
 
   public void setRollerSpeed(double speed) {
     TopRollerMotor.set(speed);
-    BotRollerMotor.set(speed);
+    // BotRollerMotor.set(speed);
   }
 
   public void RollerIn() {
@@ -214,6 +214,6 @@ public class Intake extends SubsystemBase {
     if((in_speed != in)) in_speed = in;
     if((out_speed != out)) out_speed = out;
 
-    SmartDashboard.putNumber("Roller RPM", TopRollerEncoder.getVelocity());
+    // SmartDashboard.putNumber("Roller RPM", TopRollerEncoder.getVelocity());
   }
 }
