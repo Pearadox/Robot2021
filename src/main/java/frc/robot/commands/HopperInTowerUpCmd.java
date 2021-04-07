@@ -17,7 +17,7 @@ public class HopperInTowerUpCmd extends CommandBase {
   /** Creates a new HopperInTowerUpCmd. */
   boolean clearedBottomOnce = false;
   Timer timer;
-  private final double TotalTime = 0.75;
+  private final double TotalTime = 0.25;
   private final double RunTime = 0.25;
   public HopperInTowerUpCmd() {
     // Use addRequirements() here to declare subsystem dependencies.

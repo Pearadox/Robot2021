@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -85,6 +86,23 @@ public class Drivetrain extends SubsystemBase {
   // Create the simulation model of our drivetrain.
   public DifferentialDrivetrainSim m_drivetrainSimulator;
 
+  public static final double ksVolts = 0.235;
+  public static final double kvVoltSecondsPerMeter = 3.6;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.521;
+
+  public static final double kpDriveVel = 2.5;
+
+  public static final double kMaxSpeedMetersPerSecond = 3;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+  public static final double kRamseteB = 2;
+  public static final double kRamseteZeta = 0.7;
+
+  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
+
+  private final CANEncoder m_LeftEncoder = frontLeftMotor.getEncoder();
+  private final CANEncoder m_RightEncoder = frontRightMotor.getEncoder();
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
@@ -94,6 +112,9 @@ public class Drivetrain extends SubsystemBase {
   backLeftMotor.follow(frontLeftMotor);
   backRightMotor.follow(frontRightMotor);
   frontRightMotor.setInverted(true);
+
+
+
   m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
   // m_leftEncoder.setDistancePerPulse(2 * Math.PI * Constants.DrivetrainConstants.WHEEL_DIAMETER / 2.0 / Constants.DrivetrainConstants.PULSES_PER_REVOLUTION);
