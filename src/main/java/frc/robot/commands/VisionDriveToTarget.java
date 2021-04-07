@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionLL;
@@ -18,7 +17,7 @@ public class VisionDriveToTarget extends CommandBase {
   private double kd = RobotContainer.visionLL.turnKd;
   private double ki = RobotContainer.visionLL.turnKi;
   private double tx;
-  private boolean reachedTarget, foundTarget;
+  // private boolean reachedTarget, foundTarget;
   private double changeInError, errorSum = 0; 
   private final double OFFSET = 0.215;
   private double lastError;
@@ -42,7 +41,7 @@ public class VisionDriveToTarget extends CommandBase {
     kp = SmartDashboard.getNumber("Vision Turn kp", kp);
     ki = SmartDashboard.getNumber("Vision Turn ki", ki);
     kd = SmartDashboard.getNumber("Vision Turn kd", kd);
-    foundTarget = RobotContainer.visionLL.getLLIsTargetFound();
+    // foundTarget = RobotContainer.visionLL.getLLIsTargetFound();
     errorSum = 0;
   }
 

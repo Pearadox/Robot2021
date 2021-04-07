@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
+// import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
@@ -102,8 +102,8 @@ public class Drivetrain extends SubsystemBase {
   public static final double kRamseteZeta = 0.7;
 
 
-  private final CANEncoder m_LeftEncoder = frontLeftMotor.getEncoder();
-  private final CANEncoder m_RightEncoder = frontRightMotor.getEncoder();
+  // private final CANEncoder m_LeftEncoder = frontLeftMotor.getEncoder();
+  // private final CANEncoder m_RightEncoder = frontRightMotor.getEncoder();
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {

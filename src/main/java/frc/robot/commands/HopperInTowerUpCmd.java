@@ -4,13 +4,8 @@
 
 package frc.robot.commands;
 
-import java.lang.module.ModuleDescriptor.Requires;
-
-import javax.management.modelmbean.RequiredModelMBean;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class HopperInTowerUpCmd extends CommandBase {

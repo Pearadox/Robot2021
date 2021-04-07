@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
   private CANPIDController m_pidController;
   private CANEncoder rightCanEncoder;
   private CANEncoder leftCanEncoder;
-  private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput, maxRPM;
+  private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput;//, maxRPM;
   private double lastError = 0;
 
   public Shooter() {
@@ -55,7 +55,7 @@ public class Shooter extends SubsystemBase {
     kFF = .00013; //0.0215; 
     kMaxOutput = 1; 
     kMinOutput = -1;
-    maxRPM = 5700;
+    // maxRPM = 5700;
     ksetpoint = 0;
 
     // set PID coefficients
