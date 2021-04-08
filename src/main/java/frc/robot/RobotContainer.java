@@ -182,7 +182,7 @@ public class RobotContainer {
     sendCacheTrajectory("Bounce1", "output/Bounce1");
     sendCacheTrajectory("Bounce2", "output/Bounce2");
     sendCacheTrajectory("Bounce3", "output/Bounce3");
-
+    sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
 
     SmartDashboard.putData("Path Selection", pathSelector);
   }
