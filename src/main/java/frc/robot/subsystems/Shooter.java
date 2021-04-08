@@ -153,11 +153,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void dashboard() {
-    SmartDashboard.putNumber("Flywheel RPM", getFlywheelRPM());
-    SmartDashboard.putNumber("Flywheel Voltage", rightFlywheelMotor.getBusVoltage());
-    SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 
-    SmartDashboard.putNumber("Right Current", rightFlywheelMotor.getOutputCurrent());
-    SmartDashboard.putNumber("left Current", leftFlywheelMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("Flywheel RPM", getFlywheelRPM());
+    // SmartDashboard.putNumber("Flywheel Voltage", rightFlywheelMotor.getBusVoltage());
+    // SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 
+    // SmartDashboard.putNumber("Right Current", rightFlywheelMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("left Current", leftFlywheelMotor.getOutputCurrent());
   }
 }
 

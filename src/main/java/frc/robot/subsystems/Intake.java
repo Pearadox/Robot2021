@@ -96,31 +96,31 @@ public class Intake extends SubsystemBase {
     ArmPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("Arm P Gain", kP);
-    SmartDashboard.putNumber("Arm I Gain", kI);
-    SmartDashboard.putNumber("Arm D Gain", kD);
-    SmartDashboard.putNumber("Arm I Zone", kIz);
-    SmartDashboard.putNumber("Arm Feed Forward", kFF);
-    SmartDashboard.putNumber("Arm Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Arm Min Output", kMinOutput);
+    // SmartDashboard.putNumber("Arm P Gain", kP);
+    // SmartDashboard.putNumber("Arm I Gain", kI);
+    // SmartDashboard.putNumber("Arm D Gain", kD);
+    // SmartDashboard.putNumber("Arm I Zone", kIz);
+    // SmartDashboard.putNumber("Arm Feed Forward", kFF);
+    // SmartDashboard.putNumber("Arm Max Output", kMaxOutput);
+    // SmartDashboard.putNumber("Arm Min Output", kMinOutput);
 
-    // display Smart Motion coefficients
-    SmartDashboard.putNumber("Arm Max Velocity", maxVel);
-    SmartDashboard.putNumber("Arm Min Velocity", minVel);
-    SmartDashboard.putNumber("Arm Max Acceleration", maxAcc);
-    SmartDashboard.putNumber("Arm Allowed Closed Loop Error", allowedErr);
-    SmartDashboard.putNumber("Arm Set Position", 0);
-    SmartDashboard.putNumber("Arm Set Velocity", 0);
+    // // display Smart Motion coefficients
+    // SmartDashboard.putNumber("Arm Max Velocity", maxVel);
+    // SmartDashboard.putNumber("Arm Min Velocity", minVel);
+    // SmartDashboard.putNumber("Arm Max Acceleration", maxAcc);
+    // SmartDashboard.putNumber("Arm Allowed Closed Loop Error", allowedErr);
+    // SmartDashboard.putNumber("Arm Set Position", 0);
+    // SmartDashboard.putNumber("Arm Set Velocity", 0);
 
-    // button to toggle between velocity and smart motion modes
-    SmartDashboard.putBoolean("Arm Mode", true);
+    // // button to toggle between velocity and smart motion modes
+    // SmartDashboard.putBoolean("Arm Mode", true);
 
-    SmartDashboard.putNumber("Roller in Speed", in_speed);
-    SmartDashboard.putNumber("Roller out Speed", out_speed);
-    SmartDashboard.putNumber("Roller RPM", 0);
-    SmartDashboard.putNumber("Arm Current", 0);
-    SmartDashboard.putNumber("Arm Voltage", 0);
-    SmartDashboard.putNumber("IntakeDown value", IntakeDownEncoderValue);
+    // SmartDashboard.putNumber("Roller in Speed", in_speed);
+    // SmartDashboard.putNumber("Roller out Speed", out_speed);
+    // SmartDashboard.putNumber("Roller RPM", 0);
+    // SmartDashboard.putNumber("Arm Current", 0);
+    // SmartDashboard.putNumber("Arm Voltage", 0);
+    // SmartDashboard.putNumber("IntakeDown value", IntakeDownEncoderValue);
   }
 
   public void resetArmIntakeEncoder() {
@@ -201,12 +201,12 @@ public class Intake extends SubsystemBase {
     if((maxA != maxAcc)) { ArmPidController.setSmartMotionMaxAccel(maxA,0); maxAcc = maxA; }
     if((allE != allowedErr)) { ArmPidController.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
     
-    SmartDashboard.putNumber("Arm Output", ArmIntakeMotor.getAppliedOutput());
-    SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
-    SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());
-    SmartDashboard.putNumber("IntakeDown value", IntakeDownEncoderValue);
-    SmartDashboard.putNumber("Intake Temp", ArmIntakeMotor.getMotorTemperature());
+    // SmartDashboard.putNumber("Arm Output", ArmIntakeMotor.getAppliedOutput());
+    // SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
+    // SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());
+    // SmartDashboard.putNumber("IntakeDown value", IntakeDownEncoderValue);
+    // SmartDashboard.putNumber("Intake Temp", ArmIntakeMotor.getMotorTemperature());
     //change roller speeds based on SmartDashboard values
     final double in = SmartDashboard.getNumber("Roller in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Roller out Speed", out_speed);

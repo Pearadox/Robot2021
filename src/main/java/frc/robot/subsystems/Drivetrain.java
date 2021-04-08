@@ -112,13 +112,13 @@ public class Drivetrain extends SubsystemBase {
     
   }
   public void dashboard() {
-    SmartDashboard.putNumber("RightCurrent1", frontRightMotor.getOutputCurrent());
-    SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
-    SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
-    SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
-    SmartDashboard.putNumber("Gyro Heading", navx.getAngle());
-    SmartDashboard.putNumber("RightEncoderPostion", m_rightEncoder.getPosition());
-    SmartDashboard.putNumber("LeftEncoderPostion", m_leftEncoder.getPosition());
+    // SmartDashboard.putNumber("RightCurrent1", frontRightMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
+    // SmartDashboard.putNumber("Gyro Heading", navx.getAngle());
+    // SmartDashboard.putNumber("RightEncoderPostion", m_rightEncoder.getPosition());
+    // SmartDashboard.putNumber("LeftEncoderPostion", m_leftEncoder.getPosition());
 
   }
 

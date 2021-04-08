@@ -48,7 +48,7 @@ public class Debugger {
      * @param level
      */
     public static void println(String msg, String flag, int level) {
-        HelixEvents.getInstance().addEvent(flag, msg);
+        // HelixEvents.getInstance().addEvent(flag, msg);
         if(meetsCurrRequirements(flag, level)) {
             System.out.println(level + ": [" + flag + "] " + msg);
         }

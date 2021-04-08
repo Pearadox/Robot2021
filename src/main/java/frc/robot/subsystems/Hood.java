@@ -100,10 +100,10 @@ public class Hood extends SubsystemBase {
     } else {
       SmartDashboard.putNumber("Hood Angle", getHoodAngle());
     }
-    SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
-    SmartDashboard.putBoolean("hasHoodZeroed", gethasHoodZeroed());
-    setHoodPoint(SmartDashboard.getNumber("Set Hood Angle", 0));
-    SmartDashboard.putNumber("Hood RPM", hoodMotor.getMotorOutputVoltage());
+    // SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
+    // SmartDashboard.putBoolean("hasHoodZeroed", gethasHoodZeroed());
+    // setHoodPoint(SmartDashboard.getNumber("Set Hood Angle", 0));
+    // SmartDashboard.putNumber("Hood RPM", hoodMotor.getMotorOutputVoltage());
   }
 
   public void setHoodAngle(double setPointAngle) {

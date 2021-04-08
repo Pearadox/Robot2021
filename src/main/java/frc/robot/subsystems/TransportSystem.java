@@ -79,7 +79,7 @@ public class TransportSystem extends SubsystemBase {
     
 
     //Helixlogger setup
-    setupLogs();
+    // setupLogs();
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
     // this.setDefaultCommand(new ManageBallTower(this));
@@ -310,7 +310,7 @@ public class TransportSystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    determineState();
+    // determineState();
   }
   @Override
   public void simulationPeriodic() {
@@ -320,11 +320,11 @@ public class TransportSystem extends SubsystemBase {
   
   //Set up helixlogger sources here
   private void setupLogs() {
-    HelixLogger.getInstance().addSource("TOWER Vel", TowerVictor::getSelectedSensorVelocity);
-    HelixLogger.getInstance().addSource("TOWER LOW", levelOne::get);
-    HelixLogger.getInstance().addSource("TOWER MID", levelTwo::get);
-    HelixLogger.getInstance().addSource("TOWER HIGH",  levelThree::get);
-    HelixLogger.getInstance().addSource("TOWER STATE",  currentState::toString);
+    // HelixLogger.getInstance().addSource("TOWER Vel", TowerVictor::getSelectedSensorVelocity);
+    // HelixLogger.getInstance().addSource("TOWER LOW", levelOne::get);
+    // HelixLogger.getInstance().addSource("TOWER MID", levelTwo::get);
+    // HelixLogger.getInstance().addSource("TOWER HIGH",  levelThree::get);
+    // HelixLogger.getInstance().addSource("TOWER STATE",  currentState::toString);
   }
 
   public void dashboard() {
@@ -332,12 +332,12 @@ public class TransportSystem extends SubsystemBase {
     final double down = SmartDashboard.getNumber("Down Speed", down_speed);
     final double in = SmartDashboard.getNumber("Hopper in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Hopper out Speed", out_speed);
-    SmartDashboard.putString("Tower State", getState().toString());
-    SmartDashboard.putNumber("Tower Speed", TowerVictor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Hopper Speed", HopperVictor.getMotorOutputPercent());
-    SmartDashboard.putNumber("Ball Counter", ballCounter);
-    SmartDashboard.putNumber("Tower Current", TowerVictor.getMotorOutputVoltage());
-
+    // SmartDashboard.putString("Tower State", getState().toString());
+    // SmartDashboard.putNumber("Tower Speed", TowerVictor.getMotorOutputPercent());
+    // SmartDashboard.putNumber("Hopper Speed", HopperVictor.getMotorOutputPercent());
+    // SmartDashboard.putNumber("Ball Counter", ballCounter);
+    // SmartDashboard.putNumber("Tower Current", TowerVictor.getMotorOutputVoltage());
+    
     if (up != up_speed) up_speed = up;
     if (down != down_speed) down_speed = down;
     if (in != in_speed) in_speed = in;
