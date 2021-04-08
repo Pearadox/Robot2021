@@ -38,6 +38,7 @@ public final class Constants {
         public static final double PULSES_PER_REVOLUTION = 42 * 5.6;
         public static final double DISTANCE_PER_PULSE = DISTANCE_PER_REVOLUTION / PULSES_PER_REVOLUTION;
         public static final double SECONDS_PER_MINUTE = 60.0d;
+        public static final double GEAR_REDUCTION = 13.8;
 
         public static final DifferentialDriveKinematics KINEMATICS =
             new DifferentialDriveKinematics(DRIVE_BASE_WIDTH);
@@ -73,15 +74,15 @@ public final class Constants {
     }
 
     public static final class RamseteConstants {
-        public static final double B = 0.0d;
-        public static final double ZETA = 0.0d;
+        public static final double B = 2.0d;
+        public static final double ZETA = 0.7d;
 
-        public static final double KS = 0.0d; // Volts
+        public static final double KS = 0.23d; // Volts
 
-        public static final double ksVolts = 0;
-        public static final double kvVoltSecondsPerMeter = 0;
-        public static final double kaVoltSecondsSquaredPerMeter = 0;
-        public static final double kPDriveVel = 0;
+        public static final double ksVolts = 0.23;
+        public static final double kvVoltSecondsPerMeter = 3.61;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.529;
+        public static final double kPDriveVel = 0; //2.04;
     }
 
     public static final class MPConstants {

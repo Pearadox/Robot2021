@@ -15,7 +15,7 @@ public class TrajectoryCache {
 
     public static void add(String key, String jsonPath) {
         try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("Paths/GeneratedPaths/" + jsonPath + ".wpilib.json");
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath + ".wpilib.json");
             cache.put(key, TrajectoryUtil.fromPathweaverJson(trajectoryPath));
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + jsonPath + ".wpilib.json", ex.getStackTrace());

@@ -8,15 +8,22 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.lib.drivers.EForwardableConnections;
 import frc.lib.util.Debugger;
+import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.Constants.RamseteConstants;
 import frc.robot.Robot.RobotState;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -168,13 +175,20 @@ public class RobotContainer {
 
   public void loadTrajectoryPaths() {
     TrajectoryCache.clear();
-    // sendCacheTrajectory("Galatic Search", "GalacticPath");
+    sendCacheTrajectory("Slalom", "output/SlalomPath");
+    sendCacheTrajectory("Straight", "output/Straight2m");
+    sendCacheTrajectory("Turn", "output/Turn");
+    sendCacheTrajectory("Bounce0", "output/Bounce0");
+    sendCacheTrajectory("Bounce1", "output/Bounce1");
+    sendCacheTrajectory("Bounce2", "output/Bounce2");
+    sendCacheTrajectory("Bounce3", "output/Bounce3");
 
-    SmartDashboard.putData(pathSelector);
+
+    SmartDashboard.putData("Path Selection", pathSelector);
   }
 
   private void sendCacheTrajectory(String key, String jsonPath) {
-    pathSelector.addOption(key, jsonPath);
+    pathSelector.addOption(key, key);
     TrajectoryCache.add(key, jsonPath);
   }
 
@@ -189,35 +203,37 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return (new ThreeBallAuton());
+    // return (new ThreeBallAuton());
     // An ExampleCommand will run in autonomous
-    // Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
-    // RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
+    if(pathSelector.getSelected().equals("Bounce0"))
+       return new BouncePath(m_Drivetrain);
+    Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
+    RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
+    // Reset odometry to the starting pose of the trajectory.
+    m_Drivetrain.resetOdometry(pathTrajectory.getInitialPose());
 
-    // // Reset odometry to the starting pose of the trajectory.
-    // m_Drivetrain.resetOdometry(pathTrajectory.getInitialPose());
-
-    // // Run path following command, then stop at the end.
-    // return ramseteCommand.andThen(() -> m_Drivetrain.tankDriveVolts(0, 0));
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> m_Drivetrain.tankDriveVolts(0, 0));
   }
 
-  // public RamseteCommand createRamseteCommand(Trajectory pathTrajectory) {
-  //   return new RamseteCommand(
-  //     pathTrajectory,
-  //     m_Drivetrain::getPose,
-  //     new RamseteController(RamseteConstants.B, RamseteConstants.ZETA),
-  //     new SimpleMotorFeedforward(RamseteConstants.ksVolts,
-  //                                RamseteConstants.kvVoltSecondsPerMeter,
-  //                                RamseteConstants.kaVoltSecondsSquaredPerMeter),
-  //     DrivetrainConstants.KINEMATICS,
-  //     m_Drivetrain::getWheelSpeeds,
-  //     new PIDController(RamseteConstants.kPDriveVel, 0, 0),
-  //     new PIDController(RamseteConstants.kPDriveVel, 0, 0),
-  //     // RamseteCommand passes volts to the callback
-  //     m_Drivetrain::tankDriveVolts,
-  //     m_Drivetrain
-  //   );
-  // }
+  public RamseteCommand createRamseteCommand(Trajectory pathTrajectory) {
+    return new RamseteCommand(
+      pathTrajectory,
+      m_Drivetrain::getPose,
+      new RamseteController(RamseteConstants.B, RamseteConstants.ZETA),
+      new SimpleMotorFeedforward(RamseteConstants.ksVolts,
+                                 RamseteConstants.kvVoltSecondsPerMeter,
+                                 RamseteConstants.kaVoltSecondsSquaredPerMeter),
+      DrivetrainConstants.KINEMATICS,
+      m_Drivetrain::getWheelSpeeds,
+      new PIDController(RamseteConstants.kPDriveVel, 0, 0),
+      new PIDController(RamseteConstants.kPDriveVel, 0, 0),
+      // RamseteCommand passes volts to the callback
+      m_Drivetrain::tankDriveVolts,
+      m_Drivetrain
+    );
+
+  }
 
   public static Joystick getDriverJoystick() {
     return driverJoystick;
