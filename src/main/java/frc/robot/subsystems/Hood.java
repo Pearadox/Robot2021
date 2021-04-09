@@ -28,7 +28,6 @@ public class Hood extends SubsystemBase {
   public double kMinError = 0.5;
   private boolean hasHoodZeroed = false;
 
-
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);
     hoodMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);

@@ -9,7 +9,6 @@ import static frc.robot.Constants.DrivetrainConstants.BACK_RIGHT_MOTOR;
 import static frc.robot.Constants.DrivetrainConstants.FRONT_LEFT_MOTOR;
 import static frc.robot.Constants.DrivetrainConstants.FRONT_RIGHT_MOTOR;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 // import com.revrobotics.CANEncoder;
@@ -25,10 +24,11 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 // import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Robot.RobotState;
 import frc.robot.commands.HelixDrive;
 
 public class Drivetrain extends SubsystemBase {
@@ -51,24 +51,11 @@ public class Drivetrain extends SubsystemBase {
 
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotors, rightMotors);
 
-  public final CANEncoder m_leftEncoder = frontLeftMotor.getEncoder();  
-  public final CANEncoder m_rightEncoder = frontRightMotor.getEncoder();
+  public final CANEncoder leftDriveEncoder = frontLeftMotor.getEncoder();  
+  public final CANEncoder rightDriveEncoder = frontRightMotor.getEncoder();
 
   public static AHRS navx;
-  private final DifferentialDriveOdometry m_odometry;
-  private Pose2d m_pose;
-   
-  // public static final double ksVolts = 0.23;
-  // public static final double kvVoltSecondsPerMeter = 3.61;
-  // public static final double kaVoltSecondsSquaredPerMeter = 0.529;
-
-  // public static final double kpDriveVel = 2.04;
-
-  // public static final double kMaxSpeedMetersPerSecond = 3;
-  // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-
-  // public static final double kRamseteB = 2;
-  // public static final double kRamseteZeta = 0.7;
+  private final DifferentialDriveOdometry odometry;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -78,8 +65,6 @@ public class Drivetrain extends SubsystemBase {
     frontLeftMotor.restoreFactoryDefaults();
     backLeftMotor.restoreFactoryDefaults();
 
-    
-
     frontRightMotor.setIdleMode(IdleMode.kBrake);
     frontLeftMotor.setIdleMode(IdleMode.kBrake);
     backRightMotor.setIdleMode(IdleMode.kCoast);
@@ -88,14 +73,15 @@ public class Drivetrain extends SubsystemBase {
     backLeftMotor.follow(frontLeftMotor);
     backRightMotor.follow(frontRightMotor);
     frontRightMotor.setInverted(true);
+
     navx = new AHRS(SPI.Port.kMXP);
     navx.reset();
   
-    m_leftEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DISTANCE_PER_REVOLUTION / Constants.DrivetrainConstants.GEAR_REDUCTION);
-    m_rightEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DISTANCE_PER_REVOLUTION / Constants.DrivetrainConstants.GEAR_REDUCTION);
+    leftDriveEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DISTANCE_PER_REVOLUTION / Constants.DrivetrainConstants.GEAR_REDUCTION);
+    rightDriveEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DISTANCE_PER_REVOLUTION / Constants.DrivetrainConstants.GEAR_REDUCTION);
     encoderReset();
 
-    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-navx.getAngle()));
+    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   
     this.setDefaultCommand(new HelixDrive(this));
   }
@@ -103,24 +89,22 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_odometry.update(Rotation2d.fromDegrees(-navx.getAngle()), -m_leftEncoder.getPosition(), -m_rightEncoder.getPosition());
+    if(Robot.getState() == RobotState.AUTONOMOUS)
+      odometry.update(Rotation2d.fromDegrees(getGyroAngle()), getLeftDrivePosition(), getRightEncoderPosition());
     dashboard();
   }
 
-  @Override
-  public void simulationPeriodic() {
-    
-  }
   public void dashboard() {
     // SmartDashboard.putNumber("RightCurrent1", frontRightMotor.getOutputCurrent());
     // SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
     // SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
     // SmartDashboard.putNumber("LeftCurrent2", backLeftMotor.getOutputCurrent());
     // SmartDashboard.putNumber("Gyro Heading", navx.getAngle());
-    // SmartDashboard.putNumber("RightEncoderPostion", m_rightEncoder.getPosition());
-    // SmartDashboard.putNumber("LeftEncoderPostion", m_leftEncoder.getPosition());
-
+    // SmartDashboard.putNumber("RightDriveEncoderPostion", rightDriveEncoder.getPosition());
+    // SmartDashboard.putNumber("LeftDriveEncoderPostion", leftDriveEncoder.getPosition());
   }
+
+  //Drivetrain methods
 
   public void arcadeDrive(double fwd, double rot) {
     
@@ -140,27 +124,27 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-  public void stop() {
-    frontLeftMotor.set(0);
-    frontRightMotor.set(0);
-  }
+  public void HelixDrive() {
+    double throttle = RobotContainer.driverJoystick.getY();
+    double twist = RobotContainer.driverJoystick.getZ() * -0.65;
 
-  public void zeroHeading() {
-    navx.reset();   
-  }
-  public void encoderReset() {
-    m_rightEncoder.setPosition(0.0);
-    m_leftEncoder.setPosition(0.0);
-  }
+    double saturatedInput;
+    double greaterInput = Math.max(Math.abs(twist), Math.abs(throttle));
+    double lesserInput = Math.min(Math.abs(twist), Math.abs(throttle));
 
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(-m_leftEncoder.getVelocity()/60, -m_rightEncoder.getVelocity() / 60);
-  }
+    if (greaterInput > 0.0) 
+      saturatedInput = (lesserInput/greaterInput) + 1.0;
+    else 
+      saturatedInput = 1.0;
 
-  public void resetOdometry(Pose2d pose) {
-    encoderReset();
-    zeroHeading();
-    m_odometry.resetPosition(pose, Rotation2d.fromDegrees(-navx.getAngle()));
+    throttle = throttle / saturatedInput;
+    twist = twist/saturatedInput;
+    if(Math.abs(throttle) < 0.1) 
+      throttle = 0;
+    if(Math.abs(twist) < 0.1) 
+      twist = 0;
+    
+    arcadeDrive(throttle, twist);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -169,20 +153,57 @@ public class Drivetrain extends SubsystemBase {
     m_drive.feed();
     // backRightMotor.setVoltage(-rightVolts);
     // backLeftMotor.setVoltage(leftVolts);
-
   }
-  // public double getAverageEncoderDistance() {
 
-  // }
+  public void stop() {
+    frontLeftMotor.set(0);
+    frontRightMotor.set(0);
+  }
+
+  //Gyro/Odometry methods
+
+  public void zeroHeading() {
+    navx.reset();   
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    encoderReset();
+    zeroHeading();
+    odometry.resetPosition(pose, Rotation2d.fromDegrees(-navx.getAngle()));
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(-leftDriveEncoder.getVelocity()/60, -rightDriveEncoder.getVelocity() / 60);
+  }
+
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return odometry.getPoseMeters();
   }
-  
+
   public double getHeading() {
     return navx.getRotation2d().getDegrees();
   }
 
   public double getTurnRate() {
     return -navx.getRate();
+  }
+
+  public double getGyroAngle() {
+    return -navx.getAngle();
+  }
+
+  //Encoder Methods
+
+  public void encoderReset() {
+    rightDriveEncoder.setPosition(0.0);
+    leftDriveEncoder.setPosition(0.0);
+  }
+
+  public double getLeftDrivePosition() {
+    return -leftDriveEncoder.getPosition();
+  }
+
+  public double getRightEncoderPosition() {
+    return -rightDriveEncoder.getPosition();
   }
 }

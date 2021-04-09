@@ -22,8 +22,7 @@ public class Shooter extends SubsystemBase {
   private CANPIDController m_pidController;
   private CANEncoder rightCanEncoder;
   private CANEncoder leftCanEncoder;
-  private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput;//, maxRPM;
-  private double lastError = 0;
+  private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput;
 
   public Shooter() {
     rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 80, false);
@@ -80,16 +79,7 @@ public class Shooter extends SubsystemBase {
     // this.setDefaultCommand(new ShooterVoltage(this, 4.3));
   }
 
-  // public void setShooterSpeed(double speed) {
-  //   rightFlywheelMotor.set(speed);
-  //   leftFlywheelMotor.set(speed);
-  // }
-
-  public void setShooterVoltage(double voltage){
-    m_pidController.setReference(ksetpoint, ControlType.kVelocity);
-  }
-
-  public void setShooterZone(double voltage) {
+  public void setShooterVoltage(double voltage) {
     m_pidController.setReference(voltage, ControlType.kVelocity);
   }
 
@@ -105,7 +95,6 @@ public class Shooter extends SubsystemBase {
     double ff = SmartDashboard.getNumber("S_Feed Forward", 0);
     double max = SmartDashboard.getNumber("S_Max Output", 0);
     double min = SmartDashboard.getNumber("S_Min Output", 0);
-    double setpoint = SmartDashboard.getNumber("S_SetPoint", 0);
 
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
@@ -115,7 +104,6 @@ public class Shooter extends SubsystemBase {
     if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
     if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
     if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
-    if((setpoint != ksetpoint)) { ksetpoint=setpoint; }
     if((max != kMaxOutput) || (min != kMinOutput)) { 
       m_pidController.setOutputRange(min, max); 
       kMinOutput = min; kMaxOutput = max; 
@@ -126,18 +114,6 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("S_RightProcessVariable", rightCanEncoder.getVelocity());
     SmartDashboard.putNumber("S_LeftProcessVariable", leftCanEncoder.getVelocity());
     
-  }
-
-  public void ShooterPID() {
-    double currRPM = (rightCanEncoder.getVelocity() + leftCanEncoder.getVelocity())/2;
-    double error = SmartDashboard.getNumber("S_SetPoint", 0) - currRPM;
-    double errorSum = lastError + error;
-    double P = kP * error;
-    double I = errorSum * kI;
-    double D = (lastError - error) * kD;
-    lastError = error;
-    double output = P + I - D;
-    rightFlywheelMotor.setVoltage(output);
   }
 
   public double getFlySetPoint() {

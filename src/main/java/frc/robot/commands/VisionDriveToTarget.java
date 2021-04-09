@@ -19,7 +19,7 @@ public class VisionDriveToTarget extends CommandBase {
   private double tx;
   // private boolean reachedTarget, foundTarget;
   private double changeInError, errorSum = 0; 
-  private final double OFFSET = 0.215;
+  private double OFFSET = 0.215;
   private double lastError;
   public VisionDriveToTarget(Drivetrain driveTrain, VisionLL visionLL) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -28,8 +28,6 @@ public class VisionDriveToTarget extends CommandBase {
     if (!SmartDashboard.containsKey("Vision Turn kp")) SmartDashboard.putNumber("Vision Turn kp", kp);
     if (!SmartDashboard.containsKey("Vision Turn ki")) SmartDashboard.putNumber("Vision Turn ki", ki);
     if (!SmartDashboard.containsKey("Vision Turn kd")) SmartDashboard.putNumber("Vision Turn kd", kd);
-    
-    
   }
 
   // Called when the command is initially scheduled.
@@ -48,27 +46,32 @@ public class VisionDriveToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+      OFFSET = SmartDashboard.getString("Entered Zone", "Unknown").equals("Red Zone") ? 0.17 : 0.215;
       double throttle = RobotContainer.getDriverJoystick().getY();
-      tx = RobotContainer.visionLL.getLLDegToTarget() + OFFSET;
-      changeInError = lastError - tx;
-      errorSum += tx;
-      double P = kp * tx;
-      double I = ki * errorSum;
-      double D = kd * changeInError;
-      double output = -1*(P + I - D);
-      lastError = tx;
-      if (Math.abs(tx) < 0.5) {
-       output = 0; 
+      double twist = RobotContainer.getDriverJoystick().getZ();
+      if (RobotContainer.visionLL.getLLIsTargetFound()) {
+        tx = RobotContainer.visionLL.getLLDegToTarget() + OFFSET;
+        changeInError = lastError - tx;
+        errorSum += tx;
+        double P = kp * tx;
+        double I = ki * errorSum;
+        double D = kd * changeInError;
+        double output = -1*(P + I - D);
+        lastError = tx;
+        if (Math.abs(tx) < 0.5) 
+          output = 0; 
+        twist = Math.copySign(Math.min(Math.abs(Math.pow(twist, 2)), 0.3), twist);
+        RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output + twist);
+        SmartDashboard.putNumber("Vision Output", output);
+      } else {
+        RobotContainer.m_Drivetrain.HelixDrive();
       }
-      RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output);
-      SmartDashboard.putNumber("Vision Output", output);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     RobotContainer.m_Drivetrain.stop();
-    
   }
 
   // Returns true when the command should end.

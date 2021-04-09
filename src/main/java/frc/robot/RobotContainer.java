@@ -122,14 +122,16 @@ public class RobotContainer {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
    
-    btn1.whileHeld(new HopperInTowerUpCmd()); //Tower Up
-    btn1.whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
-    btn3.whenPressed(new SetHood(m_Hood));
-    btn5.whenPressed(new SetZeroHood(m_Hood));
-    btn8.whenPressed(new ShooterVoltage(m_Shooter, SmartDashboard.getNumber("S_Setpoint", 0)));
+    btn1.whileHeld(new HopperInTowerUpCmd())
+        .whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
-    // btn9.whileHeld(new VisionTurnToTarget(m_Drivetrain, visionLL));  
-    btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport)).whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
+    btn3.whenPressed(new SetHood(m_Hood));
+    btn4.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
+    btn5.whenPressed(new SetZeroHood(m_Hood));
+    btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
+        .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
+    btn7.whileHeld(new Outake_balls()); //Tower Down/Outake
+    btn8.whenPressed(new ShooterVoltage(m_Shooter, SmartDashboard.getNumber("S_SetPoint", 0)));
 
     //intake items
     btn9.whileHeld(new RunCommand(  //ArmIntake Up
@@ -139,17 +141,6 @@ public class RobotContainer {
     }, m_Intake));
 
     btn10.whenPressed(new IntakeDown(m_Intake));
-   // btn4.whenPressed(new InstantCommand(m_Intake::resetArmIntakeEncoder, m_Intake)); //Reset ArmIntake
-    // btn3.whileHeld(new RunCommand(m_Intake::RollerIn, m_Intake)); //Roller In
-    // btn6.whileHeld(new RunCommand(m_Intake::RollerOut, m_Intake)); // Roller Out
-    //btn3.whileHeld(new DriveForward(m_Drivetrain));
-
-
-    //outtake 
-    btn7.whileHeld(new Outake_balls()); //Tower Down
-
-    //Operator Buttons
-    btn4.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
 
     new Trigger(
       () -> {
@@ -170,7 +161,6 @@ public class RobotContainer {
               // (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
               // .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))
               // .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
-
   }
 
   public void loadTrajectoryPaths() {

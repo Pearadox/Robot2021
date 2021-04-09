@@ -29,7 +29,7 @@ public class SetFlywheel_Hood extends CommandBase {
   public void execute() {
     HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
     RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
-    RobotContainer.m_Shooter.setShooterZone(currZone.getTargetShooterVoltage());
+    RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
   }
 
   // Called once the command ends or is interrupted.

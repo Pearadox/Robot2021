@@ -24,28 +24,7 @@ public class HelixDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double throttle = RobotContainer.driverJoystick.getY();
-    double twist = RobotContainer.driverJoystick.getZ() * -0.65;
-
-    double saturatedInput;
-    double greaterInput = Math.max(Math.abs(twist), Math.abs(throttle));
-    double lesserInput = Math.min(Math.abs(twist), Math.abs(throttle));
-
-    if (greaterInput > 0.0) {
-      saturatedInput = (lesserInput/greaterInput) + 1.0;
-    }
-    else {
-      saturatedInput = 1.0;
-    }
-
-    throttle = throttle / saturatedInput;
-    twist = twist/saturatedInput;
-    if(Math.abs(throttle) < 0.1) {throttle = 0;}
-    if(Math.abs(twist) < 0.1) {twist = 0;}
-
-    drivetrain.arcadeDrive(throttle, twist);
-
-
+    RobotContainer.m_Drivetrain.HelixDrive();
   }
 
   // Called once the command ends or is interrupted.
