@@ -35,9 +35,6 @@ public class Shooter extends SubsystemBase {
     rightCanEncoder = rightFlywheelMotor.getEncoder();
     leftCanEncoder = leftFlywheelMotor.getEncoder();
 
-    // rightFlywheelMotor.setOpenLoopRampRate(0.25);
-    // leftFlywheelMotor.setOpenLoopRampRate(0.25);
-
     m_pidController = rightFlywheelMotor.getPIDController();
     rightCanEncoder.setVelocityConversionFactor(1.57289);
     leftCanEncoder.setVelocityConversionFactor(1.57289);
@@ -88,30 +85,27 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     
     // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("S_P Gain", 0);
-    double i = SmartDashboard.getNumber("S_I Gain", 0);
-    double d = SmartDashboard.getNumber("S_D Gain", 0);
-    double iz = SmartDashboard.getNumber("S_I Zone", 0);
-    double ff = SmartDashboard.getNumber("S_Feed Forward", 0);
-    double max = SmartDashboard.getNumber("S_Max Output", 0);
-    double min = SmartDashboard.getNumber("S_Min Output", 0);
+    // double p = SmartDashboard.getNumber("S_P Gain", 0);
+    // double i = SmartDashboard.getNumber("S_I Gain", 0);
+    // double d = SmartDashboard.getNumber("S_D Gain", 0);
+    // double iz = SmartDashboard.getNumber("S_I Zone", 0);
+    // double ff = SmartDashboard.getNumber("S_Feed Forward", 0);
+    // double max = SmartDashboard.getNumber("S_Max Output", 0);
+    // double min = SmartDashboard.getNumber("S_Min Output", 0);
 
 
     // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { m_pidController.setP(p); kP = p; }
-    if((i != kI)) { m_pidController.setI(i); kI = i; }
-    if((d != kD)) { m_pidController.setD(d); kD = d; }
-    if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
-    if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      m_pidController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
-    }
-    // rightFlywheelMotor.setVoltage(4.2);
-    // m_pidController.setReference(ksetpoint, ControlType.kVelocity);
+    // if((p != kP)) { m_pidController.setP(p); kP = p; }
+    // if((i != kI)) { m_pidController.setI(i); kI = i; }
+    // if((d != kD)) { m_pidController.setD(d); kD = d; }
+    // if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
+    // if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
+    // if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
+    // if((max != kMaxOutput) || (min != kMinOutput)) { 
+    //   m_pidController.setOutputRange(min, max); 
+    //   kMinOutput = min; kMaxOutput = max; 
+    // }
 
-    SmartDashboard.putNumber("S_RightProcessVariable", rightCanEncoder.getVelocity());
     SmartDashboard.putNumber("S_LeftProcessVariable", leftCanEncoder.getVelocity());
     
   }

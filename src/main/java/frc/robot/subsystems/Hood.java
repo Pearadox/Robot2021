@@ -41,8 +41,7 @@ public class Hood extends SubsystemBase {
     if (!SmartDashboard.containsKey("Hood Angle")) SmartDashboard.putNumber("Hood Angle", 0);
     if (!SmartDashboard.containsKey("Set Hood Angle")) SmartDashboard.putNumber("Set Hood Angle", 0);
     if (!SmartDashboard.containsKey("Hood Error")) SmartDashboard.putNumber("Hood Error", 0);
-    if (!SmartDashboard.containsKey("Hood Switch")) SmartDashboard.putBoolean("Hood Switch", false);
-    if (!SmartDashboard.containsKey("Hood RPM")) SmartDashboard.putNumber("Hood RPM", 0);
+    // if (!SmartDashboard.containsKey("Hood Switch")) SmartDashboard.putBoolean("Hood Switch", false);
   }
 
   public void hoodUp() {
@@ -100,9 +99,6 @@ public class Hood extends SubsystemBase {
       SmartDashboard.putNumber("Hood Angle", getHoodAngle());
     }
     // SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
-    // SmartDashboard.putBoolean("hasHoodZeroed", gethasHoodZeroed());
-    // setHoodPoint(SmartDashboard.getNumber("Set Hood Angle", 0));
-    // SmartDashboard.putNumber("Hood RPM", hoodMotor.getMotorOutputVoltage());
   }
 
   public void setHoodAngle(double setPointAngle) {

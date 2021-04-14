@@ -23,7 +23,7 @@ public class liftTowerOne extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ballTower.getBallCounter() < 2) {
+    if(ballTower.getBallCounter() < (ballTower.getMaxBallCounter()-1)) {
       ballTower.TowerUp(0.35);
     }
     else {

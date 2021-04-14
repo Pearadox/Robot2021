@@ -17,8 +17,6 @@ import frc.lib.util.Debugger;
 import frc.robot.Robot;
 import frc.robot.Constants.TowerConstants;
 import frc.robot.commands.HopperInCmd;
-import frc.team2363.logger.HelixLogger;
-
 
 public class TransportSystem extends SubsystemBase {
 
@@ -48,6 +46,7 @@ public class TransportSystem extends SubsystemBase {
   private DigitalInput levelThree;
 
   private double ballCounter;
+  private final double maxBallCounter = 3;
   public double up_speed = 0.4;
   private double down_speed = -0.8;
   private double in_speed = 0.8;
@@ -63,9 +62,7 @@ public class TransportSystem extends SubsystemBase {
     //VictorSPX doesn't have current limiting capabilities. Might be reason to switch to Talon/SparkMax. 
     //Otherwise implement some current limiting via PDP for checking for ball jams
     TowerVictor.configVoltageCompSaturation(12.0, 0);
-    // TowerVictor.configOpenloopRamp(0.5, 0);
     HopperVictor.configVoltageCompSaturation(12.0, 0);
-    // HopperVictor.configOpenloopRamp(0.5, 0);
 
     levelOne = new DigitalInput(klowSensor);
     levelTwo = new DigitalInput(kmidSensor);
@@ -74,15 +71,8 @@ public class TransportSystem extends SubsystemBase {
     SmartDashboard.putNumber("Down Speed", down_speed);
     SmartDashboard.putNumber("Hopper in Speed", in_speed);
     SmartDashboard.putNumber("Hopper out Speed", out_speed);
-    SmartDashboard.putNumber("Tower Current", 0);
-
-    
-
-    //Helixlogger setup
-    // setupLogs();
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
-    // this.setDefaultCommand(new ManageBallTower(this));
     this.setDefaultCommand(new HopperInCmd(this));
   }
 
@@ -97,11 +87,13 @@ public class TransportSystem extends SubsystemBase {
   public void TowerStop() {
     TowerVictor.set(ControlMode.PercentOutput, 0.0);  
   }
+
   public void HopperInSet(double speed) {
     HopperVictor.set(ControlMode.PercentOutput,speed);
   }
+
   public void HopperIn() {
-    if(ballCounter < 3) {
+    if(ballCounter < maxBallCounter) {
       HopperVictor.set(ControlMode.PercentOutput, in_speed); 
     }
     else
@@ -109,15 +101,13 @@ public class TransportSystem extends SubsystemBase {
       HopperVictor.set(ControlMode.PercentOutput, 0.0); 
     }   
   }
+
   public void HopperInOnly() {    
     TowerVictor.set(ControlMode.PercentOutput, 0.0); 
-    if(ballCounter < 3) {
+    if(ballCounter < maxBallCounter)
       HopperVictor.set(ControlMode.PercentOutput, in_speed); 
-    }
     else
-    {
-      HopperVictor.set(ControlMode.PercentOutput, 0.0); 
-    }   
+      HopperVictor.set(ControlMode.PercentOutput, 0.0);
   }
 
   public void HopperOut() {
@@ -164,28 +154,27 @@ public class TransportSystem extends SubsystemBase {
   public boolean getLow() {
     return !(levelOne.get());
   }
-
   public boolean getMedium() {
     return !(levelTwo.get());
   }
-
   public boolean getHigh() {
     return !(levelThree.get());
   }
 
   public void incrementBallCounter(){
-    if(ballCounter <= 3)
+    if(ballCounter <= maxBallCounter)
       ballCounter++;
   }
-
   public double getBallCounter(){
     return ballCounter;
   }
-
   public void resetBallCounter(){
-
     ballCounter = 0;
   }
+  public double getMaxBallCounter() {
+    return maxBallCounter;
+  }
+
   public TowerState determineState() {
     boolean low, mid, high;
 
@@ -312,20 +301,6 @@ public class TransportSystem extends SubsystemBase {
     // This method will be called once per scheduler run
     // determineState();
   }
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
-
-  
-  //Set up helixlogger sources here
-  private void setupLogs() {
-    // HelixLogger.getInstance().addSource("TOWER Vel", TowerVictor::getSelectedSensorVelocity);
-    // HelixLogger.getInstance().addSource("TOWER LOW", levelOne::get);
-    // HelixLogger.getInstance().addSource("TOWER MID", levelTwo::get);
-    // HelixLogger.getInstance().addSource("TOWER HIGH",  levelThree::get);
-    // HelixLogger.getInstance().addSource("TOWER STATE",  currentState::toString);
-  }
 
   public void dashboard() {
     final double up = SmartDashboard.getNumber("Up Speed", up_speed);
@@ -333,16 +308,12 @@ public class TransportSystem extends SubsystemBase {
     final double in = SmartDashboard.getNumber("Hopper in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Hopper out Speed", out_speed);
     // SmartDashboard.putString("Tower State", getState().toString());
-    // SmartDashboard.putNumber("Tower Speed", TowerVictor.getMotorOutputPercent());
-    // SmartDashboard.putNumber("Hopper Speed", HopperVictor.getMotorOutputPercent());
     // SmartDashboard.putNumber("Ball Counter", ballCounter);
-    // SmartDashboard.putNumber("Tower Current", TowerVictor.getMotorOutputVoltage());
     
     if (up != up_speed) up_speed = up;
     if (down != down_speed) down_speed = down;
     if (in != in_speed) in_speed = in;
     if (out != out_speed) out_speed = out;
-    
   }
   
   public static void printDebug(String msg){

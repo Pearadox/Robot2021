@@ -15,19 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.lib.drivers.EForwardableConnections;
-import frc.lib.util.Debugger;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.RamseteConstants;
 import frc.robot.Robot.RobotState;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.button.*;
 import frc.lib.util.TrajectoryCache;
 
 /**
@@ -52,9 +46,6 @@ public class RobotContainer {
   public static DriverStation DS;
   public SendableChooser<String> pathSelector;
 
-  // public static PearadoPreferences prefs = PearadoxPreferences.getInstance();
-
-
   // Add Debug flags
   // You can have a flag for each subsystem, etc
   public static final String _controls = "CONTROL";
@@ -74,16 +65,11 @@ public class RobotContainer {
     DS = DriverStation.getInstance();
     pathSelector = new SendableChooser<>();
     portForwarding();
-    initDebugger(); // Init Debugger
-    //HelixEvents.getInstance().startLogging();
-    printInfo("Start robotInit()");
     Dashboard.intializeDashboard();
 
     // Configure the button bindings
     configureButtonBindings();
     loadTrajectoryPaths();
-
-    printInfo("End robotInit()");
   }
 
   /**
@@ -193,7 +179,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return (new ThreeBallAuton());
     // An ExampleCommand will run in autonomous
     if(pathSelector.getSelected().equals("Bounce0"))
        return new BouncePath(m_Drivetrain);
@@ -227,33 +212,5 @@ public class RobotContainer {
 
   public static Joystick getDriverJoystick() {
     return driverJoystick;
-  }
-  private static void initDebugger(){
-    if(DS.isFMSAttached()) {
-      Debugger.setLevel(Debugger.warning4);
-    } else {
-      Debugger.setLevel(Debugger.info3);
-    }
-    // Debugger.flagOn(_general); //Set all the flags on, comment out ones you want off
-    // Debugger.flagOn(_auton);
-    // Debugger.flagOn(_drive);
-    // Debugger.flagOn(_transport);
-    // Debugger.flagOn(_intake);
-    // Debugger.flagOn(_shooter);
-    // Debugger.flagOn(_tower);
-    // Debugger.flagOn(_climber);
-    // Debugger.flagOn(_visionLL);
-  }
-
-  public static void printDebug(String msg){
-    Debugger.println(msg, _general, Debugger.debug2);
-  }
-  
-  public static void printInfo(String msg){
-    Debugger.println(msg, _general, Debugger.info3);
-  }
-  
-  public static void printWarning(String msg) {
-    Debugger.println(msg, _general, Debugger.warning4);
   }
 }
