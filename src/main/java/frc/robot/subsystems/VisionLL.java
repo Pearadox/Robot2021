@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.LimeLight;
 import frc.lib.drivers.LimeLightControlModes.LedMode;
-import frc.lib.util.Debugger;
 import frc.robot.Robot;
 import frc.robot.commands.DefaultLL;
 
@@ -147,17 +146,6 @@ public double getLLRobotToTargetDistance() {
     setLimeLightPipeline(i);
   }
 
-  public static void printDebug(String msg) {
-    Debugger.println(msg, Robot._visionLL, Debugger.debug2);
-  }
-
-  public static void printInfo(String msg) {
-    Debugger.println(msg, Robot._visionLL, Debugger.info3);
-  }
-
-  public static void printWarning(String msg) {
-    Debugger.println(msg, Robot._visionLL, Debugger.warning4);
-  }
 
   public void dashboard() {
     zoneGreen = SmartDashboard.getNumber("Green Zone", zoneGreen);

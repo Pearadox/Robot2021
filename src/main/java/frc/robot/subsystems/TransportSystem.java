@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.util.Debugger;
 import frc.robot.Robot;
 import frc.robot.Constants.TowerConstants;
 import frc.robot.commands.HopperInCmd;
@@ -315,16 +314,5 @@ public class TransportSystem extends SubsystemBase {
     if (in != in_speed) in_speed = in;
     if (out != out_speed) out_speed = out;
   }
-  
-  public static void printDebug(String msg){
-    Debugger.println(msg, Robot._transport, Debugger.debug2);
-  }
-  
-  public static void printInfo(String msg){
-    Debugger.println(msg, Robot._transport, Debugger.info3);
-  }
-  
-  public static void printWarning(String msg) {
-    Debugger.println(msg, Robot._transport, Debugger.warning4);
-  }
 }
+  

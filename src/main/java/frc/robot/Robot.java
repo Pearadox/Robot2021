@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.lib.util.Debugger;
 // import frc.team2363.logger.HelixLogger;
 
 /**
@@ -94,11 +93,9 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    printInfo("Start disabledInit()");
     CommandScheduler.getInstance().cancelAll();
     RobotContainer.visionLL.setLimeLightLED(false);
     setState(RobotState.DISABLED);
-    printInfo("End disabledInit()");
   }
 
   @Override
@@ -108,14 +105,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    initDebugger();//Used to set debug level lower when FMS attached.
-    printInfo("Start autonomousInit()");
     CommandScheduler.getInstance().cancelAll();
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    printInfo("End autonomousInit()");
   }
 
   /** This function is called periodically during autonomous. */
@@ -130,13 +124,11 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     // RobotContainer.m_Drivetrain.zeroHeading();
-    printInfo("Start teleopInit()");
     CommandScheduler.getInstance().cancelAll();
     setState(RobotState.TELEOP);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    printInfo("End teleopInit()");
   }
 
   /** This function is called periodically during operator control. */
@@ -156,32 +148,5 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 
-  private static void initDebugger(){
-    if(RobotContainer.DS.isFMSAttached()) {
-      Debugger.setLevel(Debugger.warning4);
-    } else {
-      Debugger.setLevel(Debugger.info3);
-    }
-    Debugger.flagOn(_general); //Set all the flags on, comment out ones you want off
-    Debugger.flagOn(_auton);
-    Debugger.flagOn(_drive);
-    Debugger.flagOn(_transport);
-    Debugger.flagOn(_intake);
-    Debugger.flagOn(_shooter);
-    Debugger.flagOn(_tower);
-    Debugger.flagOn(_climber);
-    Debugger.flagOn(_visionLL);
-  }
 
-  public static void printDebug(String msg) {
-    Debugger.println(msg, _general, Debugger.debug2);
-  }
-
-  public static void printInfo(String msg) {
-    Debugger.println(msg, _general, Debugger.info3);
-  }
-
-  public static void printWarning(String msg) {
-    Debugger.println(msg, _general, Debugger.warning4);
-  }
 }
