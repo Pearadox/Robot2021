@@ -31,6 +31,7 @@ public final class Constants {
         public static final int FRONT_LEFT_MOTOR = 4;
         public static final int BACK_LEFT_MOTOR = 5;
 
+        // TODO: change to the trackwidth suggested in frc characterization
         public static final double DRIVE_BASE_WIDTH = Units.inchesToMeters(29.5); // Meters
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(6.0d); // Meters
 
