@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -56,6 +58,7 @@ public class Drivetrain extends SubsystemBase {
 
   public static AHRS navx;
   private final DifferentialDriveOdometry odometry;
+  private final Field2d m_field = new Field2d();
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -82,6 +85,7 @@ public class Drivetrain extends SubsystemBase {
     encoderReset();
 
     odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    SmartDashboard.putData("Field", m_field);
   
     this.setDefaultCommand(new HelixDrive(this));
   }
@@ -91,10 +95,12 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     if(Robot.getState() == RobotState.AUTONOMOUS)
       odometry.update(Rotation2d.fromDegrees(getGyroAngle()), getLeftDrivePosition(), getRightEncoderPosition());
+    
     dashboard();
   }
 
   public void dashboard() {
+    m_field.setRobotPose(getPose());
     // SmartDashboard.putNumber("RightCurrent1", frontRightMotor.getOutputCurrent());
     // SmartDashboard.putNumber("LeftCurrent1", frontLeftMotor.getOutputCurrent());
     // SmartDashboard.putNumber("RightCurrent2", backRightMotor.getOutputCurrent());
