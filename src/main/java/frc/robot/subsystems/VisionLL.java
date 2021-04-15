@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.LimeLight;
 import frc.lib.drivers.LimeLightControlModes.LedMode;
-import frc.robot.Robot;
 import frc.robot.commands.DefaultLL;
 
 public class VisionLL extends SubsystemBase {
