@@ -93,7 +93,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if(Robot.getState() == RobotState.AUTONOMOUS)
+    // if(Robot.getState() == RobotState.AUTONOMOUS)
       odometry.update(Rotation2d.fromDegrees(getGyroAngle()), getLeftDrivePosition(), getRightEncoderPosition());
     
     dashboard();
@@ -128,6 +128,7 @@ public class Drivetrain extends SubsystemBase {
       frontLeftMotor.set(fwd + rot);
       frontRightMotor.set(fwd - rot);
     }
+    m_drive.feed();
   }
 
   public void HelixDrive() {

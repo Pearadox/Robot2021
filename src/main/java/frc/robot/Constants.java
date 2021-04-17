@@ -32,7 +32,7 @@ public final class Constants {
         public static final int BACK_LEFT_MOTOR = 5;
 
         // TODO: change to the trackwidth suggested in frc characterization
-        public static final double DRIVE_BASE_WIDTH = Units.inchesToMeters(29.5); // Meters
+        public static final double DRIVE_BASE_WIDTH = 1.4; //29.5 Meters
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(6.0d); // Meters
 
         public static final double DISTANCE_PER_REVOLUTION = WHEEL_DIAMETER * Math.PI;
@@ -83,7 +83,7 @@ public final class Constants {
         public static final double ksVolts = 0.23;
         public static final double kvVoltSecondsPerMeter = 3.61;
         public static final double kaVoltSecondsSquaredPerMeter = 0.529;
-        public static final double kPDriveVel = 0; //2.04;
+        public static final double kPDriveVel = 0.0; //2.04;
     }
 
     public static final class MPConstants {

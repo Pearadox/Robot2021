@@ -60,8 +60,8 @@ public class VisionDriveToTarget extends CommandBase {
         lastError = tx;
         if (Math.abs(tx) < 0.5) 
           output = 0; 
-        twist = Math.copySign(Math.min(Math.abs(Math.pow(twist, 2)), 0.3), twist);
-        RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output + twist);
+        twist = Math.copySign(Math.min(Math.abs(Math.pow(twist, 2)), 0.2), twist);
+        RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output - twist);
         SmartDashboard.putNumber("Vision Output", output);
       } else {
         RobotContainer.m_Drivetrain.HelixDrive();

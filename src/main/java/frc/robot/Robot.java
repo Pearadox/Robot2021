@@ -106,6 +106,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CommandScheduler.getInstance().cancelAll();
+    m_robotContainer.m_Drivetrain.resetOdometry(m_robotContainer.m_Drivetrain.getPose());
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

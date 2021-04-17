@@ -152,13 +152,16 @@ public class RobotContainer {
   public void loadTrajectoryPaths() {
     TrajectoryCache.clear();
     sendCacheTrajectory("Slalom", "output/SlalomPath");
-    sendCacheTrajectory("Straight", "output/Straight2m");
+    sendCacheTrajectory("Straight2m", "output/Straight2m");
     sendCacheTrajectory("Turn", "output/Turn");
     sendCacheTrajectory("Bounce0", "output/Bounce0");
     sendCacheTrajectory("Bounce1", "output/Bounce1");
     sendCacheTrajectory("Bounce2", "output/Bounce2");
     sendCacheTrajectory("Bounce3", "output/Bounce3");
     sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
+    sendCacheTrajectory("Straight", "output/Straight");
+    sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
+    sendCacheTrajectory("SixBallForwards", "output/SixBallForwards");
 
     SmartDashboard.putData("Path Selection", pathSelector);
   }
@@ -181,7 +184,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     if(pathSelector.getSelected().equals("Bounce0"))
-       return new BouncePath(m_Drivetrain);
+      return new BouncePath(m_Drivetrain);
+    else if (pathSelector.getSelected().equals("SixBallBackwards"))
+      return new SixBallBack(m_Drivetrain);
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.
