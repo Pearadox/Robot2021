@@ -42,9 +42,10 @@ public class SetFlywheel_Hood extends CommandBase {
   @Override
   public boolean isFinished() {
     if (Math.abs(SmartDashboard.getNumber("Hood Error", 0))  < RobotContainer.m_Hood.kMinError) {
-      return true;
-    } else {
-      return false;
+      if(Math.abs(RobotContainer.m_Shooter.getFlywheelRPM()-RobotContainer.m_Shooter.getShooterReference())<200 ){
+        return true;
+      }        
     }
+    return false;
   }
 }

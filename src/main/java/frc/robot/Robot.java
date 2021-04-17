@@ -107,6 +107,8 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CommandScheduler.getInstance().cancelAll();
     m_robotContainer.m_Drivetrain.resetOdometry(m_robotContainer.m_Drivetrain.getPose());
+    
+    RobotContainer.visionLL.setLimeLightLED(true);
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

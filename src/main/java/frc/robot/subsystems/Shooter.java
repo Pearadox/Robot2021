@@ -23,6 +23,7 @@ public class Shooter extends SubsystemBase {
   private CANEncoder rightCanEncoder;
   private CANEncoder leftCanEncoder;
   private double kP, kI, kD, kIz, kFF, ksetpoint, kMaxOutput, kMinOutput;
+  private double referenceVoltage;
 
   public Shooter() {
     rightFlywheelMotor = new PearadoxSparkMax(FlywheelConstants.RIGHT_FLY_MOTOR, MotorType.kBrushless, IdleMode.kCoast, 80, false);
@@ -78,7 +79,12 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterVoltage(double voltage) {
     m_pidController.setReference(voltage, ControlType.kVelocity);
+    referenceVoltage = voltage;
   }
+  public double  getShooterReference(){
+    return referenceVoltage;
+  }
+
 
   @Override
   public void periodic() {

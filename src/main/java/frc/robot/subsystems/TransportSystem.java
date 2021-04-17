@@ -71,7 +71,7 @@ public class TransportSystem extends SubsystemBase {
     SmartDashboard.putNumber("Hopper out Speed", out_speed);
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
-    this.setDefaultCommand(new HopperInCmd(this));
+    // this.setDefaultCommand(new HopperInCmd(this));
   }
 
   public void TowerUp(double speed) {

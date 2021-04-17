@@ -3,11 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.PearadoxSparkMax;
 import frc.robot.Constants;
@@ -76,6 +78,9 @@ public class Intake extends SubsystemBase {
     ArmPidController.setIZone(kIz);
     ArmPidController.setFF(kFF);
     ArmPidController.setOutputRange(kMinOutput, kMaxOutput);
+
+    
+    this.setDefaultCommand(new RunCommand( () -> { this.setRollerSpeed(1); }, this));
 
     /**
      * Smart Motion coefficients are set on a CANPIDController object
