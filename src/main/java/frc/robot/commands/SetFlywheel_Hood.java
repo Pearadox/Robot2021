@@ -22,6 +22,9 @@ public class SetFlywheel_Hood extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
+    RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
+    RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,10 +44,10 @@ public class SetFlywheel_Hood extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(SmartDashboard.getNumber("Hood Error", 0))  < RobotContainer.m_Hood.kMinError) {
-      if(Math.abs(RobotContainer.m_Shooter.getFlywheelRPM()-RobotContainer.m_Shooter.getShooterReference())<200 ){
+    if (Math.abs(RobotContainer.m_Hood.getHoodError()) < RobotContainer.m_Hood.kMinError) {
+      if(Math.abs(RobotContainer.m_Shooter.getFlywheelRPM()-RobotContainer.m_Shooter.getShooterReference())<200 ) {
         return true;
-      }        
+      }
     }
     return false;
   }

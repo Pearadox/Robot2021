@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.sun.jdi.connect.Transport;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -104,6 +105,32 @@ public class RobotContainer {
   JoystickButton opbtn11 = new JoystickButton(operatorJoystick, 11);
   JoystickButton opbtn12 = new JoystickButton(operatorJoystick, 12);
 
+//  Transport command - hopper in
+//  Transport command - hopper out
+//  Transport command  - TowerUp'
+//  Transport command  - TowerDown
+//  Transport command  - LoadTransport
+//  setZone wall (green)
+//  setZone initiation (yellow)
+//  setZone trench (blue)
+//  setZone maybe controll panel (red)
+//  Intake ArmUp
+//  Intake ArmDown
+//  Intake RollerIn
+//  Intake RollerOut
+//  Intake ArmUp + RollerIn
+//  Intake ArmDown + RollerIn
+//  Hood HoodAngleZero
+//  Hood setAngle
+//  Hood HoodUp
+//  Hood HoodDown
+//  DriveTrain 90 degree turn left
+//  DriveTrain 90 degree turn right
+//  Climber Release
+//  Climber Down '
+//  Climber Up
+//  Climber TraverseUp
+//  Climber TraverseDown
   private void configureButtonBindings() {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
@@ -186,10 +213,12 @@ public class RobotContainer {
     if(pathSelector.getSelected().equals("Bounce0"))
       return new BouncePath(m_Drivetrain);
     else if (pathSelector.getSelected().equals("SixBallBackwards"))
-      return (new ConfirmShot(m_Shooter, m_Hood, visionLL, m_Drivetrain)).andThen(
-        (new HopperInTowerUpCmd()).withTimeout(5.0)).andThen(
-        (new RunCommand( () -> { m_Intake.setRollerSpeed(1); }, m_Intake)))
-      .alongWith(new SixBallBack(m_Drivetrain));
+      return (new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood)
+              .andThen((new HopperInTowerUpCmd()).withTimeout(5.0))
+              .andThen((new RunCommand( () -> { m_Intake.setRollerSpeed(1); }, m_Intake)))
+              .alongWith(new SixBallBack(m_Drivetrain))
+              .andThen(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL))
+              .andThen(new HopperInTowerUpCmd()));
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.

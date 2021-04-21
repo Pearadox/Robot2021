@@ -27,6 +27,7 @@ public class Hood extends SubsystemBase {
   private double kP = 1/ THRESHOLD;
   public double kMinError = 0.5;
   private boolean hasHoodZeroed = false;
+  public double desiredSetPointAngle = 0;
 
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);
@@ -100,8 +101,12 @@ public class Hood extends SubsystemBase {
     }
     // SmartDashboard.putBoolean("Hood Switch", getHoodSwitch());
   }
+  public double getHoodError(){
+    return desiredSetPointAngle - getHoodAngle();
+  }
 
   public void setHoodAngle(double setPointAngle) {
+    desiredSetPointAngle = setPointAngle;
     double currAngle = SmartDashboard.getNumber("Hood Angle", 0);
     double error = setPointAngle - currAngle;
     SmartDashboard.putNumber("Hood Error", error);
