@@ -46,7 +46,7 @@ public class VisionDriveToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      OFFSET = SmartDashboard.getString("Entered Zone", "Unknown").equals("Red Zone") ? 0.17 : 0.215;
+      OFFSET = SmartDashboard.getString("Entered Zone", "Unknown").equals("Red Zone") ? 0.0 : 0.215;
       double throttle = RobotContainer.getDriverJoystick().getY();
       double twist = RobotContainer.getDriverJoystick().getZ();
       if (RobotContainer.visionLL.getLLIsTargetFound()) {

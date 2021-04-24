@@ -213,12 +213,12 @@ public class RobotContainer {
     if(pathSelector.getSelected().equals("Bounce0"))
       return new BouncePath(m_Drivetrain);
     else if (pathSelector.getSelected().equals("SixBallBackwards"))
-      return (new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood)
+      return ((new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood)
               .andThen((new HopperInTowerUpCmd()).withTimeout(5.0))
-              .andThen((new RunCommand( () -> { m_Intake.setRollerSpeed(1); }, m_Intake)))
-              .alongWith(new SixBallBack(m_Drivetrain))
-              .andThen(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL))
-              .andThen(new HopperInTowerUpCmd()));
+              .andThen((new InstantCommand( () -> { m_Intake.setRollerSpeed(.7); }, m_Intake))))
+              .andThen(new SixBallBack(m_Drivetrain)));
+              // .andThen(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL))
+              // .andThen(new HopperInTowerUpCmd()));
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.

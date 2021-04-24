@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
-    RobotContainer.visionLL.setLimeLightLED(false);
+    RobotContainer.visionLL.setLimeLightLED(true);
     setState(RobotState.DISABLED);
   }
 
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     m_robotContainer.m_Drivetrain.resetOdometry(m_robotContainer.m_Drivetrain.getPose());
     
-    RobotContainer.visionLL.setLimeLightLED(true);
+    
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

@@ -17,11 +17,11 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   private static final int kArmIntakeMotor = Constants.IntakeConstants.ARM_INTAKE_MOTOR;
   private static final int kTopRollerMotor = Constants.IntakeConstants.TOP_ROLLER_MOTOR;
-  // private static final int kBotRollerMotor = Constants.IntakeConstants.BOT_ROLLER_MOTOR;
+  private static final int kBotRollerMotor = Constants.IntakeConstants.BOT_ROLLER_MOTOR;
 
   private CANSparkMax ArmIntakeMotor;
   private PearadoxSparkMax TopRollerMotor;
-  // private PearadoxSparkMax BotRollerMotor;
+  private PearadoxSparkMax BotRollerMotor;
 
   private CANEncoder TopRollerEncoder;
 
@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     ArmIntakeMotor = new CANSparkMax(kArmIntakeMotor, MotorType.kBrushless);
     TopRollerMotor = new PearadoxSparkMax(kTopRollerMotor);
-    // BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
+    BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
     // BotRollerMotor.setInverted(true);
 
     TopRollerEncoder = TopRollerMotor.getEncoder();
@@ -80,7 +80,7 @@ public class Intake extends SubsystemBase {
     ArmPidController.setOutputRange(kMinOutput, kMaxOutput);
 
     
-    this.setDefaultCommand(new RunCommand( () -> { this.setRollerSpeed(1); }, this));
+    //3this.setDefaultCommand(new RunCommand( () -> { this.setRollerSpeed(.7); }, this));
 
     /**
      * Smart Motion coefficients are set on a CANPIDController object
@@ -142,7 +142,7 @@ public class Intake extends SubsystemBase {
 
   public void setRollerSpeed(double speed) {
     TopRollerMotor.set(speed);
-    // BotRollerMotor.set(speed);
+    BotRollerMotor.set(-speed);
   }
 
   public void RollerIn() {
