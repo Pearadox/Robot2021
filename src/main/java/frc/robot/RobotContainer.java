@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.sun.jdi.connect.Transport;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -134,9 +133,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
-   
-    btn1.whileHeld(new HopperInTowerUpCmd())
+    btn1.whileHeld( new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL).withTimeout(1)
+        .andThen(new HopperInTowerUpCmd()))
         .whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
+    
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
     btn3.whenPressed(new SetHood(m_Hood));
     btn4.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
@@ -155,6 +155,13 @@ public class RobotContainer {
 
     btn10.whenPressed(new IntakeDown(m_Intake));
 
+    //Operator Buttons
+    opbtn5.whileHeld(new TraverseLeft(m_Climber));
+    opbtn6.whileHeld(new TraverseRight(m_Climber));
+    opbtn7.whileHeld(new ClimbUp(m_Climber));
+    opbtn8.whenPressed(new HangClimb(m_Climber));
+    opbtn9.whenPressed(new ClimbRelease(m_Climber));
+    
     new Trigger(
       () -> {
         return !(m_Hood.gethasHoodZeroed());

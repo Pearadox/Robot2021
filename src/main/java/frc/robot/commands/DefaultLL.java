@@ -33,11 +33,11 @@ public class DefaultLL extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Robot.s_robot_state == RobotState.TELEOP) {
-      RobotContainer.visionLL.limeLightLEDOn();
-    } else {
-      RobotContainer.visionLL.limeLightLEDOff();
-    }
+    // if(Robot.s_robot_state == RobotState.TELEOP) {
+    //   RobotContainer.visionLL.limeLightLEDOn();
+    // } else {
+    //   RobotContainer.visionLL.limeLightLEDOff();
+    // }
   }
 
   // Called once the command ends or is interrupted.
