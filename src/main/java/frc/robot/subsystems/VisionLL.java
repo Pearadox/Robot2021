@@ -176,4 +176,27 @@ public double getLLRobotToTargetDistance() {
       return targetShooterVoltage;
     }
   }
+
+  public enum OperatorSettings {
+    INITIATION,
+    TRENCH,
+    UNKNOWN
+  }
+
+  public OperatorSettings operatorSettings = OperatorSettings.UNKNOWN;
+
+  public void setOperatorSettings(OperatorSettings settings) {
+    operatorSettings = settings;
+  }
+
+  public HoodShooterSettings getOperatorShooterSettings() {
+    if(operatorSettings == OperatorSettings.INITIATION)
+      return new HoodShooterSettings(0,0);
+    else if (operatorSettings == OperatorSettings.TRENCH)
+      return new HoodShooterSettings(0, 0);
+    else {
+      setOperatorSettings(OperatorSettings.UNKNOWN);
+      return new HoodShooterSettings(0, 0);
+    }
+  }
 }

@@ -95,6 +95,7 @@ public class Drivetrain extends SubsystemBase {
       odometry.update(Rotation2d.fromDegrees(getGyroAngle()), getLeftDrivePosition(), getRightEncoderPosition());
     
     dashboard();
+    m_drive.feed();
   }
 
   public void dashboard() {
@@ -126,7 +127,6 @@ public class Drivetrain extends SubsystemBase {
       frontLeftMotor.set(fwd + rot);
       frontRightMotor.set(fwd - rot);
     }
-    m_drive.feed();
   }
 
   public void HelixDrive() {

@@ -19,7 +19,9 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.RamseteConstants;
 import frc.robot.Robot.RobotState;
 import frc.robot.commands.*;
+import frc.robot.commands.autocommands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.lib.util.TrajectoryCache;
@@ -139,7 +141,7 @@ public class RobotContainer {
     
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
     btn3.whenPressed(new SetHood(m_Hood));
-    btn4.whenPressed(new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood));
+    btn4.whenPressed(new SetVisionFlywheel_Hood(m_Shooter, visionLL, m_Hood));
     btn5.whenPressed(new SetZeroHood(m_Hood));
     btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
         .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
@@ -151,7 +153,8 @@ public class RobotContainer {
       () -> {
         m_Intake.setArmIntakeSpeed(1);
         m_Intake.setRollerSpeed(0);
-    }, m_Intake));
+    }, m_Intake))
+        .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
 
     btn10.whenPressed(new IntakeDown(m_Intake));
 
@@ -161,10 +164,15 @@ public class RobotContainer {
     opbtn7.whileHeld(new ClimbUp(m_Climber));
     opbtn8.whenPressed(new HangClimb(m_Climber));
     opbtn9.whenPressed(new ClimbRelease(m_Climber));
+    opbtn10.whenPressed(new InstantCommand(
+      () -> {
+        visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+      }, visionLL)
+               .andThen(new SetFlywheel_Hood(m_Shooter, m_Hood)));
     
     new Trigger(
       () -> {
-        return !(m_Hood.gethasHoodZeroed());
+        return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP;
       })
       .whileActiveContinuous(
         (new SetZeroHood(m_Hood)), false);
@@ -194,8 +202,12 @@ public class RobotContainer {
     sendCacheTrajectory("Bounce3", "output/Bounce3");
     sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
     sendCacheTrajectory("Straight", "output/Straight");
+
+    sendCacheTrajectory("SixBallBackwards", "output/SixBallFrontBackwards");
     sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
     sendCacheTrajectory("SixBallForwards", "output/SixBallForwards");
+    sendCacheTrajectory("FiveBallBack", "output/FiveBallBackwards");
+    sendCacheTrajectory("FiveBallForward", "output/FiveBallForwards");
 
     SmartDashboard.putData("Path Selection", pathSelector);
   }
@@ -219,13 +231,12 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     if(pathSelector.getSelected().equals("Bounce0"))
       return new BouncePath(m_Drivetrain);
+    else if (pathSelector.getSelected().equals("FiveBallBackwards"))
+      return new AutonDriveFiveBallBack(m_Drivetrain);
     else if (pathSelector.getSelected().equals("SixBallBackwards"))
-      return ((new SetFlywheel_Hood(m_Shooter, visionLL, m_Hood)
-              .andThen((new HopperInTowerUpCmd()).withTimeout(5.0))
-              .andThen((new InstantCommand( () -> { m_Intake.setRollerSpeed(.7); }, m_Intake))))
-              .andThen(new SixBallBack(m_Drivetrain)));
-              // .andThen(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL))
-              // .andThen(new HopperInTowerUpCmd()));
+      return new SixBallBack();
+    else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
+      return new AutonDriveSixBallFront(m_Drivetrain);
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.

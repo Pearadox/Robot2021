@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
-    RobotContainer.visionLL.setLimeLightLED(true);
+    RobotContainer.visionLL.setLimeLightLED(false);
     setState(RobotState.DISABLED);
   }
 
@@ -106,8 +106,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CommandScheduler.getInstance().cancelAll();
-    m_robotContainer.m_Drivetrain.resetOdometry(m_robotContainer.m_Drivetrain.getPose());
-    
+    RobotContainer.m_Drivetrain.resetOdometry(RobotContainer.m_Drivetrain.getPose());
+    RobotContainer.visionLL.setLimeLightLED(true);
     
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
@@ -129,6 +129,8 @@ public class Robot extends TimedRobot {
     // RobotContainer.m_Drivetrain.zeroHeading();
     CommandScheduler.getInstance().cancelAll();
     setState(RobotState.TELEOP);
+    if (!RobotContainer.visionLL.getLEDState())
+      RobotContainer.visionLL.setLimeLightLED(true);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -150,6 +152,4 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
-
-
 }

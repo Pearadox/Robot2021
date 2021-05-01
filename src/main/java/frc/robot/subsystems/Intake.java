@@ -138,6 +138,10 @@ public class Intake extends SubsystemBase {
   public void setArmIntakeSpeed(double speed) {
     ArmIntakeMotor.set(speed);
   }
+  
+  public void stopArmIntake() {
+    setArmIntakeSpeed(0);
+  }
 
   public void setRollerSpeed(double speed) {
     TopRollerMotor.set(speed);

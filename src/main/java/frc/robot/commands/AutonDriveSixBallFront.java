@@ -19,15 +19,15 @@ import frc.lib.util.TrajectoryCache;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SixBallBack extends SequentialCommandGroup {
+public class AutonDriveSixBallFront extends SequentialCommandGroup {
   /** Creates a new BounceSequence. */
-  public SixBallBack(Drivetrain drivetrain) {
+  public AutonDriveSixBallFront(Drivetrain drivetrain) {
     RamseteController ramseteController = new RamseteController(RamseteConstants.B, RamseteConstants.ZETA);
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(RamseteConstants.ksVolts, RamseteConstants.kvVoltSecondsPerMeter, RamseteConstants.kaVoltSecondsSquaredPerMeter);
     PIDController pidLeft = new PIDController(RamseteConstants.kPDriveVel, 0, 0);
     PIDController pidRight = new PIDController(RamseteConstants.kPDriveVel, 0, 0);
 
-    Trajectory trajectory0 = TrajectoryCache.get("SixBallBackwards");
+    Trajectory trajectory0 = TrajectoryCache.get("SixBallFrontBackwards");
     RamseteCommand ramsete0 = new RamseteCommand(trajectory0, drivetrain::getPose, ramseteController, feedforward, DrivetrainConstants.KINEMATICS, drivetrain::getWheelSpeeds, pidLeft, pidRight, drivetrain::tankDriveVolts, drivetrain);
     Trajectory trajectory1 = TrajectoryCache.get("SixBallForwards");
     RamseteCommand ramsete1 = new RamseteCommand(trajectory1, drivetrain::getPose, ramseteController, feedforward, DrivetrainConstants.KINEMATICS, drivetrain::getWheelSpeeds, pidLeft, pidRight, drivetrain::tankDriveVolts, drivetrain);

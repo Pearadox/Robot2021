@@ -11,10 +11,6 @@ import frc.robot.subsystems.VisionLL.HoodShooterSettings;
 
 
 public class ConfirmShotVision extends CommandBase {
-    private final Drivetrain drivetrain;
-    private final Hood hood;
-    private final Shooter shooter;
-    private final VisionLL visionLL;
     private double kp = RobotContainer.visionLL.turnKp;
     private double kd = RobotContainer.visionLL.turnKd;
     private double ki = RobotContainer.visionLL.turnKi;
@@ -24,12 +20,8 @@ public class ConfirmShotVision extends CommandBase {
     private double lastError;
 
     public ConfirmShotVision(Drivetrain drivetrain, Hood hood, Shooter shooter, VisionLL visionLL) {
-        this.drivetrain = drivetrain;
-        this.hood = hood;
-        this.shooter = shooter;
-        this.visionLL = visionLL;
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.drivetrain, this.hood, this.shooter, this.visionLL);
+        addRequirements(drivetrain, hood, shooter, visionLL);
         if (!SmartDashboard.containsKey("Vision Output")) SmartDashboard.putNumber("Vision Output", 0);
     }
 
@@ -73,6 +65,7 @@ public class ConfirmShotVision extends CommandBase {
             SmartDashboard.putNumber("Vision Output", output);
         }
     }
+
     @Override
     public void end(boolean interrupted) {
         RobotContainer.m_Hood.stopHood();
@@ -82,13 +75,10 @@ public class ConfirmShotVision extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (Math.abs(RobotContainer.m_Hood.getHoodError()) < RobotContainer.m_Hood.kMinError) {
-            if(Math.abs(RobotContainer.m_Shooter.getFlywheelRPM()-RobotContainer.m_Shooter.getShooterReference())<200 ) {
-                if(reachedTarget) {
-                    return true;
-                }
-            }
-        }
+        if (Math.abs(RobotContainer.m_Hood.getHoodError()) < RobotContainer.m_Hood.kMinError
+        &&  Math.abs(RobotContainer.m_Shooter.getFlywheelRPM()-RobotContainer.m_Shooter.getShooterReference())<200
+        &&  reachedTarget)
+            return true;
         return false;
     }
 
