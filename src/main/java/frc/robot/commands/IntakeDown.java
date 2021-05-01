@@ -21,7 +21,7 @@ public class IntakeDown extends CommandBase {
 // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.m_Intake.setArmIntakeSpeed(-0.2);
+    RobotContainer.m_Intake.setArmIntakeSpeed(-0.6);
     RobotContainer.m_Intake.setRollerSpeed(RobotContainer.m_Intake.in_speed);
       currentDownSpike = false;
     

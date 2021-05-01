@@ -54,7 +54,7 @@ public class Intake extends SubsystemBase {
     // initialze PID controller and encoder objects
     ArmPidController = ArmIntakeMotor.getPIDController();
     ArmIntakeEncoder = ArmIntakeMotor.getEncoder();
-    ArmIntakeMotor.setSmartCurrentLimit(20, 30);
+    ArmIntakeMotor.setSmartCurrentLimit(15, 30);
     ArmIntakeMotor.setInverted(true);
 
     // PID coefficients
@@ -206,12 +206,12 @@ public class Intake extends SubsystemBase {
     if((maxA != maxAcc)) { ArmPidController.setSmartMotionMaxAccel(maxA,0); maxAcc = maxA; }
     if((allE != allowedErr)) { ArmPidController.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
     
-    // SmartDashboard.putNumber("Arm Output", ArmIntakeMotor.getAppliedOutput());
-    // SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
-    // SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Arm Output", ArmIntakeMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
+    SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
     // SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());
     // SmartDashboard.putNumber("IntakeDown value", IntakeDownEncoderValue);
-    // SmartDashboard.putNumber("Intake Temp", ArmIntakeMotor.getMotorTemperature());
+    SmartDashboard.putNumber("Intake Temp", ArmIntakeMotor.getMotorTemperature());
     //change roller speeds based on SmartDashboard values
     final double in = SmartDashboard.getNumber("Roller in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Roller out Speed", out_speed);
