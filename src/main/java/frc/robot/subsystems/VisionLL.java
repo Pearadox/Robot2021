@@ -45,7 +45,7 @@ public class VisionLL extends SubsystemBase {
     if(!SmartDashboard.containsKey("LL Target Y Distance")) SmartDashboard.putNumber("LL Target Y Distance", 0);
     if(!SmartDashboard.containsKey("LL TA")) SmartDashboard.putNumber("LL TA", 0);
     
-    setDefaultCommand(new DefaultLL(this));
+    // setDefaultCommand(new DefaultLL(this));
   }
 
   @Override
