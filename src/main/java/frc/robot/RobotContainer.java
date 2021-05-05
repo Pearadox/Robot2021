@@ -36,13 +36,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final Joystick driverJoystick = new Joystick(0);
   public static final Joystick operatorJoystick = new Joystick(1);
-  public static final Climber m_Climber = new Climber();
   public static final Drivetrain m_Drivetrain = new Drivetrain();
   public static final Hood m_Hood = new Hood();
   public static final Intake m_Intake = new Intake();
   public static final Shooter m_Shooter = new Shooter();
   public static final TransportSystem m_Transport = new TransportSystem();
   public static final VisionLL visionLL = new VisionLL();
+  public static final Climber m_Climber = new Climber();
   
 
   public static DriverStation DS;
@@ -71,7 +71,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    loadTrajectoryPaths();
+    // loadTrajectoryPaths();
   }
 
   /**
@@ -229,21 +229,23 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if(pathSelector.getSelected().equals("Bounce0"))
-      return new BouncePath(m_Drivetrain);
-    else if (pathSelector.getSelected().equals("FiveBallBackwards"))
-      return new AutonDriveFiveBallBack(m_Drivetrain);
-    else if (pathSelector.getSelected().equals("SixBallBackwards"))
-      return new SixBallBack();
-    else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
-      return new AutonDriveSixBallFront(m_Drivetrain);
-    Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
-    RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
-    // Reset odometry to the starting pose of the trajectory.
-    m_Drivetrain.resetOdometry(pathTrajectory.getInitialPose());
+    return new PrintCommand("Auton Command");
+    // return printMessage("Auton Command");
+    // if(pathSelector.getSelected().equals("Bounce0"))
+    //   return new BouncePath(m_Drivetrain);
+    // else if (pathSelector.getSelected().equals("FiveBallBackwards"))
+    //   return new AutonDriveFiveBallBack(m_Drivetrain);
+    // else if (pathSelector.getSelected().equals("SixBallBackwards"))
+    //   return new SixBallBack();
+    // else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
+    //   return new AutonDriveSixBallFront(m_Drivetrain);
+    // Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
+    // RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
+    // // Reset odometry to the starting pose of the trajectory.
+    // m_Drivetrain.resetOdometry(pathTrajectory.getInitialPose());
 
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_Drivetrain.tankDriveVolts(0, 0));
+    // // Run path following command, then stop at the end.
+    // return ramseteCommand.andThen(() -> m_Drivetrain.tankDriveVolts(0, 0));
   }
 
   public RamseteCommand createRamseteCommand(Trajectory pathTrajectory) {

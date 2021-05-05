@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
   private CANEncoder transverseEncoder;
   private final static Climber INSTANCE = new Climber();
   public double kServoPos = 0.5;
-  private Servo climbServo;
+  public Servo climbServo;
   public double BrakeEngaged = 1.0;
   public double BrakeDisengaged = 0.5;
 
@@ -41,7 +41,7 @@ public class Climber extends SubsystemBase {
     //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
     //       such as SpeedControllers, Encoders, DigitalInputs, etc.
     climbMotor = new TalonSRX(ClimberConstants.CLIMB_MOTOR);
-    climbServo = new Servo(9);
+    climbServo = new Servo(ClimberConstants.CLIMB_SERVO);
     // climbMotor.configOpenloopRamp(.25);
     
     transverseMotor = new CANSparkMax(ClimberConstants.TRANSVERSE_CLIMB_MOTOR, MotorType.kBrushless);
@@ -63,11 +63,11 @@ public class Climber extends SubsystemBase {
   }
 
   public void setDisengageBrake() {
-    climbServo.set(BrakeDisengaged);
+    // climbServo.set(BrakeDisengaged);
   }
 
   public void setEngageBrake() {
-    climbServo.set(BrakeEngaged);
+    // climbServo.set(BrakeEngaged);
   }
 
   public void stopClimbMotor() { setClimbMotor(0);}
@@ -102,7 +102,7 @@ public class Climber extends SubsystemBase {
   public void dashboard() {
     SmartDashboard.putNumber("ClimbVoltage", climbMotor.getBusVoltage());
      SmartDashboard.putNumber("ClimbCurrent", getClimbCurrent());
-     double ServoPos = SmartDashboard.getNumber("ServoPos", kServoPos);
+    //  double ServoPos = SmartDashboard.getNumber("ServoPos", kServoPos);
   }
 
 }
