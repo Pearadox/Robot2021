@@ -24,17 +24,12 @@ public class Climber extends SubsystemBase {
   private TalonSRX climbMotor;
   private CANSparkMax transverseMotor;
   private CANEncoder transverseEncoder;
-  private final static Climber INSTANCE = new Climber();
   public double kServoPos = 0.5;
   public Servo climbServo;
   public double BrakeEngaged = 1.0;
   public double BrakeDisengaged = 0.5;
 
-  /**
-   * Creates a new instance of this ClimberSubsystem.
-   * This constructor is private since this class is a Singleton. External classes
-   * should use the {@link #getInstance()} method to get the instance.
-   */
+  
   public Climber() {
     // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
     //       in the constructor or in the robot coordination class, such as RobotContainer.
@@ -63,11 +58,11 @@ public class Climber extends SubsystemBase {
   }
 
   public void setDisengageBrake() {
-    // climbServo.set(BrakeDisengaged);
+    climbServo.set(BrakeDisengaged);
   }
 
   public void setEngageBrake() {
-    // climbServo.set(BrakeEngaged);
+    climbServo.set(BrakeEngaged);
   }
 
   public void stopClimbMotor() { setClimbMotor(0);}
@@ -84,20 +79,11 @@ public class Climber extends SubsystemBase {
 
   public void stopTransverseMotor() { setTransverseMotor(0);}
 
-  /**
-   * Returns the Singleton instance of this ClimberSubsystem. This static method
-   * should be used -- {@code ClimberSubsystem.getInstance();} -- by external
-   * classes, rather than the constructor to get the instance of this class.
-   */
-
    @Override
    public void periodic() {
      
      
    }
-  public static Climber getInstance() {
-    return INSTANCE;
-  }
   
   public void dashboard() {
     SmartDashboard.putNumber("ClimbVoltage", climbMotor.getBusVoltage());

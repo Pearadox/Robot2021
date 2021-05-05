@@ -103,7 +103,7 @@ public final class Constants {
     }
 
     public static final class ClimberConstants {
-        public static final int CLIMB_MOTOR = 9;
+        public static final int CLIMB_MOTOR = 10;
         public static final int TRANSVERSE_CLIMB_MOTOR = 10;
         public static final int CLIMB_SERVO = 5;
     }
