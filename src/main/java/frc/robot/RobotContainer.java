@@ -71,7 +71,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-    // loadTrajectoryPaths();
+    loadTrajectoryPaths();
   }
 
   /**
@@ -193,21 +193,21 @@ public class RobotContainer {
 
   public void loadTrajectoryPaths() {
     TrajectoryCache.clear();
-    sendCacheTrajectory("Slalom", "output/SlalomPath");
-    sendCacheTrajectory("Straight2m", "output/Straight2m");
+    // sendCacheTrajectory("Slalom", "output/SlalomPath");
+    // sendCacheTrajectory("Straight2m", "output/Straight2m");
     sendCacheTrajectory("Turn", "output/Turn");
     sendCacheTrajectory("Bounce0", "output/Bounce0");
     sendCacheTrajectory("Bounce1", "output/Bounce1");
-    sendCacheTrajectory("Bounce2", "output/Bounce2");
-    sendCacheTrajectory("Bounce3", "output/Bounce3");
-    sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
-    sendCacheTrajectory("Straight", "output/Straight");
+    // sendCacheTrajectory("Bounce2", "output/Bounce2");
+    // sendCacheTrajectory("Bounce3", "output/Bounce3");
+    // sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
+    // sendCacheTrajectory("Straight", "output/Straight");
 
     sendCacheTrajectory("SixBallBackwards", "output/SixBallFrontBackwards");
     sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
     sendCacheTrajectory("SixBallForwards", "output/SixBallForwards");
     sendCacheTrajectory("FiveBallBack", "output/FiveBallBackwards");
-    sendCacheTrajectory("FiveBallForward", "output/FiveBallForwards");
+    sendCacheTrajectory("FiveBallForward", "output/FiveBallForward");
 
     SmartDashboard.putData("Path Selection", pathSelector);
   }
