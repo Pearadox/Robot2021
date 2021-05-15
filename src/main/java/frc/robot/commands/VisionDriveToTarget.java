@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionLL;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 public class VisionDriveToTarget extends CommandBase {
   /** Creates a new VisionTurnToTarget. */
@@ -46,7 +47,8 @@ public class VisionDriveToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      OFFSET = SmartDashboard.getString("Entered Zone", "Unknown").equals("Red Zone") ? 0.0 : 0.215;
+      // OFFSET = SmartDashboard.getString("Entered Zone", "Unknown").equals("Red Zone") ? 0.0 : 0.215;
+      OFFSET = RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRENCH ? 0.0 : 0.215;
       double throttle = RobotContainer.getDriverJoystick().getY();
       double twist = RobotContainer.getDriverJoystick().getZ();
       if (RobotContainer.visionLL.getLLIsTargetFound()) {
@@ -60,7 +62,9 @@ public class VisionDriveToTarget extends CommandBase {
         lastError = tx;
         if (Math.abs(tx) < 0.5) 
           output = 0; 
-        twist = Math.copySign(Math.min(Math.abs(Math.pow(twist, 2)), 0.2), twist);
+        twist = Math.copySign(Math.min(
+                              Math.abs(
+                              Math.pow(twist, 2)), 0.2), twist);
         RobotContainer.m_Drivetrain.arcadeDrive(throttle * 0.75, output - twist);
         SmartDashboard.putNumber("Vision Output", output);
       } else {

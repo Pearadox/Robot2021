@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.drivers.PearadoxSparkMax;
 import frc.robot.Constants.FlywheelConstants;
+import frc.robot.commands.ShooterVoltage;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
@@ -73,7 +74,9 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("S_Max Output", kMaxOutput);
     SmartDashboard.putNumber("S_Min Output", kMinOutput);
     SmartDashboard.putNumber("S_SetPoint", ksetpoint);
-
+    SmartDashboard.putNumber("ShooterSetPoint", 0);
+    SmartDashboard.putNumber("ShooterReference", referenceVoltage);
+    
     // this.setDefaultCommand(new ShooterVoltage(this, 4.3));
   }
 
@@ -83,6 +86,11 @@ public class Shooter extends SubsystemBase {
   }
   public double  getShooterReference(){
     return referenceVoltage;
+  }
+
+  public void setTestVoltage(double voltage) {
+    rightFlywheelMotor.set(voltage);
+    leftFlywheelMotor.set(voltage);
   }
 
 
@@ -129,6 +137,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void dashboard() {
+    SmartDashboard.putNumber("ShooterReference", referenceVoltage);
     // SmartDashboard.putNumber("Flywheel RPM", getFlywheelRPM());
     // SmartDashboard.putNumber("Flywheel Voltage", rightFlywheelMotor.getBusVoltage());
     // SmartDashboard.putNumber("Flywheel Output", rightFlywheelMotor.getAppliedOutput()); 

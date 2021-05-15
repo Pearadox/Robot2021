@@ -6,23 +6,27 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionLL;
 import frc.robot.subsystems.VisionLL.HoodShooterSettings;
 
-public class SetVisionFlywheel_Hood extends CommandBase {
+public class SetZoneFlywheel_Hood extends CommandBase {
   /** Creates a new SetFlywheel_Hood. */
-  public SetVisionFlywheel_Hood(Shooter shooter, VisionLL limelight, Hood hood) {
+  HoodShooterSettings currZone;
+
+  public SetZoneFlywheel_Hood(Shooter shooter, VisionLL limelight, Hood hood) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter, limelight, hood);
   }
+   
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
+    currZone = RobotContainer.visionLL.getZone();
     RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
     RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
   }
@@ -30,7 +34,7 @@ public class SetVisionFlywheel_Hood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
+    currZone = RobotContainer.visionLL.getZone();
     RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
     RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
   }

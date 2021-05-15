@@ -307,6 +307,9 @@ public class TransportSystem extends SubsystemBase {
     final double out = SmartDashboard.getNumber("Hopper out Speed", out_speed);
     // SmartDashboard.putString("Tower State", getState().toString());
     // SmartDashboard.putNumber("Ball Counter", ballCounter);
+    SmartDashboard.putBoolean("Low Sensor", getLow());
+    SmartDashboard.putBoolean("Medium Sensor", getMedium());
+    SmartDashboard.putBoolean("High Sensor", getHigh());
     
     if (up != up_speed) up_speed = up;
     if (down != down_speed) down_speed = down;

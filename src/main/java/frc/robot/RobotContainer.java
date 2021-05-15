@@ -135,18 +135,18 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
-    btn1.whileHeld( new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL).withTimeout(1)
+    btn1.whileHeld(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL).withTimeout(1)
         .andThen(new HopperInTowerUpCmd()))
         .whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
     btn3.whenPressed(new SetHood(m_Hood));
-    btn4.whenPressed(new SetVisionFlywheel_Hood(m_Shooter, visionLL, m_Hood));
-    btn5.whenPressed(new SetZeroHood(m_Hood));
+    btn4.whenPressed(new SetZoneFlywheel_Hood(m_Shooter, visionLL, m_Hood));
+    btn5.whenPressed(new SetZeroHood(m_Hood).withTimeout(4));
     btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
         .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
     btn7.whileHeld(new Outake_balls()); //Tower Down/Outake
-    btn8.whenPressed(new ShooterVoltage(m_Shooter, SmartDashboard.getNumber("S_SetPoint", 0)));
+    btn8.whenPressed(new ShooterVoltage(m_Shooter, -2300));
 
     //intake items
     btn9.whileHeld(new RunCommand(  //ArmIntake Up
@@ -168,7 +168,7 @@ public class RobotContainer {
       () -> {
         visionLL.setOperatorSettings(OperatorSettings.INITIATION);
       }, visionLL)
-               .andThen(new SetFlywheel_Hood(m_Shooter, m_Hood)));
+               .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
     
     new Trigger(
       () -> {

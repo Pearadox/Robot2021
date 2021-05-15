@@ -11,11 +11,11 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionLL.HoodShooterSettings;
 import frc.robot.subsystems.VisionLL.OperatorSettings;
 
-public class SetFlywheel_Hood extends CommandBase {
+public class SetOpFlywheel_Hood extends CommandBase {
   /** Creates a new SetFlywheel_Hood. */
   HoodShooterSettings opSettings;
 
-  public SetFlywheel_Hood(Shooter shooter, Hood hood) {
+  public SetOpFlywheel_Hood(Shooter shooter, Hood hood) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter, hood);
   }
@@ -23,17 +23,17 @@ public class SetFlywheel_Hood extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    HoodShooterSettings opSettings = RobotContainer.visionLL.getOperatorShooterSettings();
-    if (RobotContainer.visionLL.operatorSettings != OperatorSettings.UNKNOWN) {
+    opSettings = RobotContainer.visionLL.getOperatorHoodShooterSettings();
+    if (RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.UNKNOWN) {
       RobotContainer.m_Hood.setHoodAngle(opSettings.getTargetHoodAngle());
       RobotContainer.m_Shooter.setShooterVoltage(opSettings.getTargetShooterVoltage());
-      }
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    opSettings = RobotContainer.visionLL.getOperatorShooterSettings();
+    opSettings = RobotContainer.visionLL.getOperatorHoodShooterSettings();
     RobotContainer.m_Hood.setHoodAngle(opSettings.getTargetHoodAngle());
     RobotContainer.m_Shooter.setShooterVoltage(opSettings.getTargetShooterVoltage());
   }
@@ -50,7 +50,7 @@ public class SetFlywheel_Hood extends CommandBase {
     if (Math.abs(RobotContainer.m_Hood.getHoodError()) < RobotContainer.m_Hood.kMinError
      && Math.abs(RobotContainer.m_Shooter.getFlywheelRPM() - RobotContainer.m_Shooter.getShooterReference()) < 200)
         return true;
-    else if (RobotContainer.visionLL.operatorSettings == OperatorSettings.UNKNOWN) {
+    else if (RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.UNKNOWN) {
       return true;
     }
     return false;

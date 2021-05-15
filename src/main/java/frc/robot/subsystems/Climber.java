@@ -68,7 +68,8 @@ public class Climber extends SubsystemBase {
   public void stopClimbMotor() { setClimbMotor(0);}
 
   public double getClimbCurrent() {
-    return climbMotor.getSupplyCurrent();
+    // return climbMotor.getSupplyCurrent();
+    return 0;
   }
 
   public void setTransverseMotor(double setSpeed) {
@@ -86,8 +87,8 @@ public class Climber extends SubsystemBase {
    }
   
   public void dashboard() {
-    SmartDashboard.putNumber("ClimbVoltage", climbMotor.getBusVoltage());
-     SmartDashboard.putNumber("ClimbCurrent", getClimbCurrent());
+    // SmartDashboard.putNumber("ClimbVoltage", climbMotor.getBusVoltage());
+    //  SmartDashboard.putNumber("ClimbCurrent", getClimbCurrent());
     //  double ServoPos = SmartDashboard.getNumber("ServoPos", kServoPos);
   }
 

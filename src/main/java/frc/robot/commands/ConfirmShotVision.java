@@ -7,7 +7,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionLL;
-import frc.robot.subsystems.VisionLL.HoodShooterSettings;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 
 public class ConfirmShotVision extends CommandBase {
@@ -18,6 +18,7 @@ public class ConfirmShotVision extends CommandBase {
     private boolean reachedTarget, foundTarget;
     private double changeInError, errorSum = 0;
     private double lastError;
+    private VisionLL.HoodShooterSettings currZone; // Currently Running on Operator Settings
 
     public ConfirmShotVision(Drivetrain drivetrain, Hood hood, Shooter shooter, VisionLL visionLL) {
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
@@ -27,10 +28,7 @@ public class ConfirmShotVision extends CommandBase {
 
     @Override
     public void initialize() {
-        HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
-        RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
-        RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
-        RobotContainer.visionLL.limeLightLEDOn();
+        // currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
 
         tx = RobotContainer.visionLL.getLLDegToTarget();
         kp = SmartDashboard.getNumber("Vision Turn kp", kp);
@@ -42,12 +40,13 @@ public class ConfirmShotVision extends CommandBase {
 
     @Override
     public void execute() {
-        HoodShooterSettings currZone = RobotContainer.visionLL.getZone();
+        currZone = RobotContainer.visionLL.getZone();
+        // currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
         RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
         RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
-        if (!foundTarget) {
-            RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6),
-                    Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.4));
+        if (!foundTarget && RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.TRIANGLE) {
+            RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6) * 0.5,
+                    Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.4)* 0.5);
         }
         else {
             tx = RobotContainer.visionLL.getLLDegToTarget();

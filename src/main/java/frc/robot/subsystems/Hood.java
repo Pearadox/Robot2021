@@ -28,6 +28,7 @@ public class Hood extends SubsystemBase {
   public double kMinError = 0.5;
   private boolean hasHoodZeroed = false;
   public double desiredSetPointAngle = 0;
+  private final double OFFSET = 2.5;
 
   public Hood() {
     hoodMotor = new TalonSRX(Constants.HoodConstants.HOOD_MOTOR_ID);
@@ -65,7 +66,7 @@ public class Hood extends SubsystemBase {
 
   // total teeth/pinion teeth
   public double getHoodAngle() {
-    return getRawHoodAngle() * 404/20;
+    return getRawHoodAngle() * 404/20 + OFFSET;
   }
 
   public void stopHood() {
