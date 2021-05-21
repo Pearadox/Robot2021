@@ -22,7 +22,7 @@ public class ConfirmShotVision extends CommandBase {
 
     public ConfirmShotVision(Drivetrain drivetrain, Hood hood, Shooter shooter, VisionLL visionLL) {
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(drivetrain, hood, shooter, visionLL);
+        addRequirements(drivetrain, hood, shooter, visionLL, RobotContainer.m_Intake);
         if (!SmartDashboard.containsKey("Vision Output")) SmartDashboard.putNumber("Vision Output", 0);
     }
 
@@ -36,6 +36,8 @@ public class ConfirmShotVision extends CommandBase {
         kd = SmartDashboard.getNumber("Vision Turn kd", kd);
         foundTarget = RobotContainer.visionLL.getLLIsTargetFound();
         errorSum = 0;
+        RobotContainer.m_Intake.StopRollers();
+
     }
 
     @Override

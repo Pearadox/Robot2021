@@ -146,17 +146,25 @@ public class RobotContainer {
     btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
         .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
     btn7.whileHeld(new Outake_balls()); //Tower Down/Outake
+    // btn7.whenRel
     btn8.whenPressed(new ShooterVoltage(m_Shooter, -2300));
 
     //intake items
-    btn9.whileHeld(new RunCommand(  //ArmIntake Up
+    // btn9.whileHeld(new RunCommand(  //ArmIntake Up
+    //   () -> {
+    //     m_Intake.setArmIntakeSpeed(1);
+    //     m_Intake.setRollerSpeed(0);
+    // }, m_Intake))
+    //     .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
+    btn9.whenPressed(new RunCommand(
       () -> {
-        m_Intake.setArmIntakeSpeed(1);
-        m_Intake.setRollerSpeed(0);
-    }, m_Intake))
-        .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
+        m_Intake.setArmPosition(18);
+        m_Intake.IntakeLoading();;
+      }, m_Intake));
 
-    btn10.whenPressed(new IntakeDown(m_Intake));
+      btn10.whenPressed(new ArmSmartMotionDown());
+
+    // btn10.whenPressed(new IntakeDown(m_Intake));
 
     //Operator Buttons
     opbtn5.whileHeld(new TraverseLeft(m_Climber));

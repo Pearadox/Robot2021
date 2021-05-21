@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.team2363.logger.HelixLogger;
 import frc.robot.commands.HopperInCmd;
+import frc.robot.commands.ResetArmandEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -136,6 +137,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     RobotContainer.m_Transport.setDefaultCommand(new HopperInCmd(RobotContainer.m_Transport));
+    new ResetArmandEncoder().withTimeout(1.0).schedule();
   }
 
   /** This function is called periodically during operator control. */

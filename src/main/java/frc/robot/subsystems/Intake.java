@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,22 +54,22 @@ public class Intake extends SubsystemBase {
     // initialze PID controller and encoder objects
     ArmPidController = ArmIntakeMotor.getPIDController();
     ArmIntakeEncoder = ArmIntakeMotor.getEncoder();
-    ArmIntakeMotor.setSmartCurrentLimit(15, 30);
+    ArmIntakeMotor.setSmartCurrentLimit(20,30);
     ArmIntakeMotor.setInverted(true);
 
     // PID coefficients
-    kP = 5e-5; //0.002469(original 5e-5)
-    kI = 1e-6; //0 (original 1e-6)
+    kP = .0003; //0.002469(original 5e-5)
+    kI = 0; //0 (original 1e-6)
     kD = 0; 
     kIz = 0; 
-    kFF = 0.000156; //0.096957 (original 0.000156)
-    kMaxOutput = .4;  //approximate speeds used previously for manual control on 2020 robot
-    kMinOutput = -.4; //approximate speeds used previously for manual control on 2020 robot
+    kFF = 0.000; //0.096957 (original 0.000156)
+    kMaxOutput =1;  //approximate speeds used previously for manual control on 2020 robot
+    kMinOutput = -1; //approximate speeds used previously for manual control on 2020 robot
     // maxRPM = 5700; not used anywhere
 
     // Smart Motion Coefficients
-    maxVel = 405; // rpm
-    maxAcc = 202;
+    maxVel = 4000; // rpm
+    maxAcc = 6000;
 
     // set PID coefficients
     ArmPidController.setP(kP);
@@ -77,7 +78,7 @@ public class Intake extends SubsystemBase {
     ArmPidController.setIZone(kIz);
     ArmPidController.setFF(kFF);
     ArmPidController.setOutputRange(kMinOutput, kMaxOutput);
-
+    
     
     //3this.setDefaultCommand(new RunCommand( () -> { this.setRollerSpeed(.7); }, this));
 
@@ -95,7 +96,7 @@ public class Intake extends SubsystemBase {
      */
     int smartMotionSlot = 0;
     ArmPidController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    ArmPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    // ArmPidController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     ArmPidController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     ArmPidController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
@@ -138,6 +139,16 @@ public class Intake extends SubsystemBase {
   public void setArmIntakeSpeed(double speed) {
     ArmIntakeMotor.set(speed);
   }
+
+  public void setArmPosition(double pos)
+  {
+    ArmPidController.setReference(pos, ControlType.kSmartMotion);
+  }
+
+  public double getOutputCurrent()
+  {
+    return ArmIntakeMotor.getOutputCurrent();
+  }
   
   public void stopArmIntake() {
     setArmIntakeSpeed(0);
@@ -146,6 +157,26 @@ public class Intake extends SubsystemBase {
   public void setRollerSpeed(double speed) {
     TopRollerMotor.set(speed);
     BotRollerMotor.set(-speed);
+  }
+  public void IntakeFloor()
+  {
+    TopRollerMotor.set(in_speed);
+    BotRollerMotor.set(-in_speed);
+  }
+
+  public void IntakeLoading() {    
+    TopRollerMotor.set(0.7 * in_speed);
+    BotRollerMotor.set(0.7 * in_speed);
+  }
+
+  public void OutakeRollers() {
+    TopRollerMotor.set(out_speed);
+    BotRollerMotor.set(-out_speed);
+  }
+  
+  public void StopRollers() {
+    TopRollerMotor.set(0);
+    BotRollerMotor.set(-0);
   }
 
   public void RollerIn() {
