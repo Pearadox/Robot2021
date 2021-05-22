@@ -183,7 +183,12 @@ public class RobotContainer {
         return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP;
       })
       .whileActiveContinuous(
-        (new SetZeroHood(m_Hood)), false);
+        (new SetZeroHood(m_Hood))
+        .andThen(new InstantCommand(
+          () -> {
+            visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+          }, visionLL)
+          .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood))), false);
 
 
     //testing out trigger for ballTower with Robot state
