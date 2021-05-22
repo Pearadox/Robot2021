@@ -7,9 +7,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import frc.team2363.logger.HelixLogger;
 import frc.robot.commands.HopperInCmd;
 import frc.robot.commands.ResetArmandEncoder;
+import frc.robot.commands.SetOpFlywheel_Hood;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -138,6 +141,13 @@ public class Robot extends TimedRobot {
     }
     RobotContainer.m_Transport.setDefaultCommand(new HopperInCmd(RobotContainer.m_Transport));
     new ResetArmandEncoder().withTimeout(1.0).schedule();
+
+    //I think this will work so that at the beginning of teleop we set the hood/wheel to init line settings?
+    new InstantCommand(
+      () -> {
+        RobotContainer.visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+      }, RobotContainer.visionLL)
+               .andThen(new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)).schedule();
   }
 
   /** This function is called periodically during operator control. */
