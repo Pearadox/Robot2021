@@ -69,6 +69,7 @@ public class TransportSystem extends SubsystemBase {
     SmartDashboard.putNumber("Down Speed", down_speed);
     SmartDashboard.putNumber("Hopper in Speed", in_speed);
     SmartDashboard.putNumber("Hopper out Speed", out_speed);
+    SmartDashboard.putNumber("Ball Counter", 0);
 
     //Default command tries to manage the ball tower states of 0, 1, 2, or 3 balls loaded
     // this.setDefaultCommand(new HopperInCmd(this));
@@ -306,7 +307,7 @@ public class TransportSystem extends SubsystemBase {
     final double in = SmartDashboard.getNumber("Hopper in Speed", in_speed);
     final double out = SmartDashboard.getNumber("Hopper out Speed", out_speed);
     // SmartDashboard.putString("Tower State", getState().toString());
-    // SmartDashboard.putNumber("Ball Counter", ballCounter);
+    SmartDashboard.putNumber("Ball Counter", ballCounter);
     SmartDashboard.putBoolean("Low Sensor", getLow());
     SmartDashboard.putBoolean("Medium Sensor", getMedium());
     SmartDashboard.putBoolean("High Sensor", getHigh());

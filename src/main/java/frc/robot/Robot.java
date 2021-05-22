@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     CommandScheduler.getInstance().cancelAll();
-    RobotContainer.visionLL.setLimeLightLED(false);
+    RobotContainer.visionLL.setLimeLightLED(true);
     setState(RobotState.DISABLED);
   }
 
@@ -141,7 +141,6 @@ public class Robot extends TimedRobot {
     }
     RobotContainer.m_Transport.setDefaultCommand(new HopperInCmd(RobotContainer.m_Transport));
     new ResetArmandEncoder().withTimeout(1.0).schedule();
-
     
   }
 

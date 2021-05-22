@@ -24,10 +24,8 @@ public class SetOpFlywheel_Hood extends CommandBase {
   @Override
   public void initialize() {
     opSettings = RobotContainer.visionLL.getOperatorHoodShooterSettings();
-    if (RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.UNKNOWN) {
-      RobotContainer.m_Hood.setHoodAngle(opSettings.getTargetHoodAngle());
-      RobotContainer.m_Shooter.setShooterVoltage(opSettings.getTargetShooterVoltage());
-    }
+    RobotContainer.m_Hood.setHoodAngle(opSettings.getTargetHoodAngle());
+    RobotContainer.m_Shooter.setShooterVoltage(opSettings.getTargetShooterVoltage());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,9 +48,6 @@ public class SetOpFlywheel_Hood extends CommandBase {
     if (Math.abs(RobotContainer.m_Hood.getHoodError()) < RobotContainer.m_Hood.kMinError
      && Math.abs(RobotContainer.m_Shooter.getFlywheelRPM() - RobotContainer.m_Shooter.getShooterReference()) < 200)
         return true;
-    else if (RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.UNKNOWN) {
-      return true;
-    }
     return false;
   }
 }

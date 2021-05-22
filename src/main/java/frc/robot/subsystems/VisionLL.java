@@ -27,10 +27,9 @@ public class VisionLL extends SubsystemBase {
   // private double zoneBlue = 1.4; 
   // private double zoneRed = 0.9;
   // private double zoneTriangle = 3.25;  // Needs to be Tested
-  private double zoneInitiation = 2.0;
+  private double zoneInitiation = 1.5;
   private double zoneTrench = 0.9;
 
-  private final HoodShooterSettings unknownSettings;
   private final HoodShooterSettings triangleSettings;
   private final HoodShooterSettings initiationSettings;
   private final HoodShooterSettings trenchSettings;
@@ -58,9 +57,8 @@ public class VisionLL extends SubsystemBase {
     if(!SmartDashboard.containsKey("LL TA")) SmartDashboard.putNumber("LL TA", 0);
 
     triangleSettings = new HoodShooterSettings(3, -2400);
-    initiationSettings = new HoodShooterSettings(40, -2600);
-    trenchSettings = new HoodShooterSettings(0, 0);
-    unknownSettings = new HoodShooterSettings();
+    initiationSettings = new HoodShooterSettings(35, -2750);
+    trenchSettings = new HoodShooterSettings(49.5, -3800);
     
     // setDefaultCommand(new DefaultLL(this));
   }
@@ -174,9 +172,6 @@ public double getLLRobotToTargetDistance() {
     //   SmartDashboard.putString("Entered Zone", "Blue");
     // } else if (getLLTargetArea() > zoneRed) {
     //   SmartDashboard.putString("Entered Zone", "Red");
-    // } else {
-    //   SmartDashboard.putString("Entered Zone", "Unknown");
-    // }
     if (getLLTargetArea() > zoneInitiation) {
       SmartDashboard.putString("Entered Zone", "Initiation");
     } else if (getLLTargetArea() > zoneTrench) {
@@ -212,11 +207,10 @@ public double getLLRobotToTargetDistance() {
   public static enum OperatorSettings {
     TRIANGLE,
     INITIATION,
-    TRENCH,
-    UNKNOWN
+    TRENCH
   }
 
-  private OperatorSettings operatorSettings = OperatorSettings.UNKNOWN;
+  private OperatorSettings operatorSettings = OperatorSettings.INITIATION;
 
   public void setOperatorSettings(OperatorSettings settings) {
     operatorSettings = settings;
@@ -227,15 +221,12 @@ public double getLLRobotToTargetDistance() {
   }
 
   public HoodShooterSettings getOperatorHoodShooterSettings() {
-    if (operatorSettings == OperatorSettings.TRIANGLE)
-      return triangleSettings;
-    else if(operatorSettings == OperatorSettings.INITIATION)
+    if(operatorSettings == OperatorSettings.INITIATION)
       return initiationSettings;
     else if(operatorSettings == OperatorSettings.TRENCH)
       return trenchSettings;
     else {
-      setOperatorSettings(OperatorSettings.UNKNOWN);
-      return unknownSettings;
+      return triangleSettings;
     }
   }
 }

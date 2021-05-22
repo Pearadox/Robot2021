@@ -22,7 +22,6 @@ public class SetZoneFlywheel_Hood extends CommandBase {
     addRequirements(shooter, limelight, hood);
   }
    
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

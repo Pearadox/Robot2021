@@ -135,19 +135,19 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
-    btn1.whileHeld(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL).withTimeout(1)
-        .andThen(new HopperInTowerUpCmd()))
+    btn1.whileHeld(new HopperInTowerUpCmd())
         .whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
     btn3.whenPressed(new SetHood(m_Hood));
-    btn4.whenPressed(new SetZoneFlywheel_Hood(m_Shooter, visionLL, m_Hood));
+    // btn4.whenPressed(new SetZoneFlywheel_Hood(m_Shooter, visionLL, m_Hood));
+    btn4.whenPressed(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL).withTimeout(2.75));
     btn5.whenPressed(new SetZeroHood(m_Hood).withTimeout(4));
     btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
         .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
     btn7.whileHeld(new Outake_balls()); //Tower Down/Outake
     // btn7.whenRel
-    btn8.whenPressed(new ShooterVoltage(m_Shooter, -2300));
+    btn8.whenPressed(new RunCommand(m_Transport::resetBallCounter));
 
     //intake items
     // btn9.whileHeld(new RunCommand(  //ArmIntake Up
@@ -156,31 +156,43 @@ public class RobotContainer {
     //     m_Intake.setRollerSpeed(0);
     // }, m_Intake))
     //     .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
-    btn9.whenPressed(new RunCommand(
+    opbtn8.whenPressed(new RunCommand(
       () -> {
         m_Intake.setArmPosition(18);
         m_Intake.IntakeLoading();;
       }, m_Intake));
 
-      btn10.whenPressed(new ArmSmartMotionDown());
+    opbtn7.whenPressed(new ArmSmartMotionDown());
 
     // btn10.whenPressed(new IntakeDown(m_Intake));
 
     //Operator Buttons
-    opbtn5.whileHeld(new TraverseLeft(m_Climber));
+    // opbtn3.whenPressed(new InstantCommand(m_Climber::setEngageBrake));
+    // opbtn4.whenPressed(new InstantCommand(m_Climber::setDisengageBrake));
+    // opbtn5.whileHeld(new TraverseLeft(m_Climber));
     opbtn6.whileHeld(new TraverseRight(m_Climber));
-    opbtn7.whileHeld(new ClimbUp(m_Climber));
-    opbtn8.whenPressed(new HangClimb(m_Climber));
-    opbtn9.whenPressed(new ClimbRelease(m_Climber));
+    opbtn3.whileHeld(new ClimbUp(m_Climber));
+    opbtn5.whenPressed(new HangClimb(m_Climber));
+    opbtn4.whenPressed(new ClimbRelease(m_Climber).withTimeout(2));
     opbtn10.whenPressed(new InstantCommand(
       () -> {
-        visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+        visionLL.setOperatorSettings(OperatorSettings.TRIANGLE);
       }, visionLL)
                .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
-    
+    opbtn11.whenPressed(new InstantCommand(
+          () -> {
+            visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+          }, visionLL)
+                  .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+    opbtn12.whenPressed(new InstantCommand(
+      () -> {
+        visionLL.setOperatorSettings(OperatorSettings.TRENCH);
+      }, visionLL)
+                .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+
     new Trigger(
       () -> {
-        return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP;
+        return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP && !(m_Shooter.isFlywheelInRange());
       })
       .whileActiveContinuous(
         (new SetZeroHood(m_Hood))
@@ -189,7 +201,6 @@ public class RobotContainer {
             visionLL.setOperatorSettings(OperatorSettings.INITIATION);
           }, visionLL)
           .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood))), false);
-
 
     //testing out trigger for ballTower with Robot state
     new Trigger(
@@ -242,23 +253,23 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new PrintCommand("Auton Command");
+    // return new PrintCommand("Auton Command");
     // return printMessage("Auton Command");
-    // if(pathSelector.getSelected().equals("Bounce0"))
-    //   return new BouncePath(m_Drivetrain);
-    // else if (pathSelector.getSelected().equals("FiveBallBackwards"))
-    //   return new AutonDriveFiveBallBack(m_Drivetrain);
-    // else if (pathSelector.getSelected().equals("SixBallBackwards"))
-    //   return new SixBallBack();
-    // else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
-    //   return new AutonDriveSixBallFront(m_Drivetrain);
-    // Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
-    // RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
-    // // Reset odometry to the starting pose of the trajectory.
-    // m_Drivetrain.resetOdometry(pathTrajectory.getInitialPose());
+    if(pathSelector.getSelected().equals("Bounce0"))
+      return new BouncePath(m_Drivetrain);
+    else if (pathSelector.getSelected().equals("FiveBallBackwards"))
+      return new AutonDriveFiveBallBack(m_Drivetrain);
+    else if (pathSelector.getSelected().equals("SixBallBackwards"))
+      return new SixBallBack();
+    else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
+      return new AutonDriveSixBallFront(m_Drivetrain);
+    Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
+    RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
+    // Reset odometry to the starting pose of the trajectory.
+    m_Drivetrain.resetOdometry(pathTrajectory.getInitialPose());
 
-    // // Run path following command, then stop at the end.
-    // return ramseteCommand.andThen(() -> m_Drivetrain.tankDriveVolts(0, 0));
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> m_Drivetrain.tankDriveVolts(0, 0));
   }
 
   public RamseteCommand createRamseteCommand(Trajectory pathTrajectory) {

@@ -133,7 +133,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isFlywheelInRange() {
-    return getFlywheelRPM() < getFlySetPoint();
+    return Math.abs(getFlySetPoint() - getFlywheelRPM()) < 200;
   }
 
   public void dashboard() {

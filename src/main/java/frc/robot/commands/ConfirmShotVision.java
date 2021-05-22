@@ -46,7 +46,7 @@ public class ConfirmShotVision extends CommandBase {
         // currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
         RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
         RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
-        if (!foundTarget && RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.TRIANGLE) {
+        if (!foundTarget && RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRIANGLE) {
             RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6) * 0.5,
                     Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.4)* 0.5);
         }
