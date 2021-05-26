@@ -17,10 +17,10 @@ public class SixBallBack extends SequentialCommandGroup {
   public SixBallBack() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-              new SetZoneFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.visionLL, RobotContainer.m_Hood).withTimeout(2.5),
-               ((new HopperInTowerUpCmd()).withTimeout(5.0)));
-              //  ((new InstantCommand( () -> { RobotContainer.m_Intake.setRollerSpeed(.7); }, RobotContainer.m_Intake))),
+    addCommands(RobotContainer.OPINITIATION,
+              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(2.5),
+               ((new HopperInTowerUpCmd()).withTimeout(5.0)),
+               ((new ArmSmartMotionDown())));
               //  (new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)),
               //  (new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)),
               //  (new HopperInTowerUpCmd()));

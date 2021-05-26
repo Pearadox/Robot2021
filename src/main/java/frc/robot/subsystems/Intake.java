@@ -31,7 +31,8 @@ public class Intake extends SubsystemBase {
 
   public double in_speed = 1;
   public double out_speed = -0.3;
-  public double IntakeDownEncoderValue = -30;
+  public double IntakeDownEncoderValue = -10;
+  public double IntakeUpEncoderValue = 18;
   // public double maxRPM; //not used anywhere
 
   /** Creates a new Intake. */

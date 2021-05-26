@@ -17,7 +17,7 @@ public class ArmSmartMotionDown extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.m_Intake.setArmPosition(0);
+    RobotContainer.m_Intake.setArmPosition(RobotContainer.m_Intake.IntakeDownEncoderValue);
     RobotContainer.m_Intake.IntakeFloor();
   }
 

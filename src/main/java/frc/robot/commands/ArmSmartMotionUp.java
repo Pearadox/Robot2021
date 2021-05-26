@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class ArmSmartMotionUp extends CommandBase {
@@ -17,7 +18,8 @@ public class ArmSmartMotionUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.m_Intake.setArmPosition(10);
+    RobotContainer.m_Intake.setArmPosition(RobotContainer.m_Intake.IntakeUpEncoderValue);
+    RobotContainer.m_Intake.IntakeLoading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

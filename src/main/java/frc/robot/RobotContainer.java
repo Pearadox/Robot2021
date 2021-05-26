@@ -61,6 +61,21 @@ public class RobotContainer {
   public static final String _climber = "CLIMBER";
   public static final String _visionLL = "LIMELIGHT";
 
+  public static final InstantCommand OPTRIANGLE = new InstantCommand(
+      () -> {
+        visionLL.setOperatorSettings(OperatorSettings.TRIANGLE);
+      }, visionLL);
+
+  public static final InstantCommand OPINITIATION = new InstantCommand(
+      () -> {
+        visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+      }, visionLL);
+    
+  public static final InstantCommand OPTRENCH = new InstantCommand(
+      () -> {
+        visionLL.setOperatorSettings(OperatorSettings.TRENCH);
+      }, visionLL);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -141,7 +156,6 @@ public class RobotContainer {
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
     btn3.whenPressed(new SetHood(m_Hood));
     // btn4.whenPressed(new SetZoneFlywheel_Hood(m_Shooter, visionLL, m_Hood));
-    btn4.whenPressed(new ConfirmShotVision(m_Drivetrain, m_Hood, m_Shooter, visionLL).withTimeout(2.75));
     btn5.whenPressed(new SetZeroHood(m_Hood).withTimeout(4));
     btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
         .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
@@ -156,38 +170,21 @@ public class RobotContainer {
     //     m_Intake.setRollerSpeed(0);
     // }, m_Intake))
     //     .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
-    opbtn8.whenPressed(new RunCommand(
-      () -> {
-        m_Intake.setArmPosition(18);
-        m_Intake.IntakeLoading();;
-      }, m_Intake));
-
-    opbtn7.whenPressed(new ArmSmartMotionDown());
+    opbtn8.whenPressed(new ArmSmartMotionDown());
 
     // btn10.whenPressed(new IntakeDown(m_Intake));
 
     //Operator Buttons
-    // opbtn3.whenPressed(new InstantCommand(m_Climber::setEngageBrake));
-    // opbtn4.whenPressed(new InstantCommand(m_Climber::setDisengageBrake));
     // opbtn5.whileHeld(new TraverseLeft(m_Climber));
     opbtn6.whileHeld(new TraverseRight(m_Climber));
     opbtn3.whileHeld(new ClimbUp(m_Climber));
     opbtn5.whenPressed(new HangClimb(m_Climber));
     opbtn4.whenPressed(new ClimbRelease(m_Climber).withTimeout(2));
-    opbtn10.whenPressed(new InstantCommand(
-      () -> {
-        visionLL.setOperatorSettings(OperatorSettings.TRIANGLE);
-      }, visionLL)
+    opbtn10.whenPressed(OPTRIANGLE
                .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
-    opbtn11.whenPressed(new InstantCommand(
-          () -> {
-            visionLL.setOperatorSettings(OperatorSettings.INITIATION);
-          }, visionLL)
+    opbtn11.whenPressed(OPINITIATION
                   .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
-    opbtn12.whenPressed(new InstantCommand(
-      () -> {
-        visionLL.setOperatorSettings(OperatorSettings.TRENCH);
-      }, visionLL)
+    opbtn12.whenPressed(OPTRENCH
                 .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
 
     new Trigger(
@@ -196,10 +193,7 @@ public class RobotContainer {
       })
       .whileActiveContinuous(
         (new SetZeroHood(m_Hood))
-        .andThen(new InstantCommand(
-          () -> {
-            visionLL.setOperatorSettings(OperatorSettings.INITIATION);
-          }, visionLL)
+        .andThen(OPINITIATION
           .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood))), false);
 
     //testing out trigger for ballTower with Robot state
@@ -227,10 +221,10 @@ public class RobotContainer {
     // sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
     // sendCacheTrajectory("Straight", "output/Straight");
 
-    sendCacheTrajectory("SixBallBackwards", "output/SixBallFrontBackwards");
+    sendCacheTrajectory("SixBallFrontBackwards", "output/SixBallFrontBackwards");
     sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
     sendCacheTrajectory("SixBallForwards", "output/SixBallForwards");
-    sendCacheTrajectory("FiveBallBack", "output/FiveBallBackwards");
+    sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
     sendCacheTrajectory("FiveBallForward", "output/FiveBallForward");
 
     SmartDashboard.putData("Path Selection", pathSelector);

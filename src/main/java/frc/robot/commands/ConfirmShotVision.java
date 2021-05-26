@@ -28,7 +28,7 @@ public class ConfirmShotVision extends CommandBase {
 
     @Override
     public void initialize() {
-        // currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
+        currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
 
         tx = RobotContainer.visionLL.getLLDegToTarget();
         kp = SmartDashboard.getNumber("Vision Turn kp", kp);
@@ -42,8 +42,8 @@ public class ConfirmShotVision extends CommandBase {
 
     @Override
     public void execute() {
-        currZone = RobotContainer.visionLL.getZone();
-        // currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
+        // currZone = RobotContainer.visionLL.getZone();
+        currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
         RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
         RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
         if (!foundTarget && RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRIANGLE) {
