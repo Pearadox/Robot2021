@@ -162,7 +162,9 @@ public class RobotContainer {
     btn7.whileHeld(new Outake_balls()); //Tower Down/Outake
     // btn7.whenRel
     btn8.whenPressed(new RunCommand(m_Transport::resetBallCounter));
-
+    btn9.whenPressed(new ArmSmartMotionUp());
+    btn10.whenPressed(new ArmSmartMotionLoading());
+    btn11.whenPressed(new ArmSmartMotionDown());
     //intake items
     // btn9.whileHeld(new RunCommand(  //ArmIntake Up
     //   () -> {
@@ -170,16 +172,19 @@ public class RobotContainer {
     //     m_Intake.setRollerSpeed(0);
     // }, m_Intake))
     //     .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
-    opbtn8.whenPressed(new ArmSmartMotionDown());
+   
 
     // btn10.whenPressed(new IntakeDown(m_Intake));
 
     //Operator Buttons
+    
+    opbtn3.whileHeld(new ClimbUp(m_Climber));
+    opbtn4.whenPressed(new ClimbRelease(m_Climber).withTimeout(2));
+    opbtn5.whenPressed(new HangClimb(m_Climber));
     // opbtn5.whileHeld(new TraverseLeft(m_Climber));
     opbtn6.whileHeld(new TraverseRight(m_Climber));
-    opbtn3.whileHeld(new ClimbUp(m_Climber));
-    opbtn5.whenPressed(new HangClimb(m_Climber));
-    opbtn4.whenPressed(new ClimbRelease(m_Climber).withTimeout(2));
+    opbtn8.whenPressed(new ArmSmartMotionDown());
+    opbtn9.whenPressed(new ResetArmandEncoder());
     opbtn10.whenPressed(OPTRIANGLE
                .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
     opbtn11.whenPressed(OPINITIATION
@@ -187,13 +192,24 @@ public class RobotContainer {
     opbtn12.whenPressed(OPTRENCH
                 .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
 
+    // new Trigger(
+    //   () -> {
+    //     return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP && !(m_Shooter.isFlywheelInRange());
+    //   })
+    //   .whileActiveContinuous(
+    //     (new SetZeroHood(m_Hood))
+    //     .andThen(OPINITIATION
+    //       .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood))), false);
     new Trigger(
       () -> {
         return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP && !(m_Shooter.isFlywheelInRange());
       })
       .whileActiveContinuous(
         (new SetZeroHood(m_Hood))
-        .andThen(OPINITIATION
+        .andThen(new InstantCommand(
+          () -> {
+            visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+          }, visionLL)
           .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood))), false);
 
     //testing out trigger for ballTower with Robot state
@@ -202,7 +218,7 @@ public class RobotContainer {
         return RobotContainer.m_Transport.getLow() && (Robot.getState() == RobotState.TELEOP);
       })
       .whenActive(
-              (new liftTowerOne(RobotContainer.m_Transport))
+              (new liftTowerOne(RobotContainer.m_Transport)).withTimeout(1)
               .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
               // (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
               // .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))

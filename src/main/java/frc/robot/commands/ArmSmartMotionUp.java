@@ -19,7 +19,7 @@ public class ArmSmartMotionUp extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.m_Intake.setArmPosition(RobotContainer.m_Intake.IntakeUpEncoderValue);
-    RobotContainer.m_Intake.IntakeLoading();
+    RobotContainer.m_Intake.StopRollers();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
