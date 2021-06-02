@@ -26,8 +26,8 @@ public class Climber extends SubsystemBase {
   private CANEncoder transverseEncoder;
   public double kServoPos = 0.5;
   public Servo climbServo;
-  public double BrakeEngaged = 1.0;
-  public double BrakeDisengaged = 0.5;
+  public double BrakeEngaged = 0.7;
+  public double BrakeDisengaged = 0.6;
 
   
   public Climber() {

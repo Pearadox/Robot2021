@@ -47,7 +47,7 @@ public class Hood extends SubsystemBase {
   }
 
   public void hoodUp() {
-    setHoodSpeed(1);
+    setHoodSpeed(.2);
   }
   public boolean gethasHoodZeroed() {
     return hasHoodZeroed;
@@ -57,7 +57,7 @@ public class Hood extends SubsystemBase {
   }
 
   public void hoodDown() {
-    setHoodSpeed(-1);
+    setHoodSpeed(-.2);
   }
 
   private double getRawHoodAngle() {

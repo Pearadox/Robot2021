@@ -154,17 +154,24 @@ public class RobotContainer {
         .whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
-    btn3.whenPressed(new SetHood(m_Hood));
+    //btn3.whenPressed(new SetHood(m_Hood));
     // btn4.whenPressed(new SetZoneFlywheel_Hood(m_Shooter, visionLL, m_Hood));
     btn5.whenPressed(new SetZeroHood(m_Hood).withTimeout(4));
-    btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
-        .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
-    btn7.whileHeld(new Outake_balls()); //Tower Down/Outake
-    // btn7.whenRel
-    btn8.whenPressed(new RunCommand(m_Transport::resetBallCounter));
-    btn9.whenPressed(new ArmSmartMotionUp());
-    btn10.whenPressed(new ArmSmartMotionLoading());
-    btn11.whenPressed(new ArmSmartMotionDown());
+    // btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
+    //     .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
+     //Tower Down/Outake
+    btn3.whileHeld(new Outake_balls());
+    btn4.whenPressed(new RunCommand(m_Transport::resetBallCounter));
+    btn7.whenPressed(new ArmSmartMotionUp());
+    btn9.whenPressed(new ArmSmartMotionLoading());
+    //btn11.whenPressed(new ArmSmartMotionDown());
+    btn11.whenPressed(new ResetArmandEncoder());
+    btn8.whenPressed(OPTRIANGLE
+        .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+    btn10.whenPressed(OPINITIATION
+        .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+    btn12.whenPressed(OPTRENCH
+        .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
     //intake items
     // btn9.whileHeld(new RunCommand(  //ArmIntake Up
     //   () -> {
@@ -178,19 +185,22 @@ public class RobotContainer {
 
     //Operator Buttons
     
-    opbtn3.whileHeld(new ClimbUp(m_Climber));
-    opbtn4.whenPressed(new ClimbRelease(m_Climber).withTimeout(2));
-    opbtn5.whenPressed(new HangClimb(m_Climber));
-    // opbtn5.whileHeld(new TraverseLeft(m_Climber));
+    opbtn3.whileHeld(new ClimbUpProcess(m_Climber));
+    //opbtn4.whileHeld(new ClimbRelease(m_Climber).withTimeout(2));
+    opbtn2.whileHeld(new HangClimb(m_Climber));
+    opbtn5.whileHeld(new TraverseLeft(m_Climber));
     opbtn6.whileHeld(new TraverseRight(m_Climber));
-    opbtn8.whenPressed(new ArmSmartMotionDown());
-    opbtn9.whenPressed(new ResetArmandEncoder());
-    opbtn10.whenPressed(OPTRIANGLE
-               .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
-    opbtn11.whenPressed(OPINITIATION
-                  .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
-    opbtn12.whenPressed(OPTRENCH
-                .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+    
+    opbtn7.whenPressed(new ArmSmartMotionUp());
+    opbtn9.whenPressed(new ArmSmartMotionLoading());
+    //btn11.whenPressed(new ArmSmartMotionDown());
+    opbtn11.whenPressed(new ResetArmandEncoder());
+    // opbtn8.whenPressed(OPTRIANGLE
+    //            .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+    // opbtn10.whenPressed(OPINITIATION
+    //               .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
+    // opbtn12.whenPressed(OPTRENCH
+    //             .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
 
     // new Trigger(
     //   () -> {

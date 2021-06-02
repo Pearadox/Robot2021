@@ -20,7 +20,7 @@ public class PearadoxSparkMax extends CANSparkMax{
 
         //Assumes worse case of neo550
         //20 amps would be safest, but 30 could be OK. 40 will kill the motor in 30 seconds
-        this.setSmartCurrentLimit(20);
+        this.setSmartCurrentLimit(30);
         this.setIdleMode(IdleMode.kBrake);
     }
 }

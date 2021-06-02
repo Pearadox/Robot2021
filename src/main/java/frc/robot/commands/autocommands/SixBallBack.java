@@ -20,7 +20,7 @@ public class SixBallBack extends SequentialCommandGroup {
     addCommands(RobotContainer.OPINITIATION,
               new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(2.5),
                ((new HopperInTowerUpCmd()).withTimeout(5.0)),
-               ((new ArmSmartMotionDown())));
+               ((new ResetArmandEncoder())));
               //  (new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)),
               //  (new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)),
               //  (new HopperInTowerUpCmd()));

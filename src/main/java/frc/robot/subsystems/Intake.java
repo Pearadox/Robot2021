@@ -57,7 +57,7 @@ public class Intake extends SubsystemBase {
     // initialze PID controller and encoder objects
     ArmPidController = ArmIntakeMotor.getPIDController();
     ArmIntakeEncoder = ArmIntakeMotor.getEncoder();
-    ArmIntakeMotor.setSmartCurrentLimit(20,30);
+    ArmIntakeMotor.setSmartCurrentLimit(25,30);
     ArmIntakeMotor.setInverted(true);
 
     // PID coefficients
