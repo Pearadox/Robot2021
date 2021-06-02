@@ -7,12 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import frc.team2363.logger.HelixLogger;
 import frc.robot.commands.HopperInCmd;
 import frc.robot.commands.ResetArmandEncoder;
-import frc.robot.commands.SetOpFlywheel_Hood;
-import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,10 +33,10 @@ public class Robot extends TimedRobot {
   public static final String _transport = "TRANSPORT";
   public static final String _intake = "INTAKE";
   public static final String _shooter = "SHOOTER";
-
   public static final String _tower = "TOWER";
   public static final String _climber = "CLIMBER";
   public static final String _visionLL = "LIMELIGHT";
+  public static final String _traverse = "TRAVERSE";
   
   public enum RobotState {
     DISABLED, AUTONOMOUS, TELEOP, TEST

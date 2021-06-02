@@ -22,8 +22,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   private TalonSRX climbMotor;
-  private CANSparkMax transverseMotor;
-  private CANEncoder transverseEncoder;
   public double kServoPos = 0.5;
   public Servo climbServo;
   public double BrakeEngaged = 0.7;
@@ -38,13 +36,7 @@ public class Climber extends SubsystemBase {
     climbMotor = new TalonSRX(ClimberConstants.CLIMB_MOTOR);
     climbServo = new Servo(ClimberConstants.CLIMB_SERVO);
     // climbMotor.configOpenloopRamp(.25);
-    
-    transverseMotor = new CANSparkMax(ClimberConstants.TRANSVERSE_CLIMB_MOTOR, MotorType.kBrushless);
-    transverseMotor.setIdleMode(IdleMode.kBrake);
-    transverseEncoder = transverseMotor.getEncoder();
-    transverseEncoder.setPositionConversionFactor(42);
-    transverseMotor.setOpenLoopRampRate(0.75);
-    
+        
     if (!SmartDashboard.containsKey("ClimbVoltage")) {
       SmartDashboard.putNumber("ClimbVoltage", 0);
     }
@@ -71,14 +63,6 @@ public class Climber extends SubsystemBase {
     // return climbMotor.getSupplyCurrent();
     return 0;
   }
-
-  public void setTransverseMotor(double setSpeed) {
-    transverseMotor.set(setSpeed);
-  }
-
-  public double getTransverseRaw() { return transverseEncoder.getPosition();}
-
-  public void stopTransverseMotor() { setTransverseMotor(0);}
 
    @Override
    public void periodic() {

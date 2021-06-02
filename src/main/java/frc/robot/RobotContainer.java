@@ -43,6 +43,7 @@ public class RobotContainer {
   public static final TransportSystem m_Transport = new TransportSystem();
   public static final VisionLL visionLL = new VisionLL();
   public static final Climber m_Climber = new Climber();
+  public static final Traverse m_Traverse = new Traverse();
   
 
   public static DriverStation DS;
@@ -60,6 +61,7 @@ public class RobotContainer {
   public static final String _tower = "TOWER";
   public static final String _climber = "CLIMBER";
   public static final String _visionLL = "LIMELIGHT";
+  public static final String _traverse = "TRAVERSE";
 
   public static final InstantCommand OPTRIANGLE = new InstantCommand(
       () -> {
@@ -193,8 +195,8 @@ public class RobotContainer {
     opbtn3.whileHeld(new ClimbUpProcess(m_Climber));
     //opbtn4.whileHeld(new ClimbRelease(m_Climber).withTimeout(2));
     opbtn2.whileHeld(new HangClimb(m_Climber));
-    opbtn5.whileHeld(new TraverseLeft(m_Climber));
-    opbtn6.whileHeld(new TraverseRight(m_Climber));
+    opbtn5.whileHeld(new TraverseLeft(m_Traverse));
+    opbtn6.whileHeld(new TraverseRight(m_Traverse));
     
     opbtn7.whenPressed(new ArmSmartMotionUp());
     opbtn9.whenPressed(new ArmSmartMotionLoading());
