@@ -75,6 +75,11 @@ public class RobotContainer {
       () -> {
         visionLL.setOperatorSettings(OperatorSettings.TRENCH);
       }, visionLL);
+    
+      public static final InstantCommand OPDJ = new InstantCommand(
+        () -> {
+          visionLL.setOperatorSettings(OperatorSettings.TRENCH);
+        }, visionLL);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -156,8 +161,8 @@ public class RobotContainer {
     btn2.whileHeld(new VisionDriveToTarget(m_Drivetrain, visionLL));
     //btn3.whenPressed(new SetHood(m_Hood));
     // btn4.whenPressed(new SetZoneFlywheel_Hood(m_Shooter, visionLL, m_Hood));
-    btn5.whenPressed(new SetZeroHood(m_Hood).withTimeout(4));
-    // btn6.whileHeld(new RunCommand(m_Transport::LoadTransport, m_Transport))
+    btn5.whenPressed(new ZeroHoodGroup(m_Hood).withTimeout(4));
+    // btn6.whileHeld(
     //     .whenReleased(new RunCommand(m_Transport::StopTransportSystem, m_Transport));
      //Tower Down/Outake
     btn3.whileHeld(new Outake_balls());
@@ -212,10 +217,11 @@ public class RobotContainer {
     //       .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood))), false);
     new Trigger(
       () -> {
-        return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP && !(m_Shooter.isFlywheelInRange());
+        return (!m_Hood.gethasHoodZeroed() && Robot.getState() == RobotState.TELEOP);
+        // return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP && !(m_Shooter.isFlywheelInRange());
       })
       .whileActiveContinuous(
-        (new SetZeroHood(m_Hood))
+        (new ZeroHoodGroup(m_Hood))
         .andThen(new InstantCommand(
           () -> {
             visionLL.setOperatorSettings(OperatorSettings.INITIATION);

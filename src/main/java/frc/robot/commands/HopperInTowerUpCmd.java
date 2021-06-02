@@ -39,7 +39,7 @@ public class HopperInTowerUpCmd extends CommandBase {
         }
         if(clearedBottomOnce)
         {
-          RobotContainer.m_Transport.HopperInSet(0.8);
+          RobotContainer.m_Transport.HopperInSet(1.0);
         }
       } else if(timer.get() < TotalTime) {
         RobotContainer.m_Transport.TowerStop();

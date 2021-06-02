@@ -46,8 +46,8 @@ public class Hood extends SubsystemBase {
     // if (!SmartDashboard.containsKey("Hood Switch")) SmartDashboard.putBoolean("Hood Switch", false);
   }
 
-  public void hoodUp() {
-    setHoodSpeed(.2);
+  public void hoodUp(double speed) {
+    setHoodSpeed(speed);
   }
   public boolean gethasHoodZeroed() {
     return hasHoodZeroed;
@@ -56,8 +56,8 @@ public class Hood extends SubsystemBase {
     hasHoodZeroed = value;
   }
 
-  public void hoodDown() {
-    setHoodSpeed(-.2);
+  public void hoodDown(double speed) {
+    setHoodSpeed(-speed);
   }
 
   private double getRawHoodAngle() {

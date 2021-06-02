@@ -56,9 +56,9 @@ public class VisionLL extends SubsystemBase {
     if(!SmartDashboard.containsKey("LL Target Y Distance")) SmartDashboard.putNumber("LL Target Y Distance", 0);
     if(!SmartDashboard.containsKey("LL TA")) SmartDashboard.putNumber("LL TA", 0);
 
-    triangleSettings = new HoodShooterSettings(5, -2450);
-    initiationSettings = new HoodShooterSettings(35, -2750);
-    trenchSettings = new HoodShooterSettings(49.5, -3800);
+    triangleSettings = new HoodShooterSettings(5, -2450); //5, -2450
+    initiationSettings = new HoodShooterSettings(35, -2750); //35, -2750
+    trenchSettings = new HoodShooterSettings(49.5, -3800); //49.5, -3800
     
     // setDefaultCommand(new DefaultLL(this));
   }

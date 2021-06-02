@@ -10,9 +10,11 @@ import frc.robot.subsystems.Hood;
 
 public class HoodUp extends CommandBase {
   /** Creates a new HoodUp. */
-  public HoodUp(Hood m_Hood) {
+  double upspeed = 0;
+  public HoodUp(Hood m_Hood, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_Hood);
+    upspeed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -22,7 +24,7 @@ public class HoodUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_Hood.hoodUp();
+    RobotContainer.m_Hood.hoodUp(upspeed);
   }
 
   // Called once the command ends or is interrupted.
