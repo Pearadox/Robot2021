@@ -7,7 +7,9 @@ package frc.robot.commands.autocommands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.Robot.RobotState;
 import frc.robot.commands.*;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,12 +19,23 @@ public class SixBallBack extends SequentialCommandGroup {
   public SixBallBack() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(RobotContainer.OPINITIATION,
-              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(2.5),
-               ((new HopperInTowerUpCmd()).withTimeout(5.0)),
-               ((new ResetArmandEncoder())));
-              //  (new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)),
-              //  (new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)),
-              //  (new HopperInTowerUpCmd()));
+    addCommands(
+              new InstantCommand(
+      () -> {
+        RobotContainer.visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+      }, RobotContainer.visionLL),
+              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(1.5),
+               ((new HopperInTowerUpCmd()).withTimeout(2.5)),
+               new InstantCommand(RobotContainer.m_Transport::HopperStop),
+              //  new InstantCommand(RobotContainer.m_Transport::toggleAutoLoad),
+              //  new InstantCommand(RobotContainer.m_Transport::resetBallCounter),
+              (new InstantCommand(
+      () -> {
+        RobotContainer.visionLL.setOperatorSettings(OperatorSettings.TRENCH);
+      }, RobotContainer.visionLL)), 
+              (new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)).alongWith(
+               new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)),
+               (new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)).withTimeout(1.5),
+               (new HopperInTowerUpCmd()));
   }
 }

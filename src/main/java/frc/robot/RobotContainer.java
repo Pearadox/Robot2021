@@ -172,7 +172,7 @@ public class RobotContainer {
     btn7.whenPressed(new ArmSmartMotionUp());
     btn9.whenPressed(new ArmSmartMotionLoading());
     //btn11.whenPressed(new ArmSmartMotionDown());
-    btn11.whenPressed(new ResetArmandEncoder());
+    btn11.whenPressed(new ResetArmandEncoder().withTimeout(0.5));
     btn8.whenPressed(OPTRIANGLE
         .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
     btn10.whenPressed(OPINITIATION
@@ -233,7 +233,7 @@ public class RobotContainer {
     //testing out trigger for ballTower with Robot state
     new Trigger(
       () -> {
-        return RobotContainer.m_Transport.getLow() && (Robot.getState() == RobotState.TELEOP);
+        return RobotContainer.m_Transport.getLow() && Robot.getState() == RobotState.TELEOP;
       })
       .whenActive(
               (new liftTowerOne(RobotContainer.m_Transport)).withTimeout(1)
@@ -257,9 +257,14 @@ public class RobotContainer {
 
     sendCacheTrajectory("SixBallFrontBackwards", "output/SixBallFrontBackwards");
     sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
-    sendCacheTrajectory("SixBallForwards", "output/SixBallForwards");
+    sendCacheTrajectory("SixBallBackwardsStraight", "output/SixBallBackwardsStraight");
+    sendCacheTrajectory("SixBallBackwardsTurn", "output/SixBallBackwardsTurn");
+    sendCacheTrajectory("SixBallForwardsInitiation", "output/SixBallForwardsInitiation");
+    sendCacheTrajectory("SixBallForwardsTrench", "output/SixBallForwardsTrench");
     sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
     sendCacheTrajectory("FiveBallForward", "output/FiveBallForward");
+    pathSelector.addOption("ThreeBallAuton", "ThreeBallAuton");
+    sendCacheTrajectory("Straight", "output/Straight");
 
     SmartDashboard.putData("Path Selection", pathSelector);
   }
@@ -287,10 +292,12 @@ public class RobotContainer {
       return new BouncePath(m_Drivetrain);
     else if (pathSelector.getSelected().equals("FiveBallBackwards"))
       return new AutonDriveFiveBallBack(m_Drivetrain);
-    else if (pathSelector.getSelected().equals("SixBallBackwards"))
+    else if (pathSelector.getSelected().equals("SixBallBackwardsTurn"))
       return new SixBallBack();
     else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
       return new AutonDriveSixBallFront(m_Drivetrain);
+    else if (pathSelector.getSelected().equals("ThreeBallAuton"))
+      return new ThreeBallAuton();
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.

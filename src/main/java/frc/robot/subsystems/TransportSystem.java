@@ -42,6 +42,7 @@ public class TransportSystem extends SubsystemBase {
   private DigitalInput levelOne;
   private DigitalInput levelTwo;
   private DigitalInput levelThree;
+  private boolean hasAutoLoad = false;
 
   private double ballCounter;
   private final double maxBallCounter = 3;
@@ -164,6 +165,9 @@ public class TransportSystem extends SubsystemBase {
     if(ballCounter <= maxBallCounter)
       ballCounter++;
   }
+  public void setBallCounter(int counter) {
+    ballCounter = counter;
+  }
   public double getBallCounter(){
     return ballCounter;
   }
@@ -172,6 +176,14 @@ public class TransportSystem extends SubsystemBase {
   }
   public double getMaxBallCounter() {
     return maxBallCounter;
+  }
+
+  public boolean hasAutoLoad() {
+    return hasAutoLoad;
+  }
+
+  public void toggleAutoLoad() {
+    hasAutoLoad = !hasAutoLoad;
   }
 
   public TowerState determineState() {

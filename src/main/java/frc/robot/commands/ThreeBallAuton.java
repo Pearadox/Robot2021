@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 public class ThreeBallAuton extends SequentialCommandGroup {
 
@@ -13,11 +13,13 @@ public class ThreeBallAuton extends SequentialCommandGroup {
 
         super(
 
-                 new ShooterVoltage(RobotContainer.m_Shooter, 4.25).withTimeout(4),
-                 new AutonTowerUp(RobotContainer.m_Transport).withTimeout(4)
-                        .alongWith(new ShooterVoltage(RobotContainer.m_Shooter, 4.3).withTimeout(4)),
-                 new DriveForward(RobotContainer.m_Drivetrain).withTimeout(1),
-                 new DriveBackward(RobotContainer.m_Drivetrain).withTimeout(2)
+            new InstantCommand(
+                () -> {
+                  RobotContainer.visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+                }, RobotContainer.visionLL),
+            new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(4),
+            new HopperInTowerUpCmd().withTimeout(5.0),
+            new AutonDriveStraight(RobotContainer.m_Drivetrain)
         )
         ;
     }

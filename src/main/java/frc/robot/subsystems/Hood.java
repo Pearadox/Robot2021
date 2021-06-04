@@ -118,9 +118,9 @@ public class Hood extends SubsystemBase {
       if (output < kMinOutput) {
         output = kMinOutput;
       }
-      if(Math.abs(output) < 0.3)
+      if(Math.abs(output) < 0.25)
       {
-        output = Math.signum(output) * 0.3;
+        output = Math.signum(output) * 0.25;
       }
       setHoodSpeed(output);
   }

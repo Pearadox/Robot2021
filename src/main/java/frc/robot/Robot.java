@@ -110,6 +110,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     RobotContainer.m_Drivetrain.resetOdometry(RobotContainer.m_Drivetrain.getPose());
     RobotContainer.visionLL.setLimeLightLED(true);
+    RobotContainer.m_Transport.setBallCounter(3);
     
     setState(RobotState.AUTONOMOUS);
     if (m_autonomousCommand != null) {
@@ -137,7 +138,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     RobotContainer.m_Transport.setDefaultCommand(new HopperInCmd(RobotContainer.m_Transport));
-    new ResetArmandEncoder().withTimeout(1.0).schedule();
+    // new ResetArmandEncoder().withTimeout(1.0).schedule();
     
   }
 
