@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Intake;
 
 public class Climb extends CommandBase {
 
@@ -14,15 +16,17 @@ public class Climb extends CommandBase {
    * Creates a new ClimbUp.
    */
   double climbCurrent;
-  public Climb(Climber climber) {
+  public Climb(Climber climber, Hood hood,Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climber);
+    addRequirements(climber,hood,intake);
   }
   
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     RobotContainer.m_Climber.setEngageBrake();
+    RobotContainer.m_Hood.setHoodAngle(5);
+    RobotContainer.m_Intake.setArmPosition(22);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -169,7 +169,7 @@ public class Intake extends SubsystemBase {
 
   public void IntakeLoading() {    
     TopRollerMotor.set(0.7 * in_speed);
-    BotRollerMotor.set(0.7 * in_speed);
+    BotRollerMotor.set(0.25 * in_speed);
   }
 
   public void OutakeRollers() {

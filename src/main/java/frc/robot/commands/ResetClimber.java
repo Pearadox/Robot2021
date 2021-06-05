@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,10 +19,10 @@ public class ResetClimber extends SequentialCommandGroup {
   /**
    * Creates a new ClimbRelease.
    */
-  public ResetClimber(Climber climber) {
+  public ResetClimber(Climber climber, Hood hood,Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Climb(climber).withTimeout(0.15),
+    super(new Climb(climber,hood,intake).withTimeout(0.15),
           new ClimbUp(climber));
   }
 }

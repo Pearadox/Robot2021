@@ -58,7 +58,7 @@ public class VisionLL extends SubsystemBase {
 
     triangleSettings = new HoodShooterSettings(5, -2450); //5, -2450
     initiationSettings = new HoodShooterSettings(35, -2750); //35, -2750
-    trenchSettings = new HoodShooterSettings(49.5, -3800); //49.5, -3800
+    trenchSettings = new HoodShooterSettings(47, -3800); //49.5, -3800
     
     // setDefaultCommand(new DefaultLL(this));
   }

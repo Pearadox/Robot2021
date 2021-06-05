@@ -25,7 +25,7 @@ public class SixBallBack extends SequentialCommandGroup {
         RobotContainer.visionLL.setOperatorSettings(OperatorSettings.INITIATION);
       }, RobotContainer.visionLL),
               new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL )
-                    .withTimeout(1.5),
+                    .withTimeout(1),
               new HopperInTowerUpCmd()
                     .withTimeout(1),
               new InstantCommand(RobotContainer.m_Transport::HopperStop),
@@ -38,7 +38,7 @@ public class SixBallBack extends SequentialCommandGroup {
               new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)
                 .alongWith( new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)),
               new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)
-                    .withTimeout(1.5),
+                    .withTimeout(1),
               new HopperInTowerUpCmd());
   }
 }
