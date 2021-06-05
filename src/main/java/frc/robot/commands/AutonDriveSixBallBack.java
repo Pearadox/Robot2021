@@ -45,7 +45,7 @@ public class AutonDriveSixBallBack extends SequentialCommandGroup {
             .withTimeout(3))
         .alongWith( new WaitCommand(0.5)
         .andThen( ramsete2.beforeStarting(() -> drivetrain.resetOdometry(trajectory2.getInitialPose()), drivetrain)
-        .andThen(() -> drivetrain.tankDriveVolts(0, 0))))
+            .andThen(() -> drivetrain.tankDriveVolts(0, 0))))
     );
   }
 }

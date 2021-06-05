@@ -263,8 +263,10 @@ public class RobotContainer {
     sendCacheTrajectory("SixBallForwardsTrench", "output/SixBallForwardsTrench");
     sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
     sendCacheTrajectory("FiveBallForward", "output/FiveBallForward");
+    sendCacheTrajectory("FiveBallLineup", "output/FiveBallLineup");
     pathSelector.setDefaultOption("ThreeBallAuton", "ThreeBallAuton");
     pathSelector.addOption("SixBallBackAuton", "SixBallBackAuton");
+    pathSelector.addOption("FiveBallAuton", "FiveBallAuton");
     sendCacheTrajectory("Straight", "output/Straight");
 
     SmartDashboard.putData("Path Selection", pathSelector);
@@ -291,7 +293,7 @@ public class RobotContainer {
     // return printMessage("Auton Command");
     if(pathSelector.getSelected().equals("Bounce0"))
       return new BouncePath(m_Drivetrain);
-    else if (pathSelector.getSelected().equals("FiveBallBackwards"))
+    else if (pathSelector.getSelected().equals("FiveBallAuton"))
       return new AutonDriveFiveBallBack(m_Drivetrain);
     else if (pathSelector.getSelected().equals("SixBallBackAuton"))
       return new SixBallBack();
