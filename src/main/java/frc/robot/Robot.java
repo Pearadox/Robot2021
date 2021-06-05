@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.team2363.logger.HelixLogger;
 import frc.robot.commands.HopperInCmd;
+import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.commands.ResetArmandEncoder;
 
 /**
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    CameraServer.getInstance().startAutomaticCapture();
     m_robotContainer = new RobotContainer();
     
     

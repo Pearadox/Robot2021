@@ -32,17 +32,13 @@ public class ResetArmandEncoder extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_Intake.setArmIntakeSpeed(-0.2);
+    RobotContainer.m_Intake.setArmIntakeSpeed(-0.02);
     RobotContainer.m_Intake.resetArmIntakeEncoder();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if(RobotContainer.m_Intake.getOutputCurrent() > 7)
-    // {
-    //   return true;
-    // }
     return false;
   }
 }

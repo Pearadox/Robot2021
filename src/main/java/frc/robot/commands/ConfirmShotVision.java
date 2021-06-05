@@ -60,10 +60,10 @@ public class ConfirmShotVision extends CommandBase {
             double output = -1*(P + I - D);
             lastError = tx;
             RobotContainer.m_Drivetrain.arcadeDrive(0, output);
-            if (Math.abs(tx) < 0.5) {
+            if (Math.abs(tx) < 0.5 && RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.TRENCH)
                 reachedTarget = true;
-            }
-            SmartDashboard.putNumber("Vision Output", output);
+            else if (Math.abs(tx) < 0.25 && RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRENCH)
+                reachedTarget = true;
         }
     }
 

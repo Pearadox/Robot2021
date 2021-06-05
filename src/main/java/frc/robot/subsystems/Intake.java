@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
   public double out_speed = -0.3;
   public double IntakeDownEncoderValue = -10;
   public double IntakeUpEncoderValue = 22;
-  public double IntakeUpEncoderValueLoading = 18;
+  public double IntakeUpEncoderValueLoading = 21;
 
   // public double maxRPM; //not used anywhere
 
@@ -42,7 +42,7 @@ public class Intake extends SubsystemBase {
     ArmIntakeMotor = new CANSparkMax(kArmIntakeMotor, MotorType.kBrushless);
     TopRollerMotor = new PearadoxSparkMax(kTopRollerMotor);
     BotRollerMotor = new PearadoxSparkMax(kBotRollerMotor);
-    // BotRollerMotor.setInverted(true);
+    TopRollerMotor.setInverted(true);
 
     TopRollerEncoder = TopRollerMotor.getEncoder();
     resetRollerIntakeEncoder();
@@ -209,6 +209,10 @@ public class Intake extends SubsystemBase {
     return ArmIntakeMotor.getOutputCurrent();
   }
 
+  public double getIntakeVelocity() {
+    return ArmIntakeEncoder.getVelocity();
+  }
+
   @Override
   public void periodic() {
   }
@@ -244,6 +248,7 @@ public class Intake extends SubsystemBase {
     if((allE != allowedErr)) { ArmPidController.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
     
     SmartDashboard.putNumber("Arm Output", ArmIntakeMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Arm Velocity", ArmIntakeEncoder.getVelocity());
     SmartDashboard.putNumber("Arm Encoder",  ArmIntakeEncoder.getPosition());
     SmartDashboard.putNumber("Arm Current", ArmIntakeMotor.getOutputCurrent());
     // SmartDashboard.putNumber("Arm Voltage", ArmIntakeMotor.getBusVoltage());

@@ -24,18 +24,21 @@ public class SixBallBack extends SequentialCommandGroup {
       () -> {
         RobotContainer.visionLL.setOperatorSettings(OperatorSettings.INITIATION);
       }, RobotContainer.visionLL),
-              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(1.5),
-               ((new HopperInTowerUpCmd()).withTimeout(2.5)),
-               new InstantCommand(RobotContainer.m_Transport::HopperStop),
+              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL )
+                    .withTimeout(1.5),
+              new HopperInTowerUpCmd()
+                    .withTimeout(1),
+              new InstantCommand(RobotContainer.m_Transport::HopperStop),
               //  new InstantCommand(RobotContainer.m_Transport::toggleAutoLoad),
-              //  new InstantCommand(RobotContainer.m_Transport::resetBallCounter),
-              (new InstantCommand(
+              new InstantCommand(RobotContainer.m_Transport::resetBallCounter),
+              new InstantCommand(
       () -> {
         RobotContainer.visionLL.setOperatorSettings(OperatorSettings.TRENCH);
-      }, RobotContainer.visionLL)), 
-              (new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)).alongWith(
-               new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)),
-               (new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)).withTimeout(1.5),
-               (new HopperInTowerUpCmd()));
+      }, RobotContainer.visionLL),
+              new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)
+                .alongWith( new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)),
+              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)
+                    .withTimeout(1.5),
+              new HopperInTowerUpCmd());
   }
 }

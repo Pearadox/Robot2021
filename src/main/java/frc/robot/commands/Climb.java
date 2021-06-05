@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 import frc.robot.RobotContainer;
 
-public class HangClimb extends CommandBase {
+public class Climb extends CommandBase {
 
   /**
    * Creates a new ClimbUp.
    */
   double climbCurrent;
-  public HangClimb(Climber climber) {
+  public Climb(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber);
   }

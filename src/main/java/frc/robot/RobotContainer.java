@@ -172,7 +172,7 @@ public class RobotContainer {
     btn7.whenPressed(new ArmSmartMotionUp());
     btn9.whenPressed(new ArmSmartMotionLoading());
     //btn11.whenPressed(new ArmSmartMotionDown());
-    btn11.whenPressed(new ResetArmandEncoder().withTimeout(0.5));
+    btn11.whenPressed(new ResetArmandEncoder().withTimeout(2));
     btn8.whenPressed(OPTRIANGLE
         .andThen(new SetOpFlywheel_Hood(m_Shooter, m_Hood)));
     btn10.whenPressed(OPINITIATION
@@ -192,9 +192,9 @@ public class RobotContainer {
 
     //Operator Buttons
     
-    opbtn3.whileHeld(new ClimbUpProcess(m_Climber));
+    opbtn3.whileHeld(new ResetClimber(m_Climber)); //TODO: Rename to "resetClimber"
     //opbtn4.whileHeld(new ClimbRelease(m_Climber).withTimeout(2));
-    opbtn2.whileHeld(new HangClimb(m_Climber));
+    opbtn2.whileHeld(new Climb(m_Climber)); //TODO: Rename command to "Climb"
     opbtn5.whileHeld(new TraverseLeft(m_Traverse));
     opbtn6.whileHeld(new TraverseRight(m_Traverse));
     
@@ -263,7 +263,8 @@ public class RobotContainer {
     sendCacheTrajectory("SixBallForwardsTrench", "output/SixBallForwardsTrench");
     sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
     sendCacheTrajectory("FiveBallForward", "output/FiveBallForward");
-    pathSelector.addOption("ThreeBallAuton", "ThreeBallAuton");
+    pathSelector.setDefaultOption("ThreeBallAuton", "ThreeBallAuton");
+    pathSelector.addOption("SixBallBackAuton", "SixBallBackAuton");
     sendCacheTrajectory("Straight", "output/Straight");
 
     SmartDashboard.putData("Path Selection", pathSelector);
@@ -292,7 +293,7 @@ public class RobotContainer {
       return new BouncePath(m_Drivetrain);
     else if (pathSelector.getSelected().equals("FiveBallBackwards"))
       return new AutonDriveFiveBallBack(m_Drivetrain);
-    else if (pathSelector.getSelected().equals("SixBallBackwardsTurn"))
+    else if (pathSelector.getSelected().equals("SixBallBackAuton"))
       return new SixBallBack();
     else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
       return new AutonDriveSixBallFront(m_Drivetrain);
