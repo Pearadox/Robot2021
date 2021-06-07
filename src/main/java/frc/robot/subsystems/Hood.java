@@ -120,7 +120,7 @@ public class Hood extends SubsystemBase {
       }
       if(Math.abs(output) < 0.25)
       {
-        output = Math.signum(output) * 0.25;
+        output = Math.signum(output) * 0.175;
       }
       setHoodSpeed(output);
   }

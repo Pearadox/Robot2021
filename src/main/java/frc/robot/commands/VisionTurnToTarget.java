@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionLL;
+import frc.robot.subsystems.VisionLL.OperatorSettings;
 
 public class VisionTurnToTarget extends CommandBase {
   /** Creates a new VisionTurnToTarget. */
@@ -42,12 +43,12 @@ public class VisionTurnToTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!foundTarget) {
-      RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6),
-                                              Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.4));
-    }
-    else {
-      tx = RobotContainer.visionLL.getLLDegToTarget();
+    // if (!foundTarget) {
+    //   RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6),
+    //                                           Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.4));
+    // }
+    // else {
+      tx = RobotContainer.visionLL.getLLDegToTarget() + RobotContainer.visionLL.getOFFSET();
       changeInError = lastError - tx;
       errorSum += tx;
       double P = kp * tx;
@@ -56,11 +57,12 @@ public class VisionTurnToTarget extends CommandBase {
       double output = -1*(P + I - D);
       lastError = tx;
       RobotContainer.m_Drivetrain.arcadeDrive(0, output);
-      if (Math.abs(tx) < 0.5) {
-        reachedTarget = true;
-      }
+      if (Math.abs(tx) < RobotContainer.visionLL.MIN && RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.TRENCH)
+                reachedTarget = true;
+      else if (Math.abs(tx) < 0.25 && RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRENCH)
+                reachedTarget = true;
       SmartDashboard.putNumber("Vision Output", output);
-    }
+    // }
   }
 
   // Called once the command ends or is interrupted.

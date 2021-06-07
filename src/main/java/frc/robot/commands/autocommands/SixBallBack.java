@@ -6,6 +6,7 @@ package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Robot.RobotState;
 import frc.robot.commands.*;
@@ -37,8 +38,8 @@ public class SixBallBack extends SequentialCommandGroup {
       }, RobotContainer.visionLL),
               new AutonDriveSixBallBack(RobotContainer.m_Drivetrain)
                 .alongWith( new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)),
-              new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL)
-                    .withTimeout(1),
-              new HopperInTowerUpCmd());
+              new VisionTurnToTarget(RobotContainer.m_Drivetrain, RobotContainer.visionLL)
+              .alongWith( new WaitCommand(1).andThen(
+              new HopperInTowerUpCmd())));
   }
 }

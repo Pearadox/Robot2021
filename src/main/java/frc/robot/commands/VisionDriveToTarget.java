@@ -19,8 +19,7 @@ public class VisionDriveToTarget extends CommandBase {
   private double ki = RobotContainer.visionLL.turnKi;
   private double tx;
   // private boolean reachedTarget, foundTarget;
-  private double changeInError, errorSum = 0; 
-  private double OFFSET = 0.215;
+  private double changeInError, errorSum = 0;
   private double lastError;
   public VisionDriveToTarget(Drivetrain driveTrain, VisionLL visionLL) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -48,11 +47,10 @@ public class VisionDriveToTarget extends CommandBase {
   @Override
   public void execute() {
       // OFFSET = SmartDashboard.getString("Entered Zone", "Unknown").equals("Red Zone") ? 0.0 : 0.215;
-      OFFSET = RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRENCH ? 0.0 : 0.215;
       double throttle = RobotContainer.getDriverJoystick().getY();
       double twist = RobotContainer.getDriverJoystick().getZ();
       if (RobotContainer.visionLL.getLLIsTargetFound()) {
-        tx = RobotContainer.visionLL.getLLDegToTarget() + OFFSET;
+        tx = RobotContainer.visionLL.getLLDegToTarget() + RobotContainer.visionLL.getOFFSET();
         changeInError = lastError - tx;
         errorSum += tx;
         double P = kp * tx;
@@ -60,7 +58,7 @@ public class VisionDriveToTarget extends CommandBase {
         double D = kd * changeInError;
         double output = -1*(P + I - D);
         lastError = tx;
-        if (Math.abs(tx) < 0.5) 
+        if (Math.abs(tx) < RobotContainer.visionLL.MIN) 
           output = 0; 
         twist = Math.copySign(Math.min(
                               Math.abs(

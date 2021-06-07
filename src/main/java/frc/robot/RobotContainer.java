@@ -247,14 +247,22 @@ public class RobotContainer {
     TrajectoryCache.clear();
     // sendCacheTrajectory("Slalom", "output/SlalomPath");
     // sendCacheTrajectory("Straight2m", "output/Straight2m");
+    pathSelector.setDefaultOption("ThreeBallAuton", "ThreeBallAuton");
+    pathSelector.addOption("SixBallBackAuton", "SixBallBackAuton");
+    pathSelector.addOption("FiveBallAuton", "FiveBallAuton");
+    pathSelector.addOption("TriangleThreeBallAuton", "TriangleThreeBallAuton");
+    
     sendCacheTrajectory("Turn", "output/Turn");
     sendCacheTrajectory("Bounce0", "output/Bounce0");
     sendCacheTrajectory("Bounce1", "output/Bounce1");
     // sendCacheTrajectory("Bounce2", "output/Bounce2");
     // sendCacheTrajectory("Bounce3", "output/Bounce3");
     // sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
+    sendCacheTrajectory("TriangleFirstTurn", "output/TriangleFirstTurn");
+    sendCacheTrajectory("TriangleBackwardsStraight", "output/TriangleBackwardsStraight");
     // sendCacheTrajectory("Straight", "output/Straight");
-
+    sendCacheTrajectory("FiveBallBackwardsStraight", "output/FiveBallBackwardsStraight");
+    sendCacheTrajectory("FiveBallForwardsShort", "output/FiveBallForwardsShort");
     sendCacheTrajectory("SixBallFrontBackwards", "output/SixBallFrontBackwards");
     sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
     sendCacheTrajectory("SixBallBackwardsStraight", "output/SixBallBackwardsStraight");
@@ -262,11 +270,8 @@ public class RobotContainer {
     sendCacheTrajectory("SixBallForwardsInitiation", "output/SixBallForwardsInitiation");
     sendCacheTrajectory("SixBallForwardsTrench", "output/SixBallForwardsTrench");
     sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
-    sendCacheTrajectory("FiveBallForward", "output/FiveBallForward");
+    sendCacheTrajectory("FiveBallForwards", "output/FiveBallForwards");
     sendCacheTrajectory("FiveBallLineup", "output/FiveBallLineup");
-    pathSelector.setDefaultOption("ThreeBallAuton", "ThreeBallAuton");
-    pathSelector.addOption("SixBallBackAuton", "SixBallBackAuton");
-    pathSelector.addOption("FiveBallAuton", "FiveBallAuton");
     sendCacheTrajectory("Straight", "output/Straight");
 
     SmartDashboard.putData("Path Selection", pathSelector);
@@ -301,6 +306,8 @@ public class RobotContainer {
       return new AutonDriveSixBallFront(m_Drivetrain);
     else if (pathSelector.getSelected().equals("ThreeBallAuton"))
       return new ThreeBallAuton();
+    else if (pathSelector.getSelected().equals("TriangleThreeBallAuton"))
+      return new TriangleThreeBallAuton(m_Drivetrain); 
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.

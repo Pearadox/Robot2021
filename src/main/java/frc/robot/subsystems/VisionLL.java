@@ -39,6 +39,7 @@ public class VisionLL extends SubsystemBase {
   public double turnKd = 0.015; //0.15
 
   public int enteredZone = -99;
+  public final double MIN = 0.5;
 
   /**
    * Creates a new VisionLL.
@@ -56,7 +57,7 @@ public class VisionLL extends SubsystemBase {
     if(!SmartDashboard.containsKey("LL Target Y Distance")) SmartDashboard.putNumber("LL Target Y Distance", 0);
     if(!SmartDashboard.containsKey("LL TA")) SmartDashboard.putNumber("LL TA", 0);
 
-    triangleSettings = new HoodShooterSettings(5, -2450); //5, -2450
+    triangleSettings = new HoodShooterSettings(4.3, -2300); //5, -2450
     initiationSettings = new HoodShooterSettings(35, -2750); //35, -2750
     trenchSettings = new HoodShooterSettings(47, -3800); //49.5, -3800
     
@@ -179,6 +180,10 @@ public double getLLRobotToTargetDistance() {
     } else {
       SmartDashboard.putString("Entered Zone", "Triangle");
     }
+  }
+
+  public double getOFFSET() {
+    return getOperatorSettings() == OperatorSettings.TRENCH ? -0.15 : 0.215;
   }
 
   public HoodShooterSettings getZone() {

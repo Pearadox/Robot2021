@@ -44,7 +44,8 @@ public class ConfirmShotVision extends CommandBase {
     public void execute() {
         // currZone = RobotContainer.visionLL.getZone();
         currZone = RobotContainer.visionLL.getOperatorHoodShooterSettings();
-        RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
+        if(!(Math.abs(RobotContainer.m_Hood.getHoodError()) < RobotContainer.m_Hood.kMinError))
+            RobotContainer.m_Hood.setHoodAngle(currZone.getTargetHoodAngle());
         RobotContainer.m_Shooter.setShooterVoltage(currZone.getTargetShooterVoltage());
         if (!foundTarget && RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRIANGLE) {
             RobotContainer.m_Drivetrain.arcadeDrive(Math.min(RobotContainer.getDriverJoystick().getRawAxis(0), 0.6) * 0.5,
@@ -59,8 +60,9 @@ public class ConfirmShotVision extends CommandBase {
             double D = kd * changeInError;
             double output = -1*(P + I - D);
             lastError = tx;
+            
             RobotContainer.m_Drivetrain.arcadeDrive(0, output);
-            if (Math.abs(tx) < 0.5 && RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.TRENCH)
+            if (Math.abs(tx) < RobotContainer.visionLL.MIN && RobotContainer.visionLL.getOperatorSettings() != OperatorSettings.TRENCH)
                 reachedTarget = true;
             else if (Math.abs(tx) < 0.25 && RobotContainer.visionLL.getOperatorSettings() == OperatorSettings.TRENCH)
                 reachedTarget = true;
