@@ -22,7 +22,7 @@ public class ResetClimber extends SequentialCommandGroup {
   public ResetClimber(Climber climber, Hood hood,Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Climb(climber,hood,intake).withTimeout(0.15),
+    super(new Climb(climber,hood, intake).withTimeout(0.15),
           new ClimbUp(climber));
   }
 }

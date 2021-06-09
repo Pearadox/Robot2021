@@ -122,6 +122,8 @@ public class Hood extends SubsystemBase {
       {
         output = Math.signum(output) * 0.175;
       }
+      if(getHoodSwitch())
+        output = 0;
       setHoodSpeed(output);
   }
 }

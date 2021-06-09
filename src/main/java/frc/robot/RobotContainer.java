@@ -194,7 +194,7 @@ public class RobotContainer {
     
     opbtn3.whileHeld(new ResetClimber(m_Climber,m_Hood,m_Intake)); //TODO: Rename to "resetClimber"
     //opbtn4.whileHeld(new ClimbRelease(m_Climber).withTimeout(2));
-    opbtn2.whileHeld(new Climb(m_Climber,m_Hood,m_Intake)); //TODO: Rename command to "Climb"
+    opbtn2.whileHeld(new Climb(m_Climber,m_Hood, m_Intake)); //TODO: Rename command to "Climb"
     opbtn5.whileHeld(new TraverseLeft(m_Traverse));
     opbtn6.whileHeld(new TraverseRight(m_Traverse));
     
@@ -252,9 +252,9 @@ public class RobotContainer {
     pathSelector.addOption("FiveBallAuton", "FiveBallAuton");
     pathSelector.addOption("TriangleThreeBallAuton", "TriangleThreeBallAuton");
     
-    sendCacheTrajectory("Turn", "output/Turn");
-    sendCacheTrajectory("Bounce0", "output/Bounce0");
-    sendCacheTrajectory("Bounce1", "output/Bounce1");
+    // sendCacheTrajectory("Turn", "output/Turn");
+    // sendCacheTrajectory("Bounce0", "output/Bounce0");
+    // sendCacheTrajectory("Bounce1", "output/Bounce1");
     // sendCacheTrajectory("Bounce2", "output/Bounce2");
     // sendCacheTrajectory("Bounce3", "output/Bounce3");
     // sendCacheTrajectory("BarrelRacing", "output/BarrelRacing");
@@ -278,7 +278,7 @@ public class RobotContainer {
   }
 
   private void sendCacheTrajectory(String key, String jsonPath) {
-    pathSelector.addOption(key, key);
+    // pathSelector.addOption(key, key); //commenting out so that it doesn't clutter the shuffleboard options
     TrajectoryCache.add(key, jsonPath);
   }
 

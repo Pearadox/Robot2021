@@ -16,16 +16,17 @@ public class Climb extends CommandBase {
    * Creates a new ClimbUp.
    */
   double climbCurrent;
-  public Climb(Climber climber, Hood hood,Intake intake) {
+  public Climb(Climber climber, Hood hood, Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climber,hood,intake);
+    addRequirements(climber,intake);
   }
   
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     RobotContainer.m_Climber.setEngageBrake();
-    RobotContainer.m_Hood.setHoodAngle(5);
+    // RobotContainer.m_Hood.hoodDown(0.3);
+    // RobotContainer.m_Hood.setHoodAngle(5);
     RobotContainer.m_Intake.setArmPosition(22);
   }
 
@@ -34,6 +35,8 @@ public class Climb extends CommandBase {
   public void execute() {
     climbCurrent = RobotContainer.m_Climber.getClimbCurrent();
     RobotContainer.m_Climber.setClimbMotor(1.0);
+    // if(RobotContainer.m_Hood.getHoodSwitch())
+    //   RobotContainer.m_Hood.stopHood();
   }
 
   // Called once the command ends or is interrupted.
