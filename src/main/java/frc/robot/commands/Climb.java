@@ -16,7 +16,7 @@ public class Climb extends CommandBase {
    * Creates a new ClimbUp.
    */
   double climbCurrent;
-  public Climb(Climber climber, Hood hood, Intake intake) {
+  public Climb(Climber climber, Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climber,intake);
   }

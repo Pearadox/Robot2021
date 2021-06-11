@@ -34,7 +34,11 @@ import frc.lib.util.TrajectoryCache;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static final Joystick driverJoystick = new Joystick(0);
+  private final static int DRIVERJOYSTICKPORT = 0;
+  private final boolean isXboxController = false;
+
+  public static final Joystick driverJoystick = new Joystick(DRIVERJOYSTICKPORT);
+  public static final XboxController driverXBox = new XboxController(DRIVERJOYSTICKPORT);
   public static final Joystick operatorJoystick = new Joystick(1);
   public static final Drivetrain m_Drivetrain = new Drivetrain();
   public static final Hood m_Hood = new Hood();
@@ -102,6 +106,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+  JoystickButton xBoxbtn1 = new JoystickButton(driverXBox, 1);
+  JoystickButton xBoxbtn2 = new JoystickButton(driverXBox, 2);
+  JoystickButton xBoxbtn3 = new JoystickButton(driverXBox, 3);
+  JoystickButton xBoxbtn4 = new JoystickButton(driverXBox, 4);
+  JoystickButton xBoxbtn5 = new JoystickButton(driverXBox, 5);
+  JoystickButton xBoxbtn6 = new JoystickButton(driverXBox, 6);
+  
   JoystickButton btn1 = new JoystickButton(driverJoystick, 1);
   JoystickButton btn2 = new JoystickButton(driverJoystick, 2);
   JoystickButton btn3 = new JoystickButton(driverJoystick, 3);
@@ -157,6 +168,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
+    if(isXboxController) {
+    }
+    else {
     btn1.whileHeld(new HopperInTowerUpCmd())
         .whenReleased(new RunCommand(m_Transport::HopperInOnly, m_Transport));
     
@@ -186,15 +200,16 @@ public class RobotContainer {
     //     m_Intake.setRollerSpeed(0);
     // }, m_Intake))
     //     .whenReleased(new InstantCommand(m_Intake::stopArmIntake, m_Intake));
+    }
    
 
     // btn10.whenPressed(new IntakeDown(m_Intake));
 
     //Operator Buttons
     
-    opbtn3.whileHeld(new ResetClimber(m_Climber,m_Hood,m_Intake)); //TODO: Rename to "resetClimber"
+    opbtn3.whileHeld(new ResetClimber(m_Climber,m_Intake)); //TODO: Rename to "resetClimber"
     //opbtn4.whileHeld(new ClimbRelease(m_Climber).withTimeout(2));
-    opbtn2.whileHeld(new Climb(m_Climber,m_Hood, m_Intake)); //TODO: Rename command to "Climb"
+    opbtn2.whenPressed(new ResetArmandEncoder()).whileHeld(new Climb(m_Climber, m_Intake)); //TODO: Rename command to "Climb"
     opbtn5.whileHeld(new TraverseLeft(m_Traverse));
     opbtn6.whileHeld(new TraverseRight(m_Traverse));
     
@@ -249,7 +264,8 @@ public class RobotContainer {
     // sendCacheTrajectory("Straight2m", "output/Straight2m");
     pathSelector.setDefaultOption("ThreeBallAuton", "ThreeBallAuton");
     pathSelector.addOption("SixBallBackAuton", "SixBallBackAuton");
-    pathSelector.addOption("FiveBallAuton", "FiveBallAuton");
+    pathSelector.addOption("FiveBallShortAuton", "FiveBallShortAuton");
+    pathSelector.addOption("FiveBallLongAuton", "FiveBallLongAuton");
     pathSelector.addOption("TriangleThreeBallAuton", "TriangleThreeBallAuton");
     
     // sendCacheTrajectory("Turn", "output/Turn");
@@ -296,18 +312,20 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     // return new PrintCommand("Auton Command");
     // return printMessage("Auton Command");
-    if(pathSelector.getSelected().equals("Bounce0"))
-      return new BouncePath(m_Drivetrain);
-    else if (pathSelector.getSelected().equals("FiveBallAuton"))
-      return new AutonDriveFiveBallBack(m_Drivetrain);
+    // if(pathSelector.getSelected().equals("Bounce0"))
+    //   return new BouncePath(m_Drivetrain);
+    if (pathSelector.getSelected().equals("FiveBallShortAuton"))
+      return new FiveBallShortAuton(m_Drivetrain);
     else if (pathSelector.getSelected().equals("SixBallBackAuton"))
       return new SixBallBack();
-    else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
-      return new AutonDriveSixBallFront(m_Drivetrain);
+    // else if (pathSelector.getSelected().equals("SixBallFrontBackwards"))
+    //   return new AutonDriveSixBallFront(m_Drivetrain);
     else if (pathSelector.getSelected().equals("ThreeBallAuton"))
       return new ThreeBallAuton();
     else if (pathSelector.getSelected().equals("TriangleThreeBallAuton"))
       return new TriangleThreeBallAuton(m_Drivetrain); 
+    else if (pathSelector.getSelected().equals("FiveBallLongAuton"))
+      return new FiveBallLongAuton(m_Drivetrain);
     Trajectory pathTrajectory = TrajectoryCache.get(pathSelector.getSelected());
     RamseteCommand ramseteCommand = createRamseteCommand(pathTrajectory);
     // Reset odometry to the starting pose of the trajectory.

@@ -32,7 +32,7 @@ public class HopperInTowerUpCmd extends CommandBase {
   public void execute() {
     // if(RobotContainer.m_Shooter.isFlywheelInRange()) {
       if (timer.get() < RunTime) {
-        RobotContainer.m_Transport.TowerUp(0.9);
+        RobotContainer.m_Transport.TowerUp(1);
         if(!RobotContainer.m_Transport.getLow())
         {
           clearedBottomOnce = true;
@@ -42,7 +42,7 @@ public class HopperInTowerUpCmd extends CommandBase {
           RobotContainer.m_Transport.HopperInSet(1.0);
         }
       } else if(timer.get() < TotalTime) {
-        RobotContainer.m_Transport.TowerStop();
+        RobotContainer.m_Transport.TowerUp(0.8);
       } else {
         timer.reset();
       }

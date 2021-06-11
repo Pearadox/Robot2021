@@ -19,10 +19,10 @@ public class ResetClimber extends SequentialCommandGroup {
   /**
    * Creates a new ClimbRelease.
    */
-  public ResetClimber(Climber climber, Hood hood,Intake intake) {
+  public ResetClimber(Climber climber, Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Climb(climber,hood, intake).withTimeout(0.15),
+    super(new Climb(climber, intake).withTimeout(0.15),
           new ClimbUp(climber));
   }
 }

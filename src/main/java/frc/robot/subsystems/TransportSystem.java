@@ -48,7 +48,7 @@ public class TransportSystem extends SubsystemBase {
   private final double maxBallCounter = 3;
   public double up_speed = 0.4;
   private double down_speed = -0.8;
-  private double in_speed = 0.42;
+  private double in_speed = 0.5;
   private double out_speed = -0.8;
 
   /** Creates a new TransportSystem. */

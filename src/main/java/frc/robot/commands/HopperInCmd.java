@@ -27,7 +27,7 @@ public class HopperInCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        if(balltower.getBallCounter() < balltower.getMaxBallCounter()) {
+        if((balltower.getBallCounter() < balltower.getMaxBallCounter()) && !balltower.getLow()) {
             balltower.HopperIn();
         }else{
             balltower.HopperStop();
