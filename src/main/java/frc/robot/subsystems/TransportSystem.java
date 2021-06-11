@@ -45,7 +45,7 @@ public class TransportSystem extends SubsystemBase {
   private boolean hasAutoLoad = false;
 
   private double ballCounter;
-  private final double maxBallCounter = 3;
+  private final double maxBallCounter = 2;
   public double up_speed = 0.4;
   private double down_speed = -0.8;
   private double in_speed = 0.5;
@@ -93,7 +93,7 @@ public class TransportSystem extends SubsystemBase {
   }
 
   public void HopperIn() {
-    if(ballCounter < maxBallCounter) {
+    if(ballCounter <= maxBallCounter) {
       HopperVictor.set(ControlMode.PercentOutput, in_speed); 
     }
     else
@@ -151,7 +151,7 @@ public class TransportSystem extends SubsystemBase {
     return prevState;
   }
 
-  public boolean getLow() {
+  public boolean isBallLow() {
     return !(levelOne.get());
   }
   public boolean getMedium() {
@@ -189,7 +189,7 @@ public class TransportSystem extends SubsystemBase {
   public TowerState determineState() {
     boolean low, mid, high;
 
-    low = getLow();
+    low = isBallLow();
     mid = getMedium();
     high = getHigh();
 
@@ -320,7 +320,7 @@ public class TransportSystem extends SubsystemBase {
     final double out = SmartDashboard.getNumber("Hopper out Speed", out_speed);
     // SmartDashboard.putString("Tower State", getState().toString());
     SmartDashboard.putNumber("Ball Counter", ballCounter);
-    SmartDashboard.putBoolean("Low Sensor", getLow());
+    SmartDashboard.putBoolean("Low Sensor", isBallLow());
     SmartDashboard.putBoolean("Medium Sensor", getMedium());
     SmartDashboard.putBoolean("High Sensor", getHigh());
     

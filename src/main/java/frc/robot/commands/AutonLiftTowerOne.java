@@ -42,11 +42,11 @@ public class AutonLiftTowerOne extends CommandBase {
   public boolean isFinished() {
     if(ballTower.getBallCounter() == 0)
     {
-      return (ballTower.getMedium() && !ballTower.getLow());
+      return (ballTower.getMedium() && !ballTower.isBallLow());
     }
     else if(ballTower.getBallCounter() == 1)
     {
-      return (ballTower.getHigh() && ballTower.getMedium() && !ballTower.getLow());
+      return (ballTower.getHigh() && ballTower.getMedium() && !ballTower.isBallLow());
     }
     else {
       return true;

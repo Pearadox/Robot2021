@@ -27,7 +27,8 @@ public class Climb extends CommandBase {
     RobotContainer.m_Climber.setEngageBrake();
     // RobotContainer.m_Hood.hoodDown(0.3);
     // RobotContainer.m_Hood.setHoodAngle(5);
-    RobotContainer.m_Intake.setArmPosition(22);
+    RobotContainer.m_Intake.setArmPosition(RobotContainer.m_Intake.IntakeUpEncoderValue);
+    RobotContainer.m_Intake.setRollerSpeed(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

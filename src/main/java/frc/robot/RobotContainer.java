@@ -169,6 +169,7 @@ public class RobotContainer {
     // BUTTONS 11 and 12 ARE USED FOR HELIX DRIVE TURNS
     //Shooter items
     if(isXboxController) {
+      
     }
     else {
     btn1.whileHeld(new HopperInTowerUpCmd())
@@ -209,7 +210,8 @@ public class RobotContainer {
     
     opbtn3.whileHeld(new ResetClimber(m_Climber,m_Intake)); //TODO: Rename to "resetClimber"
     //opbtn4.whileHeld(new ClimbRelease(m_Climber).withTimeout(2));
-    opbtn2.whenPressed(new ResetArmandEncoder()).whileHeld(new Climb(m_Climber, m_Intake)); //TODO: Rename command to "Climb"
+    opbtn2.whenPressed(new ZeroHoodGroup(m_Hood).alongWith(new ShooterVoltage(m_Shooter, 0)))
+          .whileHeld(new Climb(m_Climber, m_Intake)); //TODO: Rename command to "Climb"
     opbtn5.whileHeld(new TraverseLeft(m_Traverse));
     opbtn6.whileHeld(new TraverseRight(m_Traverse));
     
@@ -248,11 +250,11 @@ public class RobotContainer {
     //testing out trigger for ballTower with Robot state
     new Trigger(
       () -> {
-        return RobotContainer.m_Transport.getLow() && Robot.getState() == RobotState.TELEOP;
+        return RobotContainer.m_Transport.isBallLow() && Robot.getState() == RobotState.TELEOP;
       })
       .whenActive(
-              (new liftTowerOne(RobotContainer.m_Transport)).withTimeout(1)
-              .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
+              (new liftTowerOne(RobotContainer.m_Transport)).withTimeout(0.7));
+              //andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
               // (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
               // .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))
               // .andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
@@ -278,6 +280,8 @@ public class RobotContainer {
     sendCacheTrajectory("TriangleBackwardsStraight", "output/TriangleBackwardsStraight");
     // sendCacheTrajectory("Straight", "output/Straight");
     sendCacheTrajectory("FiveBallBackwardsStraight", "output/FiveBallBackwardsStraight");
+    sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
+    sendCacheTrajectory("FiveBallForwardsLong", "output/FiveBallForwardsLong");
     sendCacheTrajectory("FiveBallForwardsShort", "output/FiveBallForwardsShort");
     sendCacheTrajectory("SixBallFrontBackwards", "output/SixBallFrontBackwards");
     sendCacheTrajectory("SixBallBackwards", "output/SixBallBackwards");
@@ -285,8 +289,6 @@ public class RobotContainer {
     sendCacheTrajectory("SixBallBackwardsTurn", "output/SixBallBackwardsTurn");
     sendCacheTrajectory("SixBallForwardsInitiation", "output/SixBallForwardsInitiation");
     sendCacheTrajectory("SixBallForwardsTrench", "output/SixBallForwardsTrench");
-    sendCacheTrajectory("FiveBallBackwards", "output/FiveBallBackwards");
-    sendCacheTrajectory("FiveBallForwards", "output/FiveBallForwards");
     sendCacheTrajectory("FiveBallLineup", "output/FiveBallLineup");
     sendCacheTrajectory("Straight", "output/Straight");
 

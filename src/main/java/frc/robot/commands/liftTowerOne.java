@@ -23,8 +23,15 @@ public class liftTowerOne extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ballTower.getBallCounter() < (ballTower.getMaxBallCounter()-1)) {
-      ballTower.TowerUp(0.35);
+    if(ballTower.getBallCounter() < (ballTower.getMaxBallCounter())) {
+      if(ballTower.getBallCounter() == 1)
+      {
+        ballTower.TowerUp(0.32);
+      }
+      else 
+      {
+        ballTower.TowerUp(0.32);
+      }
     }
     else {
       ballTower.TowerStop();
@@ -35,6 +42,9 @@ public class liftTowerOne extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     ballTower.TowerStop();
+    if(!ballTower.isBallLow()){
+      ballTower.incrementBallCounter();
+    }
   }
 
   // Returns true when the command should end.
@@ -42,11 +52,11 @@ public class liftTowerOne extends CommandBase {
   public boolean isFinished() {
     if(ballTower.getBallCounter() == 0)
     {
-      return (ballTower.getMedium() && !ballTower.getLow());
+      return (ballTower.getMedium() && !ballTower.isBallLow());
     }
     else if(ballTower.getBallCounter() == 1)
     {
-      return (ballTower.getHigh() && ballTower.getMedium() && !ballTower.getLow());
+      return (ballTower.getHigh() && ballTower.getMedium() && !ballTower.isBallLow());
     }
     else {
       return true;

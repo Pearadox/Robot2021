@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.html.FormSubmitEvent.MethodType;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
@@ -81,12 +83,21 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterVoltage(double voltage) {
-    m_pidController.setReference(voltage, ControlType.kVelocity);
-    referenceVoltage = voltage;
+    if(voltage == 0)
+    {
+      setTestVoltage(0);
+    }
+    else
+    {
+      m_pidController.setReference(voltage, ControlType.kVelocity);
+      referenceVoltage = voltage;
+
+    }
   }
   public double  getShooterReference(){
     return referenceVoltage;
   }
+
 
   public void setTestVoltage(double voltage) {
     rightFlywheelMotor.set(voltage);

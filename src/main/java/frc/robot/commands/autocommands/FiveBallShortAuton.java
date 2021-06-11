@@ -39,7 +39,7 @@ public class FiveBallShortAuton extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(
       () -> {
-        RobotContainer.visionLL.setOperatorSettings(OperatorSettings.INITIATION);
+        RobotContainer.visionLL.setOperatorSettings(OperatorSettings.TRENCH);
       }, RobotContainer.visionLL),
       new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)
         .alongWith(ramsete0.beforeStarting(() -> drivetrain.resetOdometry(trajectory0.getInitialPose()), drivetrain)
@@ -49,7 +49,7 @@ public class FiveBallShortAuton extends SequentialCommandGroup {
         new ArmSmartMotionUp(),
         new WaitCommand(0.75),
       ramsete1.beforeStarting(() -> drivetrain.resetOdometry(trajectory1.getInitialPose()), drivetrain),
-      new VisionTurnToTarget(RobotContainer.m_Drivetrain, RobotContainer.visionLL).withTimeout(1.5),
+      new VisionTurnToTarget(RobotContainer.m_Drivetrain, RobotContainer.visionLL).withTimeout(2.5),
       new HopperInTowerUpCmd(),
       new InstantCommand(RobotContainer.m_Transport::resetBallCounter)
     );

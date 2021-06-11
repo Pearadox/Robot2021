@@ -46,6 +46,6 @@ public class TowerUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !balltower.getLow() && balltower.getMedium();
+    return !balltower.isBallLow() && balltower.getMedium();
   }
 }

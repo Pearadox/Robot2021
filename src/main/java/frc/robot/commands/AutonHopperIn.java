@@ -37,6 +37,6 @@ public class AutonHopperIn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return RobotContainer.m_Transport.getLow();
+    return RobotContainer.m_Transport.isBallLow();
   }
 }

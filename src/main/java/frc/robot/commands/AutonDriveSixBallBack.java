@@ -37,9 +37,9 @@ public class AutonDriveSixBallBack extends SequentialCommandGroup {
     
     addCommands(
       ramsete0.beforeStarting(() -> drivetrain.resetOdometry(trajectory0.getInitialPose()), drivetrain)
-        .alongWith( new WaitCommand(2.65)
+        .alongWith( new WaitCommand(2.5)
           .andThen( new AutonResetArmandEncoder())),
-      new WaitCommand(0.15),
+      new WaitCommand(0.1),
       ramsete1.beforeStarting(() -> drivetrain.resetOdometry(trajectory1.getInitialPose()), drivetrain),
       new ArmSmartMotionUp()
         .alongWith( new AutonTransportLoading()
