@@ -46,7 +46,7 @@ public class TriangleThreeBallAuton extends SequentialCommandGroup {
       () -> {
         RobotContainer.visionLL.setOperatorSettings(OperatorSettings.TRIANGLE);
       }, RobotContainer.visionLL),
-      new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood)
+      new SetOpFlywheel_Hood(RobotContainer.m_Shooter, RobotContainer.m_Hood).withTimeout(1)
         .alongWith(new WaitCommand(0.5)).andThen(ramsete0.beforeStarting(() -> drivetrain.resetOdometry(trajectory0.getInitialPose()), drivetrain))
           .andThen(() -> drivetrain.tankDriveVolts(0, 0)),
       new HopperInTowerUpCmd().withTimeout(1.0),

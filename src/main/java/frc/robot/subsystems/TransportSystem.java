@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 // import java.lang.System.Logger.Level;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -57,6 +58,7 @@ public class TransportSystem extends SubsystemBase {
     HopperVictor = new WPI_VictorSPX(kHopperMotor);
     TowerVictor.configFactoryDefault();
     HopperVictor.configFactoryDefault();
+    TowerVictor.setNeutralMode(NeutralMode.Brake);
 
     //VictorSPX doesn't have current limiting capabilities. Might be reason to switch to Talon/SparkMax. 
     //Otherwise implement some current limiting via PDP for checking for ball jams
@@ -165,8 +167,8 @@ public class TransportSystem extends SubsystemBase {
     if(ballCounter <= maxBallCounter)
       ballCounter++;
   }
-  public void setBallCounter(int counter) {
-    ballCounter = counter;
+  public void setBallCounter(double d) {
+    ballCounter = d;
   }
   public double getBallCounter(){
     return ballCounter;

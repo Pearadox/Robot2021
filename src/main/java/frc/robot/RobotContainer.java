@@ -240,7 +240,7 @@ public class RobotContainer {
         // return !(m_Hood.gethasHoodZeroed()) && Robot.getState() == Robot.RobotState.TELEOP && !(m_Shooter.isFlywheelInRange());
       })
       .whileActiveContinuous(
-        (new ZeroHoodGroup(m_Hood))
+        (new ZeroHoodGroup(m_Hood).withTimeout(2))
         .andThen(new InstantCommand(
           () -> {
             visionLL.setOperatorSettings(OperatorSettings.INITIATION);

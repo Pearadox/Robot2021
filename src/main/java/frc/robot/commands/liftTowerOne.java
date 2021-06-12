@@ -50,6 +50,11 @@ public class liftTowerOne extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (ballTower.getHigh()) {
+      ballTower.setBallCounter(ballTower.getMaxBallCounter());
+      return true;
+    }
+
     if(ballTower.getBallCounter() == 0)
     {
       return (ballTower.getMedium() && !ballTower.isBallLow());
