@@ -253,7 +253,7 @@ public class RobotContainer {
         return RobotContainer.m_Transport.isBallLow() && Robot.getState() == RobotState.TELEOP;
       })
       .whenActive(
-              (new liftTowerOne(RobotContainer.m_Transport)).withTimeout(0.7));
+              (new liftTowerOne(RobotContainer.m_Transport)).withTimeout(0.6));
               //andThen(new InstantCommand(m_Transport::incrementBallCounter, m_Transport)), false);
               // (new HopperInCmd(RobotContainer.m_Transport)).withTimeout(0.17)
               // .andThen(new TowerUp(RobotContainer.m_Transport).withTimeout(1.3))

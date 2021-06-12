@@ -23,7 +23,6 @@ public class ThreeBallAuton extends SequentialCommandGroup {
             new ConfirmShotVision(RobotContainer.m_Drivetrain, RobotContainer.m_Hood, RobotContainer.m_Shooter, RobotContainer.visionLL ).withTimeout(1.5),
             new HopperInTowerUpCmd().withTimeout(1.5),
             new AutonDriveStraight(RobotContainer.m_Drivetrain)
-        )
-        ;
+        );
     }
 }
