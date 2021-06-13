@@ -131,9 +131,12 @@ public class Drivetrain extends SubsystemBase {
 
   public void HelixDrive() {
     double throttle = RobotContainer.driverJoystick.getY();
-    double twist = RobotContainer.driverJoystick.getZ() * -0.65;
+    double twist = RobotContainer.driverJoystick.getZ() * -0.8;
 
     double saturatedInput;
+
+
+    
     double greaterInput = Math.max(Math.abs(twist), Math.abs(throttle));
     double lesserInput = Math.min(Math.abs(twist), Math.abs(throttle));
 
@@ -151,6 +154,7 @@ public class Drivetrain extends SubsystemBase {
     
     arcadeDrive(throttle, twist);
   }
+
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     frontLeftMotor.setVoltage(-leftVolts);
