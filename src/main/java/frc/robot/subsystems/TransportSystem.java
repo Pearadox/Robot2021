@@ -49,7 +49,7 @@ public class TransportSystem extends SubsystemBase {
   private final double maxBallCounter = 2;
   public double up_speed = 0.4;
   private double down_speed = -0.8;
-  private double in_speed = 0.5;
+  private double in_speed = 0.6;
   private double out_speed = -0.8;
 
   /** Creates a new TransportSystem. */
@@ -58,7 +58,7 @@ public class TransportSystem extends SubsystemBase {
     HopperVictor = new WPI_VictorSPX(kHopperMotor);
     TowerVictor.configFactoryDefault();
     HopperVictor.configFactoryDefault();
-    TowerVictor.setNeutralMode(NeutralMode.Brake);
+    TowerVictor.setNeutralMode(NeutralMode.Coast);
 
     //VictorSPX doesn't have current limiting capabilities. Might be reason to switch to Talon/SparkMax. 
     //Otherwise implement some current limiting via PDP for checking for ball jams
