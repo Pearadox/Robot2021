@@ -183,7 +183,8 @@ public double getLLRobotToTargetDistance() {
   }
 
   public double getOFFSET() {
-    return getOperatorSettings() == OperatorSettings.TRENCH ? -0.15 : 0.215;
+    return getOperatorSettings() == OperatorSettings.TRENCH ? -0.15 : 0.10;
+    //-.15:.215
   }
 
   public HoodShooterSettings getZone() {
